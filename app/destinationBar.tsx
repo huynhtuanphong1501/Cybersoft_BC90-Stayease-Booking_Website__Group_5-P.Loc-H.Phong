@@ -7,6 +7,8 @@ import { TDestination } from "./type";
 const DestinationBar = () => {
     const [locations, setLocations] = useState<TDestination[]>([]);
     const [keyword, setKeyword] = useState("");
+    console.log(keyword);
+
 
     useEffect(() => {
         const fetchLocations = async () => {
