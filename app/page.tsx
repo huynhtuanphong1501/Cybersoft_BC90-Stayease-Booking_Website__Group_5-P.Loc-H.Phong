@@ -19,15 +19,26 @@ export default function Home() {
   const [homeReady, setHomeReady] = useState(false);
 
   useEffect(() => {
-    new WOW.WOW({ live: false }).init();
+    let wow: any;
+
+    import("wowjs/dist/wow").then((module) => {
+      const WOW = module.WOW;
+      wow = new WOW({ live: false, offset: 80 });
+      wow.init();
+    });
+
     const t = setTimeout(() => setSplashDone(true), 80);
-    return () => clearTimeout(t);
+
+    return () => {
+      clearTimeout(t);
+      wow = null;
+    };
   }, []);
 
   return (
-    <div className="w-full min-h-screen bg-gradient-to-b from-[#C6C6C6] via-[#8D8D8D] to-[#383838] relative overflow-hidden">
+    <div className="w-full min-h-screen bg-linear-to-b from-[#C6C6C6] via-[#8D8D8D] to-[#383838] relative overflow-hidden">
 
-      <div className="fixed inset-0 z-[100] pointer-events-none">
+      <div className="fixed inset-0 z-100 pointer-events-none">
         <motion.div
           initial={{ y: 0 }}
           animate={splashDone ? { y: "-100%" } : {}}
@@ -44,16 +55,16 @@ export default function Home() {
 
       <motion.div
         className="relative w-full bg-white origin-center"
-        initial={{ scale: 0.6, opacity: 0 }}
-        animate={splashDone ? { scale: 1, opacity: 1 } : {}}
-        transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
+        initial={{ scale: 0.7, opacity: 0, y: 40 }}
+        animate={splashDone ? { scale: 1, opacity: 1, y: 0 } : {}}
+        transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
         onAnimationComplete={() => setHomeReady(true)}
       >
         <HomeHeader isHome homeAnimationDone={homeReady} />
 
         <main className="w-full">
 
-          <section className="relative h-screen overflow-hidden">
+          <section className="relative h-screen">
             <div className="absolute inset-0">
               <Swiper
                 modules={[Autoplay, Pagination]}
@@ -63,18 +74,20 @@ export default function Home() {
                 className="w-full h-full"
               >
                 <SwiperSlide>
-                  <img src="/img/Carousel/carousel1.jpg" className="w-full h-full object-cover" />
+                  <img src="/img/Carousel/carousel1.jpg" className="w-full h-full object-cover animate__animated animate__fadeIn" />
                 </SwiperSlide>
                 <SwiperSlide>
-                  <img src="/img/Carousel/carousel2.jpg" className="w-full h-full object-cover" />
+                  <img src="/img/Carousel/carousel2.jpg" className="w-full h-full object-cover animate__animated animate__fadeIn" />
                 </SwiperSlide>
               </Swiper>
             </div>
 
             {homeReady && (
-              <div className="absolute bottom-10 left-1/2 -translate-x-1/2 w-full max-w-6xl px-6 z-20 wow animate__animated animate__fadeInUp">
-                <div className="bg-white/90 backdrop-blur-md rounded-full shadow-2xl p-6">
-                  <DestinationBar />
+              <div className="absolute bottom-10 left-0 w-full z-1">
+                <div className="bg-white rounded-full shadow-2xl py-6 container mx-auto">
+                  <div className="container mx-auto">
+                    <DestinationBar />
+                  </div>
                 </div>
               </div>
             )}
@@ -86,16 +99,16 @@ export default function Home() {
             </h2>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
-              <div className="h-64 rounded-2xl overflow-hidden shadow-lg bg-gray-200 wow animate__animated animate__zoomIn">
+              <div className="h-64 rounded-2xl overflow-hidden shadow-lg bg-gray-200 wow animate__animated animate__zoomIn animate__slow">
                 <img src="/destinations/img1.jpg" className="w-full h-full object-cover" />
               </div>
-              <div className="h-64 rounded-2xl overflow-hidden shadow-lg bg-gray-200 wow animate__animated animate__zoomIn" data-wow-delay="0.1s">
+              <div className="h-64 rounded-2xl overflow-hidden shadow-lg bg-gray-200 wow animate__animated animate__zoomIn animate__slow" data-wow-delay="0.1s">
                 <img src="/destinations/img2.jpg" className="w-full h-full object-cover" />
               </div>
-              <div className="h-64 rounded-2xl overflow-hidden shadow-lg bg-gray-200 wow animate__animated animate__zoomIn" data-wow-delay="0.2s">
+              <div className="h-64 rounded-2xl overflow-hidden shadow-lg bg-gray-200 wow animate__animated animate__zoomIn animate__slow" data-wow-delay="0.2s">
                 <img src="/destinations/img3.jpg" className="w-full h-full object-cover" />
               </div>
-              <div className="h-64 rounded-2xl overflow-hidden shadow-lg bg-gray-200 wow animate__animated animate__zoomIn" data-wow-delay="0.3s">
+              <div className="h-64 rounded-2xl overflow-hidden shadow-lg bg-gray-200 wow animate__animated animate__zoomIn animate__slow" data-wow-delay="0.3s">
                 <img src="/destinations/img4.jpg" className="w-full h-full object-cover" />
               </div>
             </div>
@@ -107,30 +120,64 @@ export default function Home() {
             </h2>
 
             <div className="flex gap-6 overflow-x-auto no-scrollbar max-w-7xl mx-auto">
-              <div className="min-w-[80%] md:min-w-[30%] h-80 rounded-2xl overflow-hidden shadow-md bg-gray-200 wow animate__animated animate__fadeInLeft">
+              <div className="min-w-[80%] md:min-w-[30%] h-80 rounded-2xl overflow-hidden shadow-md bg-gray-200 wow animate__animated animate__fadeInLeft animate__slow">
                 <img src="/experiences/exp1.jpg" className="w-full h-full object-cover" />
               </div>
-              <div className="min-w-[80%] md:min-w-[30%] h-80 rounded-2xl overflow-hidden shadow-md bg-gray-200 wow animate__animated animate__fadeInUp">
+              <div className="min-w-[80%] md:min-w-[30%] h-80 rounded-2xl overflow-hidden shadow-md bg-gray-200 wow animate__animated animate__fadeInUp animate__slow">
                 <img src="/experiences/exp2.jpg" className="w-full h-full object-cover" />
               </div>
-              <div className="min-w-[80%] md:min-w-[30%] h-80 rounded-2xl overflow-hidden shadow-md bg-gray-200 wow animate__animated animate__fadeInRight">
+              <div className="min-w-[80%] md:min-w-[30%] h-80 rounded-2xl overflow-hidden shadow-md bg-gray-200 wow animate__animated animate__fadeInRight animate__slow">
                 <img src="/experiences/exp3.jpg" className="w-full h-full object-cover" />
               </div>
             </div>
           </section>
 
-          <section className="w-full py-28 bg-gray-100 px-6">
+          <section className="w-full py-28 bg-gray-100 overflow-hidden">
             <h3 className="text-xl text-gray-500 mb-16 uppercase tracking-[0.3em] font-medium text-center wow animate__animated animate__fadeInUp">
               Our Partners
             </h3>
 
-            <div className="flex justify-center items-center gap-16 flex-wrap max-w-6xl mx-auto">
-              <img src="/img/Partner/expedia.png" className="h-10 opacity-40 grayscale hover:grayscale-0 hover:opacity-100 transition-all wow animate__animated animate__fadeInUp" />
-              <img src="/img/Partner/visa.png" className="h-10 opacity-40 grayscale hover:grayscale-0 hover:opacity-100 transition-all wow animate__animated animate__fadeInUp" data-wow-delay="0.1s" />
-              <img src="/img/Partner/mastercard.png" className="h-10 opacity-40 grayscale hover:grayscale-0 hover:opacity-100 transition-all wow animate__animated animate__fadeInUp" data-wow-delay="0.2s" />
-              <img src="/img/Partner/paypal.png" className="h-10 opacity-40 grayscale hover:grayscale-0 hover:opacity-100 transition-all wow animate__animated animate__fadeInUp" data-wow-delay="0.3s" />
-              <img src="/img/Partner/airbnb.png" className="h-10 opacity-40 grayscale hover:grayscale-0 hover:opacity-100 transition-all wow animate__animated animate__fadeInUp" data-wow-delay="0.4s" />
-            </div>
+            <Swiper
+              modules={[Autoplay]}
+              slidesPerView="auto"
+              spaceBetween={80}
+              loop
+              speed={12000}
+              allowTouchMove={false}
+              autoplay={{ delay: 0, disableOnInteraction: false }}
+              className="w-full"
+            >
+              <SwiperSlide className="w-auto! flex items-center wow animate__animated animate__fadeIn">
+                <img src="/img/Partner/expedia.png" className="h-10 opacity-40 grayscale hover:grayscale-0 hover:opacity-100 transition-all" />
+              </SwiperSlide>
+              <SwiperSlide className="w-auto! flex items-center wow animate__animated animate__fadeIn">
+                <img src="/img/Partner/visa.png" className="h-10 opacity-40 grayscale hover:grayscale-0 hover:opacity-100 transition-all" />
+              </SwiperSlide>
+              <SwiperSlide className="w-auto! flex items-center wow animate__animated animate__fadeIn">
+                <img src="/img/Partner/mastercard.png" className="h-10 opacity-40 grayscale hover:grayscale-0 hover:opacity-100 transition-all" />
+              </SwiperSlide>
+              <SwiperSlide className="w-auto! flex items-center wow animate__animated animate__fadeIn">
+                <img src="/img/Partner/paypal.png" className="h-10 opacity-40 grayscale hover:grayscale-0 hover:opacity-100 transition-all" />
+              </SwiperSlide>
+              <SwiperSlide className="w-auto! flex items-center wow animate__animated animate__fadeIn">
+                <img src="/img/Partner/airbnb.png" className="h-10 opacity-40 grayscale hover:grayscale-0 hover:opacity-100 transition-all" />
+              </SwiperSlide>
+              <SwiperSlide className="w-auto! flex items-center wow animate__animated animate__fadeIn">
+                <img src="/img/Partner/expedia.png" className="h-10 opacity-40 grayscale hover:grayscale-0 hover:opacity-100 transition-all" />
+              </SwiperSlide>
+              <SwiperSlide className="w-auto! flex items-center wow animate__animated animate__fadeIn">
+                <img src="/img/Partner/visa.png" className="h-10 opacity-40 grayscale hover:grayscale-0 hover:opacity-100 transition-all" />
+              </SwiperSlide>
+              <SwiperSlide className="w-auto! flex items-center wow animate__animated animate__fadeIn">
+                <img src="/img/Partner/mastercard.png" className="h-10 opacity-40 grayscale hover:grayscale-0 hover:opacity-100 transition-all" />
+              </SwiperSlide>
+              <SwiperSlide className="w-auto! flex items-center wow animate__animated animate__fadeIn">
+                <img src="/img/Partner/paypal.png" className="h-10 opacity-40 grayscale hover:grayscale-0 hover:opacity-100 transition-all" />
+              </SwiperSlide>
+              <SwiperSlide className="w-auto! flex items-center wow animate__animated animate__fadeIn">
+                <img src="/img/Partner/airbnb.png" className="h-10 opacity-40 grayscale hover:grayscale-0 hover:opacity-100 transition-all" />
+              </SwiperSlide>
+            </Swiper>
           </section>
 
           <div className="relative bg-white">

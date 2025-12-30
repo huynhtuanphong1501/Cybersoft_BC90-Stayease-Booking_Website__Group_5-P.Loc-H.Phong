@@ -40,43 +40,11 @@ body {
   height: 100dvh;
 }
 
-@utility container {
-  width: 90%;
-  margin-left: auto;
-  margin-right: auto;
+.container {
+  width: 95%;
+  margin: 0 auto;
 }
 
-@media (min-width: 640px) {
-  .container {
-    width: 90%;
-    max-width: 640px;
-  }
-}
-
-@media (min-width: 768px) {
-  .container {
-    width: 90%;
-    max-width: 768px;
-  }
-}
-
-@media (min-width: 1024px) {
-  .container {
-    width: 90%;
-    max-width: 1024px;
-  }
-}
-
-@media (min-width: 1280px) {
-  .container {
-    width: 90%;
-    max-width: 1280px;
-  }
-}
-
-@media (min-width: 1536px) {
-  .container {
-    width: 90%;
-    max-width: 1536px;
-  }
+.swiper-wrapper {
+  transition-timing-function: linear !important;
 }
