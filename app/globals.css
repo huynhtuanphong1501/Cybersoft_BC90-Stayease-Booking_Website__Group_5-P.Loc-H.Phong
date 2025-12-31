@@ -26,24 +26,11 @@ body {
   font-weight: 400;
 }
 
-@utility no-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
-}
-
-@utility h-screen {
-  height: 100vh;
-  height: 100dvh;
-}
-
-.container {
+.app-container {
   width: 95%;
-  margin: 0 auto;
+  margin: 0 auto
 }
+
 
 .swiper-wrapper {
   transition-timing-function: linear !important;

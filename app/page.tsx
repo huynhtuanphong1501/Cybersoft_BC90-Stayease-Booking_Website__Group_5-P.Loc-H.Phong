@@ -12,7 +12,8 @@ import "animate.css";
 import HomeHeader from "./components/HomeHeader";
 import HomeFooter from "./components/HomeFooter";
 import BackToTopButton from "./components/BackToTop";
-import DestinationBar from "./destinationBar";
+import DestinationBar from "./(pages)/destinationBar";
+import SocialMedia from "./components/SocialMedia";
 
 export default function Home() {
   const [splashDone, setSplashDone] = useState(false);
@@ -83,13 +84,22 @@ export default function Home() {
             </div>
 
             {homeReady && (
-              <div className="absolute bottom-10 left-0 w-full z-1">
-                <div className="bg-white rounded-full shadow-2xl py-6 container mx-auto">
-                  <div className="container mx-auto">
-                    <DestinationBar />
-                  </div>
+              <div className="absolute bottom-10 w-full left-0 z-1 animate__animated animate__fadeInUp">
+                <div className="w-[90%] xl:w-[80%] 2xl:w-[85%] mx-auto">
+                  <DestinationBar />
                 </div>
               </div>
+            )}
+
+            {homeReady && (
+              <motion.div
+                initial={{ x: -40, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
+                className="fixed left-1 bottom-[20%] z-10"
+              >
+                <SocialMedia />
+              </motion.div>
             )}
           </section>
 
