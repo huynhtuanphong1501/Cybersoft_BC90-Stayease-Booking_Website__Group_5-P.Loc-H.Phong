@@ -1,13 +1,19 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser } from "@fortawesome/free-solid-svg-icons";
-import LoginModal from "@/app/(pages)/login/page";
-import RegisterModal from "@/app/(pages)/register/page";
+import {
+    faUser,
+    faRightFromBracket,
+    faCheckCircle,
+    faBars,
+    faTimes
+} from "@fortawesome/free-solid-svg-icons";
+import LoginModal from "@/app/(pages)/login";
+import RegisterModal from "@/app/(pages)/register";
 
 interface HeaderProps {
     isHome?: boolean;
@@ -18,7 +24,29 @@ const HomeHeader = ({ isHome = false, homeAnimationDone = false }: HeaderProps) 
     const pathname = usePathname();
     const [showBg, setShowBg] = useState(!isHome);
     const [dropdownOpen, setDropdownOpen] = useState(false);
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [authModal, setAuthModal] = useState<"login" | "register" | null>(null);
+    const [userLogin, setUserLogin] = useState<any>(null);
+    const [showToast, setShowToast] = useState(false);
+    const [toastMessage, setToastMessage] = useState("");
+
+    const dropdownRef = useRef<HTMLDivElement>(null);
+
+    // Xử lý đóng dropdown khi bấm ra ngoài
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+                setDropdownOpen(false);
+            }
+        };
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, []);
+
+    useEffect(() => {
+        const storedUser = localStorage.getItem("USER_LOGIN");
+        if (storedUser) setUserLogin(JSON.parse(storedUser));
+    }, []);
 
     useEffect(() => {
         if (!isHome) return;
@@ -27,45 +55,143 @@ const HomeHeader = ({ isHome = false, homeAnimationDone = false }: HeaderProps) 
         return () => window.removeEventListener("scroll", onScroll);
     }, [isHome]);
 
+    const handleLoginSuccess = (userData: any) => {
+        localStorage.setItem("USER_LOGIN", JSON.stringify(userData));
+        setUserLogin(userData);
+        setAuthModal(null);
+        setToastMessage("Logged in successfully!");
+        setShowToast(true);
+        setTimeout(() => setShowToast(false), 3000);
+    };
+
+    const handleLogout = () => {
+        localStorage.removeItem("USER_LOGIN");
+        setUserLogin(null);
+        setDropdownOpen(false);
+    };
+
+    const handleRegisterSuccess = () => {
+        setAuthModal(null);
+        setToastMessage("Registered successfully!");
+        setShowToast(true);
+        setTimeout(() => setShowToast(false), 3000);
+    };
+
     const HeaderContent = (
-        <div className="flex items-center justify-between">
-            <div className="flex items-center gap-6 font-semibold flex-1">
-                <Link
-                    href="/inspiration"
-                    className={`px-3 py-1 rounded-full cursor-pointer transition ${pathname === "/inspiration" ? "bg-black text-white" : "hover:text-black/70"
-                        }`}
+        <div className="flex items-center justify-between py-4 sm:py-4 md:py-4 lg:py-0">
+            <div className="flex items-center gap-2 sm:gap-4 lg:gap-6 flex-1">
+                <button
+                    className="lg:hidden p-2 text-gray-700 cursor-pointer hover:bg-black/5 rounded-full transition-colors"
+                    onClick={() => setIsMenuOpen(true)}
                 >
-                    Inspiration
+                    <FontAwesomeIcon icon={faBars} className="text-xl" />
+                </button>
+
+                <Link href="/" className="lg:hidden cursor-pointer active:scale-95 transition-transform">
+                    <img src="/img/logo.png" className="h-8 sm:h-10 object-contain" alt="Logo" />
                 </Link>
-                <Link
-                    href="/about"
-                    className={`px-3 py-1 rounded-full cursor-pointer transition ${pathname === "/about" ? "bg-black text-white" : "hover:text-black/70"
-                        }`}
-                >
-                    About
+
+                <div className="hidden lg:flex items-center gap-2 xl:gap-6 font-semibold">
+                    <Link
+                        href="/inspiration"
+                        className={`px-4 py-1.5 rounded-full cursor-pointer transition-all duration-300 hover:scale-105 ${pathname === "/inspiration" ? "bg-black text-white shadow" : "text-gray-700 hover:bg-black/5"
+                            }`}
+                    >
+                        Inspiration
+                    </Link>
+                    <Link
+                        href="/about"
+                        className={`px-4 py-1.5 rounded-full cursor-pointer transition-all duration-300 hover:scale-105 ${pathname === "/about" ? "bg-black text-white shadow" : "text-gray-700 hover:bg-black/5"
+                            }`}
+                    >
+                        About
+                    </Link>
+                </div>
+            </div>
+
+            <div className="hidden lg:block">
+                <Link href="/" className="cursor-pointer group">
+                    <div className="bg-[#C3DFE3] px-10 xl:px-14 py-3 xl:py-4 shadow-md [clip-path:polygon(0%_0%,100%_0%,80%_100%,20%_100%)]">
+                        <img src="/img/logo.png" className="h-10 xl:h-12 mx-auto pointer-events-none" alt="Logo" />
+                    </div>
                 </Link>
             </div>
 
-            <Link href="/" className="cursor-pointer">
-                <div className="bg-[#C3DFE3] px-10 py-3 clip-logo">
-                    <img src="/img/logo.png" className="h-12 " />
-                </div>
-            </Link>
-
-            <div className="flex items-center gap-4 flex-1 justify-end">
+            <div
+                className="flex items-center gap-2 sm:gap-3 md:gap-4 flex-1 justify-end relative"
+                ref={dropdownRef}
+            >
                 <Link
                     href="/list-now"
-                    className="px-6 py-2 rounded-full text-white bg-linear-to-br from-blue-900 via-indigo-500 to-pink-500 hover:scale-105 transition cursor-pointer"
+                    className="px-3 sm:px-4 xl:px-6 py-1.5 sm:py-2 rounded-full cursor-pointer text-white 
+        bg-linear-to-br from-blue-900 via-indigo-500 to-pink-500 
+        text-[10px] sm:text-xs xl:text-sm font-medium 
+        transition-all duration-300 hover:scale-105 hover:shadow-lg active:scale-95 shadow-sm whitespace-nowrap"
                 >
                     List Now
                 </Link>
 
-                <button
-                    onClick={() => setDropdownOpen(!dropdownOpen)}
-                    className="w-10 h-10 rounded-full bg-[#143944] text-white flex items-center justify-center hover:bg-black transition cursor-pointer"
+                <div
+                    className="flex items-center gap-1.5 sm:gap-2 xl:gap-3 
+        bg-white/40 backdrop-blur-md 
+        px-2 sm:px-2.5 xl:px-3 
+        py-1 sm:py-1.5 
+        rounded-full border border-white/30 shadow-inner"
                 >
-                    <FontAwesomeIcon icon={faUser} />
-                </button>
+                    <AnimatePresence mode="wait">
+                        {userLogin ? (
+                            <motion.div
+                                key="logged-in"
+                                initial={{ opacity: 0, x: 4 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                exit={{ opacity: 0, x: 4 }}
+                                className="flex items-center"
+                            >
+                                <span
+                                    className="text-[10px] sm:text-xs xl:text-sm font-medium text-gray-700 truncate"
+                                    title={userLogin.content.user.name}
+                                >
+                                    Welcome,&nbsp;
+                                    <span className="font-bold text-[#143944] truncate">
+                                        {userLogin.content.user.name}
+                                    </span>
+                                </span>
+                            </motion.div>
+                        ) : (
+                            <motion.div
+                                key="guest"
+                                initial={{ opacity: 0, y: 3 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: 3 }}
+                                className="flex items-center max-w-22.5 sm:max-w-35 xl:max-w-none"
+                            >
+                                <span className="text-[10px] sm:text-xs xl:text-sm font-semibold text-gray-700 truncate">
+                                    Sign in to get started
+                                </span>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+
+                    <button
+                        onClick={() => setDropdownOpen(!dropdownOpen)}
+                        className="w-7 h-7 sm:w-8 sm:h-8 xl:w-9 xl:h-9 
+            rounded-full overflow-hidden cursor-pointer 
+            bg-[#143944] text-white 
+            flex items-center justify-center 
+            transition-all hover:scale-105 hover:ring-2 ring-offset-2 ring-[#143944] 
+            shadow-md active:scale-95 shrink-0"
+                    >
+                        {userLogin ? (
+                            <img
+                                src={userLogin.avatar || "/img/avatarLogo.jpg"}
+                                className="w-full h-full object-cover"
+                                alt="Avatar"
+                            />
+                        ) : (
+                            <FontAwesomeIcon icon={faUser} className="text-[10px] sm:text-xs xl:text-sm" />
+                        )}
+                    </button>
+                </div>
 
                 <AnimatePresence>
                     {dropdownOpen && (
@@ -73,26 +199,94 @@ const HomeHeader = ({ isHome = false, homeAnimationDone = false }: HeaderProps) 
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: 10 }}
-                            className="absolute right-0 top-14 w-40 bg-white rounded-xl shadow-xl overflow-hidden"
+                            className={`absolute right-0 top-12 sm:top-14 
+            ${userLogin ? "w-[420px] xl:w-[480px]" : "w-44"} 
+            bg-white/95 backdrop-blur-md 
+            rounded-2xl shadow-2xl border border-gray-100 z-50 p-4`}
                         >
-                            <button
-                                onClick={() => {
-                                    setAuthModal("login");
-                                    setDropdownOpen(false);
-                                }}
-                                className="w-full px-4 py-3 text-left hover:bg-gray-100 cursor-pointer"
-                            >
-                                Login
-                            </button>
-                            <button
-                                onClick={() => {
-                                    setAuthModal("register");
-                                    setDropdownOpen(false);
-                                }}
-                                className="w-full px-4 py-3 text-left hover:bg-gray-100 cursor-pointer"
-                            >
-                                Register
-                            </button>
+                            {userLogin ? (
+                                userLogin.content.user.role === "ADMIN" ? (
+                                    <div className="flex flex-col gap-2 px-2 py-1 text-sm text-gray-700">
+                                        <Link
+                                            href="/admin/dashboard"
+                                            onClick={() => { setDropdownOpen(false); }}
+                                            className="w-full px-4 py-3 text-left cursor-pointer 
+                            text-gray-700 hover:bg-gray-100 rounded-xl transition-all font-medium"
+                                        >
+                                            Go to Admin Page
+                                        </Link>
+
+                                        <div className="h-px bg-gray-200 my-2" />
+
+                                        <button
+                                            onClick={handleLogout}
+                                            className="w-full px-4 py-2 text-left cursor-pointer 
+                            text-red-500 hover:bg-red-50 rounded-xl 
+                            flex items-center gap-3 transition-all font-medium"
+                                        >
+                                            <FontAwesomeIcon icon={faRightFromBracket} />
+                                            Logout
+                                        </button>
+                                    </div>
+                                ) : (
+                                    <div className="flex flex-col gap-2 px-2 py-1 text-sm text-gray-700">
+                                        <div className="flex gap-3">
+                                            <span className="font-semibold w-28 shrink-0">ID:</span>
+                                            <span>{userLogin.content.user.id}</span>
+                                        </div>
+
+                                        <div className="flex gap-3">
+                                            <span className="font-semibold w-28 shrink-0">Name:</span>
+                                            <span>{userLogin.content.user.name}</span>
+                                        </div>
+
+                                        <div className="flex gap-3">
+                                            <span className="font-semibold w-28 shrink-0">Email:</span>
+                                            <span className="break-all">{userLogin.content.user.email}</span>
+                                        </div>
+
+                                        <div className="flex gap-3">
+                                            <span className="font-semibold w-28 shrink-0">Birthday:</span>
+                                            <span>{userLogin.content.user.birthday}</span>
+                                        </div>
+
+                                        <div className="flex gap-3">
+                                            <span className="font-semibold w-28 shrink-0">Gender:</span>
+                                            <span>{userLogin.content.user.gender ? "Male" : "Female"}</span>
+                                        </div>
+
+                                        <div className="h-px bg-gray-200 my-3" />
+
+                                        <button
+                                            onClick={handleLogout}
+                                            className="w-full px-4 py-2 text-left cursor-pointer 
+                            text-red-500 hover:bg-red-50 rounded-xl 
+                            flex items-center gap-3 transition-all font-medium"
+                                        >
+                                            <FontAwesomeIcon icon={faRightFromBracket} />
+                                            Logout
+                                        </button>
+                                    </div>
+                                )
+                            ) : (
+                                <div className="flex flex-col gap-1">
+                                    <button
+                                        onClick={() => { setAuthModal("login"); setDropdownOpen(false); }}
+                                        className="w-full px-4 py-3 text-left cursor-pointer 
+                        text-gray-700 hover:bg-gray-100 rounded-xl transition-all font-medium text-sm"
+                                    >
+                                        Login
+                                    </button>
+
+                                    <button
+                                        onClick={() => { setAuthModal("register"); setDropdownOpen(false); }}
+                                        className="w-full px-4 py-3 text-left cursor-pointer 
+                        text-gray-700 hover:bg-gray-100 rounded-xl transition-all font-medium text-sm"
+                                    >
+                                        Register
+                                    </button>
+                                </div>
+                            )}
                         </motion.div>
                     )}
                 </AnimatePresence>
@@ -102,6 +296,69 @@ const HomeHeader = ({ isHome = false, homeAnimationDone = false }: HeaderProps) 
 
     return (
         <>
+            {/* Toast Notification */}
+            <AnimatePresence>
+                {showToast && (
+                    <div className="fixed top-[5%] left-0 w-full flex justify-center z-50 pointer-events-none">
+                        <motion.div
+                            initial={{ opacity: 0, y: -40 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -40 }}
+                            className="bg-[#143944] text-white px-8 py-3.5 rounded-full shadow-2xl flex items-center gap-3 border border-white/10 pointer-events-auto"
+                        >
+                            <FontAwesomeIcon icon={faCheckCircle} className="text-green-400" />
+                            <span className="font-semibold tracking-wide text-sm">
+                                {toastMessage}
+                            </span>
+                        </motion.div>
+                    </div>
+                )}
+            </AnimatePresence>
+
+            <AnimatePresence>
+                {isMenuOpen && (
+                    <>
+                        <motion.div
+                            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                            onClick={() => setIsMenuOpen(false)}
+                            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 lg:hidden"
+                        />
+                        <motion.div
+                            initial={{ x: "-100%" }}
+                            animate={{ x: 0 }}
+                            exit={{ x: "-100%" }}
+                            transition={{ type: "spring", damping: 25, stiffness: 200 }}
+                            className="fixed top-0 left-0 h-full w-70 sm:w-[320px] 
+    bg-white z-101 shadow-2xl p-6 lg:hidden"
+                        >
+                            <div className="flex justify-between items-center mb-10">
+                                <img src="/img/logo.png" className="h-8" alt="Logo" />
+                                <button onClick={() => setIsMenuOpen(false)} className="text-2xl text-gray-400 cursor-pointer p-2 hover:text-black">
+                                    <FontAwesomeIcon icon={faTimes} />
+                                </button>
+                            </div>
+                            <nav className="flex flex-col gap-2">
+                                <Link
+                                    href="/inspiration"
+                                    onClick={() => setIsMenuOpen(false)}
+                                    className={`p-4 rounded-2xl font-semibold text-lg cursor-pointer transition-colors ${pathname === "/inspiration" ? "bg-[#C3DFE3] text-[#143944]" : "text-gray-700 hover:bg-gray-50"}`}
+                                >
+                                    Inspiration
+                                </Link>
+                                <Link
+                                    href="/about"
+                                    onClick={() => setIsMenuOpen(false)}
+                                    className={`p-4 rounded-2xl font-semibold text-lg cursor-pointer transition-colors ${pathname === "/about" ? "bg-[#C3DFE3] text-[#143944]" : "text-gray-700 hover:bg-gray-50"}`}
+                                >
+                                    About
+                                </Link>
+                            </nav>
+                        </motion.div>
+                    </>
+                )}
+            </AnimatePresence>
+
+            {/* Main Header */}
             {isHome ? (
                 <AnimatePresence>
                     {homeAnimationDone && (
@@ -109,52 +366,44 @@ const HomeHeader = ({ isHome = false, homeAnimationDone = false }: HeaderProps) 
                             initial={{ y: -60, opacity: 0 }}
                             animate={{ y: 0, opacity: 1 }}
                             transition={{ duration: 0.6 }}
-                            className={`fixed top-0 left-0 w-full z-10 transition ${showBg
-                                ? "bg-[#C3DFE3] shadow-md rounded-b-4xl"
-                                : "bg-white/30 backdrop-blur-sm rounded-b-4xl"
+                            className={`fixed top-0 left-0 w-full z-40 transition-all duration-300 rounded-b-2xl sm:rounded-b-3xl lg:rounded-b-4xl xl:rounded-b-[2.5rem] ${showBg ? "bg-[#C3DFE3] shadow-md" : "bg-white/30 backdrop-blur-sm"
                                 }`}
                         >
-                            <div className="container mx-auto">{HeaderContent}</div>
+                            <div className="app-container mx-auto">{HeaderContent}</div>
                         </motion.header>
                     )}
                 </AnimatePresence>
             ) : (
-                <header className="sticky top-0 z-10 bg-[#C3DFE3] shadow-md rounded-b-4xl">
-                    <div className="container mx-auto">{HeaderContent}</div>
+                <header className="sticky top-0 z-40 bg-[#C3DFE3] shadow-md rounded-b-lg sm:rounded-b-xl md:rounded-b-2xl lg:rounded-b-3xl xl:rounded-b-4xl">
+                    <div className="app-container mx-auto">{HeaderContent}</div>
                 </header>
             )}
 
+            {/* Auth Modals */}
             <AnimatePresence>
                 {authModal && (
                     <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        className="fixed inset-0 z-10 bg-black/40 backdrop-blur-sm flex items-center justify-center"
+                        initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                        className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4"
                         onClick={() => setAuthModal(null)}
                     >
-                        {authModal === "login" && (
-                            <LoginModal
-                                onClose={() => setAuthModal(null)}
-                                onSwitchRegister={() => setAuthModal("register")}
-                            />
-                        )}
-
-                        {authModal === "register" && (
-                            <RegisterModal
-                                onClose={() => setAuthModal(null)}
-                                onSwitchLogin={() => setAuthModal("login")}
-                            />
-                        )}
+                        <div onClick={(e) => e.stopPropagation()} className="app-container mx-auto">
+                            {authModal === "login" && (
+                                <LoginModal onClose={() => setAuthModal(null)}
+                                    onSwitchRegister={() => setAuthModal("register")}
+                                    onLoginSuccess={handleLoginSuccess} />
+                            )}
+                            {authModal === "register" && (
+                                <RegisterModal
+                                    onClose={() => setAuthModal(null)}
+                                    onSwitchLogin={() => setAuthModal("login")}
+                                    onRegisterSuccess={handleRegisterSuccess}
+                                />
+                            )}
+                        </div>
                     </motion.div>
                 )}
             </AnimatePresence>
-
-            <style jsx>{`
-                .clip-logo {
-                    clip-path: polygon(10% 0, 90% 0, 100% 100%, 0 100%);
-                }
-            `}</style>
         </>
     );
 };
