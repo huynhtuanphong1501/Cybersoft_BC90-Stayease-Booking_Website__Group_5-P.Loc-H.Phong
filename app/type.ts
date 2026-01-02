@@ -18,3 +18,18 @@ export interface TUser {
     role: string;
 }
 
+export interface TCity {
+    id: number;
+    tenViTri: string;
+    tinhThanh: string;
+    quocGia: string;
+    hinhAnh: string;
+}
+
+export interface CityNameProps {
+    params: Promise<{ id: string }>
+}
+
+export interface DetailRoomProps {
+    params: Promise<{ id: number }>;
+}
