@@ -8,6 +8,7 @@ import api from "@/app/service/api";
 import Link from "next/link";
 
 const DestinationBar = () => {
+    const [allLocations, setAllLocations] = useState<TDestination[]>([]);
     const [filteredLocations, setFilteredLocations] = useState<TDestination[]>([]);
     const [keyword, setKeyword] = useState("");
     const [selectedLocation, setSelectedLocation] = useState<TDestination | null>(null);
@@ -29,45 +30,52 @@ const DestinationBar = () => {
     };
 
     useEffect(() => {
-        if (!keyword.trim() || (selectedLocation && keyword === selectedLocation.tenViTri)) {
-            setFilteredLocations([]);
+        const fetchAll = async () => {
+            try {
+                const response = await api.get("vi-tri");
+                setAllLocations(response.data?.content || []);
+            } catch (error) {
+                console.error(error);
+            }
+        };
+        fetchAll();
+    }, []);
+
+    useEffect(() => {
+        if (!isOpen) return;
+
+        if (selectedLocation && keyword === selectedLocation.tenViTri) {
             setIsOpen(false);
             return;
         }
 
-        if (debounceRef.current) {
-            clearTimeout(debounceRef.current);
+        if (!keyword.trim()) {
+            setFilteredLocations(allLocations);
+            return;
         }
+
+        if (debounceRef.current) clearTimeout(debounceRef.current);
 
         setIsLoading(true);
 
-        debounceRef.current = setTimeout(async () => {
-            try {
-                const response = await api.get("vi-tri");
-                const allData: TDestination[] = response.data?.content || [];
+        debounceRef.current = setTimeout(() => {
+            const normalizedKeyword = removeAccents(keyword);
 
-                const normalizedKeyword = removeAccents(keyword);
+            const result = allLocations.filter(item => {
+                const searchString = removeAccents(
+                    `${item.tenViTri} ${item.tinhThanh} ${item.quocGia}`
+                );
+                return searchString.includes(normalizedKeyword);
+            });
 
-                const result = allData.filter(item => {
-                    const searchString = removeAccents(`${item.tenViTri} ${item.tinhThanh} ${item.quocGia}`);
-                    return searchString.includes(normalizedKeyword);
-                });
-
-                setFilteredLocations(result);
-                setIsOpen(result.length > 0);
-            } catch (error) {
-                console.error(error);
-            } finally {
-                setIsLoading(false);
-            }
+            setFilteredLocations(result);
+            setIsLoading(false);
         }, 500);
 
         return () => {
-            if (debounceRef.current) {
-                clearTimeout(debounceRef.current);
-            }
+            if (debounceRef.current) clearTimeout(debounceRef.current);
         };
-    }, [keyword]);
+    }, [keyword, allLocations, selectedLocation, isOpen]);
 
     useEffect(() => {
         const handleClickOutside = (e: MouseEvent) => {
@@ -96,7 +104,8 @@ const DestinationBar = () => {
                             if (selectedLocation) setSelectedLocation(null);
                         }}
                         onFocus={() => {
-                            if (keyword.trim() && filteredLocations.length > 0) setIsOpen(true);
+                            setFilteredLocations(allLocations);
+                            setIsOpen(true);
                         }}
                         placeholder="Where are you going?"
                         className="w-full bg-transparent outline-none text-sm placeholder:text-gray-400"
@@ -155,7 +164,7 @@ const DestinationBar = () => {
 
             <Link
                 href={selectedLocation ? `/${selectedLocation.id}` : "#"}
-                className={`w-full lg:w-auto px-7 py-3 lg:rounded-full rounded-xl bg-gradient-to-br from-blue-900 via-indigo-500 to-pink-500 text-white font-semibold text-sm shadow-md hover:opacity-90 transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer ${!selectedLocation ? 'pointer-events-none opacity-50' : ''}`}
+                className={`w-full lg:w-auto px-7 py-3 lg:rounded-full rounded-xl bg-linear-to-br from-blue-900 via-indigo-500 to-pink-500 text-white font-semibold text-sm shadow-md hover:opacity-90 transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer ${!selectedLocation ? "pointer-events-none opacity-50" : ""}`}
             >
                 <FontAwesomeIcon icon={faMagnifyingGlass} className="w-4 h-4" />
                 Search
