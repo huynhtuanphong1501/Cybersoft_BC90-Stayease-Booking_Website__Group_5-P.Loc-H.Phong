@@ -200,7 +200,7 @@ const HomeHeader = ({ isHome = false, homeAnimationDone = false }: HeaderProps) 
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: 10 }}
                             className={`absolute right-0 top-12 sm:top-14 
-            ${userLogin ? "w-[420px] xl:w-[480px]" : "w-44"} 
+            ${userLogin ? "w-105 xl:w-120" : "w-44"} 
             bg-white/95 backdrop-blur-md 
             rounded-2xl shadow-2xl border border-gray-100 z-50 p-4`}
                         >

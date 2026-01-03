@@ -22,14 +22,14 @@ const Auth = () => {
                 className="absolute inset-0 w-full h-full object-cover scale-110"
             />
 
-            <div className="absolute inset-0 bg-linear-to-br from-black/50 via-black/25 to-black/40 z-0" />
+            <div className="absolute inset-0 bg-linear-to-br from-black/50 via-black/25 to-black/40" />
 
             <div className="relative z-10 w-full max-w-6xl flex flex-col lg:flex-row items-center justify-between">
 
                 <div className="hidden lg:flex w-1/2 items-center justify-center">
                     <div className="w-100 h-100 rounded-full bg-linear-to-br from-blue-900 via-indigo-500 to-pink-500 flex items-center justify-center shadow-[0_40px_120px_rgba(56,189,248,0.45)]">
                         <div className="w-90 h-90 bg-gray-300 rounded-full flex items-center justify-center shadow-xl relative">
-                            <div className="absolute top-[28%] left-1/2 -translate-x-1/2 w-40 h-40 bg-indigo-800 rounded-full flex items-center justify-center shadow-lg z-20">
+                            <div className="absolute top-[28%] left-1/2 -translate-x-1/2 w-40 h-40 bg-indigo-800 rounded-full flex items-center justify-center shadow-lg z-10">
 
                                 <div className="flex flex-col items-center">
                                     <div className="w-5 h-5 bg-black rounded-full mb-1" />

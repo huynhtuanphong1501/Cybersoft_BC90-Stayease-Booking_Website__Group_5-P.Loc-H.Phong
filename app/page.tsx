@@ -11,10 +11,15 @@ import HomeFooter from "./components/HomeFooter";
 import BackToTopButton from "./components/BackToTop";
 import DestinationBar from "./(pages)/home/destinationBar";
 import SocialMedia from "./components/SocialMedia";
+import { TCity } from "./type";
+import api from "./service/api";
+import Link from "next/link";
+import { useMemo } from "react";
 
 const Home = () => {
   const [splashDone, setSplashDone] = useState(false);
   const [homeReady, setHomeReady] = useState(false);
+  const [cities, setCities] = useState<TCity[]>([]);
 
   const [heroRef] = useEmblaCarousel(
     { loop: true },
@@ -23,22 +28,108 @@ const Home = () => {
 
   useEffect(() => {
     import("wowjs/dist/wow").then((module) => {
-      const WOW = module.WOW;
+      const WOW = module.WOW
       new WOW({
         live: false,
         offset: 80,
-      }).init();
+      }).init()
+    })
+
+    const t = setTimeout(() => setSplashDone(true), 80)
+
+    const fetchCities = async () => {
+      try {
+        const response = await api.get("vi-tri")
+        setCities(response?.data?.content || [])
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
+    fetchCities()
+
+    return () => clearTimeout(t)
+  }, [])
+
+  const groupedCities = useMemo(() => {
+    const map = new Map<string, any>();
+
+    cities.forEach(city => {
+      const key = `${city.quocGia}-${city.tinhThanh}`;
+
+      if (!map.has(key)) {
+        map.set(key, {
+          key,
+          quocGia: city.quocGia,
+          tinhThanh: city.tinhThanh,
+          hinhAnh: city.hinhAnh,
+          locations: [{ id: city.id, name: city.tenViTri }],
+        });
+      } else {
+        map.get(key).locations.push({
+          id: city.id,
+          name: city.tenViTri,
+        });
+      }
     });
 
-    const t = setTimeout(() => setSplashDone(true), 80);
-    return () => clearTimeout(t);
-  }, []);
+    return Array.from(map.values());
+  }, [cities]);
 
+  const renderExploreDestination = () => {
+    return groupedCities.slice(0, 6).map((group, index) => (
+      <div
+        key={group.key}
+        className="wow animate__animated animate__fadeInUp group relative h-64 sm:h-72 lg:h-80  overflow-hidden shadow-lg cursor-pointer"
+        data-wow-delay={`${index * 0.1}s`}
+      >
+        <img
+          src={group.hinhAnh || "/destinations/img1.jpg"}
+          alt={group.tinhThanh}
+          className="w-full h-full object-cover"
+        />
+
+        <div className="absolute inset-0 flex flex-col justify-end p-5">
+          <h3 className="text-white text-3xl font-bold">
+            {group.tinhThanh}
+          </h3>
+          <span className="text-white text-xl italic">
+            {group.quocGia}
+          </span>
+        </div>
+
+        <div className="
+        absolute top-0 right-0 h-full w-1/2
+        bg-white text-black backdrop-blur-sm
+        translate-x-full
+        group-hover:translate-x-0
+        transition-transform duration-500 ease-out
+        p-5
+      ">
+          <p className=" text-sm font-semibold mb-3 uppercase tracking-wide">
+            Popular locations
+          </p>
+
+          <ul className="text-sm space-y-2 overflow-y-auto max-h-full pr-1">
+            {group.locations.map((loc: any) => (
+              <Link
+                key={loc.id}
+                href={`/${loc.id}`}
+                className="flex text-black items-center gap-2 hover:text-[#7D6834] transition-all duration-300 "
+              >
+                {loc.name}
+              </Link>
+            ))}
+          </ul>
+        </div>
+      </div>
+    ));
+  };
 
   return (
     <div className="w-full min-h-screen bg-linear-to-b from-[#C6C6C6] via-[#8D8D8D] to-[#383838] relative overflow-hidden">
 
-      <div className="fixed inset-0 z-100 pointer-events-none">
+      <div className="fixed inset-0 z-50 pointer-events-none">
         <motion.div
           initial={{ y: 0 }}
           animate={splashDone ? { y: "-100%" } : {}}
@@ -96,30 +187,24 @@ const Home = () => {
             )}
           </section>
 
-          <section className="w-full py-16 sm:py-20 md:py-24 lg:py-28 xl:py-32 bg-white">
+          <section className="w-full py-12 sm:py-16 lg:py-20 xl:py-24 bg-white">
             <div className="app-container mx-auto">
               <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-center mb-10 sm:mb-12 md:mb-14 lg:mb-16 xl:mb-20 wow animate__animated animate__fadeInUp">
                 Explore Destinations
               </h2>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-5 sm:gap-6 lg:gap-8 xl:gap-10">
-                <div className="h-52 sm:h-56 md:h-60 lg:h-64 xl:h-72 2xl:h-80 rounded-2xl overflow-hidden shadow-lg bg-gray-200 wow animate__animated animate__fadeInUp" data-wow-delay="0s">
-                  <img src="/destinations/img1.jpg" className="w-full h-full object-cover" />
-                </div>
-                <div className="h-52 sm:h-56 md:h-60 lg:h-64 xl:h-72 2xl:h-80 rounded-2xl overflow-hidden shadow-lg bg-gray-200 wow animate__animated animate__fadeInUp" data-wow-delay="0.2s">
-                  <img src="/destinations/img2.jpg" className="w-full h-full object-cover" />
-                </div>
-                <div className="h-52 sm:h-56 md:h-60 lg:h-64 xl:h-72 2xl:h-80 rounded-2xl overflow-hidden shadow-lg bg-gray-200 wow animate__animated animate__fadeInUp" data-wow-delay="0.4s">
-                  <img src="/destinations/img3.jpg" className="w-full h-full object-cover" />
-                </div>
-                <div className="h-52 sm:h-56 md:h-60 lg:h-64 xl:h-72 2xl:h-80 rounded-2xl overflow-hidden shadow-lg bg-gray-200 wow animate__animated animate__fadeInUp" data-wow-delay="0.6s">
-                  <img src="/destinations/img4.jpg" className="w-full h-full object-cover" />
-                </div>
+              <p className="text-center bg-[#1C1F35] text-white font-extralight text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl px-4 sm:px-6 md:px-10 lg:px-16 xl:px-24 py-6 sm:py-8 md:py-12 lg:py-16 xl:py-20 wow animate__animated animate__fadeInUp">
+                From vibrant cities to peaceful retreats, explore destinations carefully selected to match every travel style.
+              </p>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 wow">
+                {renderExploreDestination()}
               </div>
+
             </div>
           </section>
 
-          <section className="w-full py-16 sm:py-20 md:py-24 lg:py-28 xl:py-32 bg-white">
+          <section className="w-full py-12 sm:py-16 lg:py-20 xl:py-24 bg-white">
             <div className="app-container mx-auto">
               <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-center mb-10 sm:mb-12 md:mb-14 lg:mb-16 xl:mb-20 wow animate__animated animate__fadeInUp">
                 Amazing Experiences
@@ -139,7 +224,7 @@ const Home = () => {
             </div>
           </section>
 
-          <section className="w-full py-16 sm:py-20 md:py-24 lg:py-28 xl:py-32 bg-[#F5F5F5]">
+          <section className="w-full py-12 sm:py-16 lg:py-20 xl:py-24 bg-[#F5F5F5]">
             <div className="app-container mx-auto">
               <h3 className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl 2xl:text-2xl text-gray-500 mb-4 xl:mb-6 uppercase tracking-[0.25em] sm:tracking-[0.3em] font-semibold text-center wow animate__animated animate__fadeInUp">
                 Open your door to over 50 million travellers

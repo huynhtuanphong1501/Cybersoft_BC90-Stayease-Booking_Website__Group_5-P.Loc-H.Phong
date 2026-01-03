@@ -14,7 +14,9 @@ const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"]
 export const metadata: Metadata = {
   title: "LockWind | Accommodation Booking Platform",
   description: "LockWind is a short-term accommodation booking platform developed by Loc & Phong.",
-  icons: { icon: "/icon.png" },
+  icons: {
+    icon: "/img/icon.jpg",
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
