@@ -31,5 +31,8 @@ export interface CityNameProps {
 }
 
 export interface DetailRoomProps {
-    params: Promise<{ id: number }>;
+    params: Promise<{
+        id: string
+    }>
 }
+
