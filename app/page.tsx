@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
@@ -14,7 +14,6 @@ import SocialMedia from "./components/SocialMedia";
 import { TCity } from "./type";
 import api from "./service/api";
 import Link from "next/link";
-import { useMemo } from "react";
 
 const Home = () => {
   const [splashDone, setSplashDone] = useState(false);
