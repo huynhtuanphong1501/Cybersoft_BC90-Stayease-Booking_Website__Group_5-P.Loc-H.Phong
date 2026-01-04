@@ -5,8 +5,6 @@ import "animate.css/animate.min.css";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 import { config } from "@fortawesome/fontawesome-svg-core";
 import BackToTopButton from "./components/BackToTop";
-import { Provider } from "react-redux";
-import { store } from "@/app/store/store";
 
 config.autoAddCss = false;
 
@@ -35,7 +33,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Provider store={store}>{children}</Provider>
+        {children}
         <BackToTopButton />
       </body>
     </html>

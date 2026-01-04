@@ -1,43 +1,48 @@
 "use client";
 
-import { useState, ChangeEvent, FormEvent, useEffect } from "react";
-import { fetchAuth } from "./slice";
-import { useDispatch, useSelector } from "react-redux";
-import type { AppDispatch, RootState } from "@/app/store/store";
+import { useState, ChangeEvent, FormEvent } from "react";
 import { useRouter } from "next/navigation";
-import Loader from "@/app/components/Loader/Loader";
+import { fetchData } from "@/app/server/action/auth";
 
-const Auth = () => {
-  const dispatch = useDispatch<AppDispatch>();
-  const authData = useSelector((state: RootState) => state.authSlice);
-  const { data, loading } = authData;
+export default function Auth() {
   const route = useRouter();
   const [user, setUser] = useState({ email: "", password: "" });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [submitted, setSubmitted] = useState(false);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setUser({ ...user, [name]: value });
+    setUser((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    dispatch(fetchAuth(user));
-  };
+    setSubmitted(true);
+    setLoading(true);
+    setError(null);
 
-  useEffect(() => {
-    if (data) {
-      route.push("/admin");
-      console.log(data);
+    if (!user.email || !user.password) {
+      setError("Please enter email and password");
+      setLoading(false);
+      return;
     }
-  }, [data, route]);
 
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center">
-        <Loader />
-      </div>
-    );
-  }
+    try {
+      const data = await fetchData(user);
+      console.log(data);
+      if (data.user.role === "ADMIN") {
+        route.push("/admin");
+      } else {
+        setError("Invalid role");
+      }
+    } catch (err) {
+      console.error(err);
+      setError("Login failed. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="relative min-h-screen w-full overflow-hidden flex items-center justify-center px-4">
@@ -85,9 +90,11 @@ const Auth = () => {
                   placeholder="Enter your email"
                   className="w-full bg-transparent text-lack border-b border-gray-300 py-2.5 px-1 outline-none transition-all focus:border-cyan-400 focus:border-b-2"
                 />
-                <p className="mt-1 text-xs text-red-500">
-                  Username is required.
-                </p>
+                {user.email && (
+                  <p className="mt-1 text-xs text-red-500">
+                    Email is required.
+                  </p>
+                )}
               </div>
 
               <div className="group relative">
@@ -103,9 +110,11 @@ const Auth = () => {
                   placeholder="Enter your password"
                   className="w-full bg-transparent text-lack border-b border-gray-300 py-2.5 px-1 outline-none transition-all focus:border-emerald-400 focus:border-b-2"
                 />
-                <p className="mt-1 text-xs text-red-500">
-                  Password is required.
-                </p>
+                {user.password && (
+                  <p className="mt-1 text-xs text-red-500">
+                    Password is required.
+                  </p>
+                )}
               </div>
 
               <button
@@ -116,14 +125,14 @@ const Auth = () => {
               </button>
             </form>
 
-            <div className="mt-6 rounded-xl border border-red-600 bg-red-500 px-4 py-3 text-sm text-red-200">
-              Login failed. Please check your information and try again.
-            </div>
+            {error && (
+              <div className="mt-6 rounded-xl border border-red-600 bg-red-500 px-4 py-3 text-sm text-red-200">
+                {error}
+              </div>
+            )}
           </div>
         </div>
       </div>
     </div>
   );
-};
-
-export default Auth;
+}
