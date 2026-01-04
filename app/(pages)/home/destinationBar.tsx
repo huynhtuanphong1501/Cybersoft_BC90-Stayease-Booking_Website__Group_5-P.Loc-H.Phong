@@ -164,9 +164,9 @@ const DestinationBar = () => {
 
             <Link
                 href={selectedLocation ? `/${selectedLocation.id}` : "#"}
-                className={`w-full lg:w-auto px-7 py-3 lg:rounded-full rounded-xl bg-linear-to-br from-blue-900 via-indigo-500 to-pink-500 text-white font-semibold text-sm shadow-md hover:opacity-90 transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer ${!selectedLocation ? "pointer-events-none opacity-50" : ""}`}
+                className={`w-full lg:w-auto px-7 py-3 lg:rounded-full rounded-xl bg-linear-to-br from-blue-900 via-indigo-500 to-pink-500 text-white font-semibold text-sm shadow-md flex items-center justify-center gap-2 cursor-pointer transition-all duration-300 hover:scale-[1.03] hover:shadow-xl hover:brightness-110 active:scale-95 ${!selectedLocation ? "pointer-events-none opacity-50" : ""}`}
             >
-                <FontAwesomeIcon icon={faMagnifyingGlass} className="w-4 h-4" />
+                <FontAwesomeIcon icon={faMagnifyingGlass} className="w-4 h-4 transition-transform duration-300 group-hover:scale-110" />
                 Search
             </Link>
         </div>

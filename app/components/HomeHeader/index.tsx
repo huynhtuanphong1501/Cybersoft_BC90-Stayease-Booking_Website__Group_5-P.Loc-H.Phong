@@ -55,6 +55,20 @@ const HomeHeader = ({ isHome = false, homeAnimationDone = false }: HeaderProps) 
         return () => window.removeEventListener("scroll", onScroll);
     }, [isHome]);
 
+    // Lắng nghe sự kiện mở Modal từ các trang khác (như DetailRoom)
+    useEffect(() => {
+        const handleOpenModal = (event: any) => {
+            const mode = event.detail?.mode || "login";
+            setAuthModal(mode);
+            // Đảm bảo đóng các menu linh tinh nếu đang mở
+            setDropdownOpen(false);
+            setIsMenuOpen(false);
+        };
+
+        window.addEventListener("OPEN_AUTH_MODAL", handleOpenModal);
+        return () => window.removeEventListener("OPEN_AUTH_MODAL", handleOpenModal);
+    }, []);
+
     const handleLoginSuccess = (userData: any) => {
         localStorage.setItem("USER_LOGIN", JSON.stringify(userData));
         setUserLogin(userData);
@@ -122,7 +136,7 @@ const HomeHeader = ({ isHome = false, homeAnimationDone = false }: HeaderProps) 
                 ref={dropdownRef}
             >
                 <Link
-                    href="/list-now"
+                    href="/listing"
                     className="px-3 sm:px-4 xl:px-6 py-1.5 sm:py-2 rounded-full cursor-pointer text-white 
         bg-linear-to-br from-blue-900 via-indigo-500 to-pink-500 
         text-[10px] sm:text-xs xl:text-sm font-medium 

@@ -1,15 +1,16 @@
 "use client";
 
 import { useState, ChangeEvent, FormEvent } from "react";
-import { useRouter } from "next/navigation";
-import { fetchData } from "@/app/server/action/auth";
+import Loader from "@/app/components/Loader/Loader";
+import api from "@/app/service/api";
 
-export default function Auth() {
-  const route = useRouter();
-  const [user, setUser] = useState({ email: "", password: "" });
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [submitted, setSubmitted] = useState(false);
+const Auth = () => {
+  const [user, setUser] = useState(
+    {
+      email: "",
+      password: "",
+    }
+  );
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -18,37 +19,28 @@ export default function Auth() {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setSubmitted(true);
-    setLoading(true);
-    setError(null);
-
-    if (!user.email || !user.password) {
-      setError("Please enter email and password");
-      setLoading(false);
-      return;
-    }
 
     try {
-      const data = await fetchData(user);
-      console.log(data);
-      if (data.user.role === "ADMIN") {
-        route.push("/admin");
-      } else {
-        setError("Invalid role");
+      const response = await api.post("auth/signin", user);
+
+      if (response.data?.content) {
+        const userData = response.data.content;
+
+        localStorage.setItem("USER_LOGIN", JSON.stringify(userData));
+        localStorage.setItem("TOKEN", userData.token);
+
+        window.dispatchEvent(new Event("AUTH_SUCCESS"));
       }
     } catch (err) {
-      console.error(err);
-      setError("Login failed. Please try again.");
-    } finally {
-      setLoading(false);
+      console.error("Login Error:", err);
     }
   };
 
   return (
-    <div className="relative min-h-screen w-full overflow-hidden flex items-center justify-center px-4">
+    <section className="relative min-h-screen w-full overflow-hidden flex items-center justify-center px-4">
       <img
         src="/img/Auth/AuthBackground.jpg"
-        alt=""
+        alt="Background"
         className="absolute inset-0 w-full h-full object-cover scale-110"
       />
 
@@ -64,8 +56,7 @@ export default function Auth() {
                   <div className="w-2 h-6 bg-black rounded-full" />
                 </div>
               </div>
-
-              <div className="absolute top-[15%] left-1/2 -translate-x-1/2 w-30 h-30 border-8 border-gray-500 rounded-t-full bg-transparent z-10" />
+              <div className="absolute top-[15%] left-1/2 -translate-x-1/2 w-30 h-30 border-8 border-gray-500 rounded-t-full bg-transparent z-5" />
             </div>
           </div>
         </div>
@@ -81,58 +72,49 @@ export default function Auth() {
                 <label className="inline-block px-3 py-1 mb-2 text-sm font-semibold text-gray-600 bg-gray-200/70 backdrop-blur-sm rounded-full">
                   Email
                 </label>
-
                 <input
-                  type="text"
+                  type="email"
                   name="email"
                   value={user.email}
                   onChange={handleChange}
                   placeholder="Enter your email"
-                  className="w-full bg-transparent text-lack border-b border-gray-300 py-2.5 px-1 outline-none transition-all focus:border-cyan-400 focus:border-b-2"
+                  required
+                  className="w-full bg-transparent text-black border-b border-gray-300 py-2.5 px-1 outline-none transition-all focus:border-cyan-400 focus:border-b-2"
                 />
-                {user.email && (
-                  <p className="mt-1 text-xs text-red-500">
-                    Email is required.
-                  </p>
-                )}
               </div>
 
               <div className="group relative">
                 <label className="inline-block px-3 py-1 mb-2 text-sm font-semibold text-gray-600 bg-gray-200/70 backdrop-blur-sm rounded-full">
                   Password
                 </label>
-
                 <input
                   type="password"
                   name="password"
                   value={user.password}
                   onChange={handleChange}
                   placeholder="Enter your password"
-                  className="w-full bg-transparent text-lack border-b border-gray-300 py-2.5 px-1 outline-none transition-all focus:border-emerald-400 focus:border-b-2"
+                  required
+                  className="w-full bg-transparent text-black border-b border-gray-300 py-2.5 px-1 outline-none transition-all focus:border-emerald-400 focus:border-b-2"
                 />
-                {user.password && (
-                  <p className="mt-1 text-xs text-red-500">
-                    Password is required.
-                  </p>
-                )}
               </div>
 
               <button
                 type="submit"
-                className="w-full mt-8 py-3 rounded-full font-semibold tracking-wide text-lack bg-linear-to-r from-cyan-500 via-sky-500 to-emerald-500 transition-all duration-300 hover:scale-105 hover:shadow-[0_15px_45px_rgba(56,189,248,0.55)] active:scale-95 cursor-pointer"
+                className="w-full mt-8 py-3 rounded-full font-semibold tracking-wide text-black bg-linear-to-r from-cyan-500 via-sky-500 to-emerald-500 transition-all duration-300 hover:scale-105 hover:shadow-[0_15px_45px_rgba(56,189,248,0.55)] active:scale-95 cursor-pointer"
               >
                 Login
               </button>
             </form>
 
-            {error && (
-              <div className="mt-6 rounded-xl border border-red-600 bg-red-500 px-4 py-3 text-sm text-red-200">
-                {error}
-              </div>
-            )}
+            {/* NẾU CÓ ERROR THÌ NÓ LÀ DÒNG NÀY NÈ */}
+            <div className="mt-6 rounded-xl border border-red-600 bg-red-500 px-4 py-3 text-sm text-white text-center">
+              Login failed. Please check your information and try again.
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
-}
+};
+
+export default Auth;
