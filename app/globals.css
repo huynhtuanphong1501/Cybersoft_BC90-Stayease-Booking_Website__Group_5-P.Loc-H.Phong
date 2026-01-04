@@ -22,61 +22,15 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: "Suisse Int'l", sans-serif !important;
+  font-family: var(--font-geist-sans), Inter, system-ui, sans-serif;
   font-weight: 400;
 }
 
-@utility no-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
+.app-container {
+  width: 95%;
+  margin: 0 auto;
 }
 
-@utility h-screen {
-  height: 100vh;
-  height: 100dvh;
-}
-
-@utility container {
-  width: 90%;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-@media (min-width: 640px) {
-  .container {
-    width: 90%;
-    max-width: 640px;
-  }
-}
-
-@media (min-width: 768px) {
-  .container {
-    width: 90%;
-    max-width: 768px;
-  }
-}
-
-@media (min-width: 1024px) {
-  .container {
-    width: 90%;
-    max-width: 1024px;
-  }
-}
-
-@media (min-width: 1280px) {
-  .container {
-    width: 90%;
-    max-width: 1280px;
-  }
-}
-
-@media (min-width: 1536px) {
-  .container {
-    width: 90%;
-    max-width: 1536px;
-  }
+.swiper-wrapper {
+  transition-timing-function: linear !important;
 }

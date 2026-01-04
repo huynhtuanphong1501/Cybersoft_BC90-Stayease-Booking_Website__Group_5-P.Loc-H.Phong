@@ -32,7 +32,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             <AdminHeader sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
 
             <div className="flex-1 flex flex-col">
-                <header className="sticky top-0 z-40 flex items-center justify-between 
+                <header className="sticky top-0 z-50 flex items-center justify-between 
 h-16 sm:h-18 lg:h-20 px-4 sm:px-6 lg:px-8 
 bg-white border-b border-neutral-200">
 
