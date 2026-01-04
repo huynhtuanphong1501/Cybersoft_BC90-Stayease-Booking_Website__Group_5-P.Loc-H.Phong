@@ -1,3 +1,25 @@
+import { AxiosError } from "axios";
+
+// type state của api
+export type InitState<T> = {
+  loading: boolean;
+  data: T | null;
+  error: AxiosError<any> | null;
+};
+
+// type ai trả về (response)
+export type TApiResponse<T> = {
+  statusCode: number;
+  message: string;
+  content: T;
+};
+
+// type login
+export type AuthUser = {
+    email: string;
+    password: string;
+ }
+
 export interface TDestination {
     id: number;
     tenViTri: string;
