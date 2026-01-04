@@ -152,7 +152,7 @@ const CityName = async ({ params }: CityNameProps) => {
                                         </span>
                                     </div>
                                 </div>
-                                <div className="w-full sm:w-auto bg-black text-white px-6 sm:px-8 py-2 sm:py-3 rounded-xl font-bold text-sm sm:text-base md:text-base shadow-md text-center mt-2 transition-all duration-300 hover:bg-rose-600 cursor-pointer">
+                                <div className="w-full sm:w-auto bg-linear-to-br from-blue-900 via-indigo-500 to-pink-500 text-white px-6 sm:px-8 py-2 sm:py-3 rounded-xl font-bold text-sm sm:text-base md:text-base shadow-md text-center mt-2 cursor-pointer transition-all duration-300 hover:scale-[1.03] hover:shadow-xl hover:brightness-110 active:scale-95">
                                     Check Availability
                                 </div>
                             </div>
@@ -198,6 +198,7 @@ const CityName = async ({ params }: CityNameProps) => {
             </main>
 
             <BackToTopButton />
+
             <HomeFooter />
         </div>
     )

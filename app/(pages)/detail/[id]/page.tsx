@@ -5,8 +5,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import HomeHeader from "@/app/components/HomeHeader";
 import HomeFooter from "@/app/components/HomeFooter";
 import api from "@/app/service/api";
-import { Star, MapPin, Share, Heart, ShieldCheck, Award, Info, ChevronRight, Lock, Wifi, Tv, Snowflake, Waves, UtensilsCrossed, Car, Shirt, Calendar, Users } from 'lucide-react';
+import { Star, MapPin, ShieldCheck, Award, Lock, Wifi, Tv, Snowflake, Waves, UtensilsCrossed, Car, Shirt } from 'lucide-react';
 import { DetailRoomProps, TCity } from "@/app/type";
+import Link from "next/link";
 
 const DetailRoom = ({ params }: DetailRoomProps) => {
     const { id } = React.use(params);
@@ -14,6 +15,25 @@ const DetailRoom = ({ params }: DetailRoomProps) => {
     const [loading, setLoading] = useState(true);
     const [dataCity, setDataCity] = useState<TCity[]>([]);
     const [showAuthNotice, setShowAuthNotice] = useState(false);
+    const [user, setUser] = useState<string | null>(null);
+
+    useEffect(() => {
+        const checkUser = () => {
+            const currentUser = localStorage.getItem("USER_LOGIN");
+            if (currentUser !== user) {
+                setUser(currentUser);
+            }
+        };
+
+        checkUser();
+        const interval = setInterval(checkUser, 1000);
+        window.addEventListener("storage", checkUser);
+
+        return () => {
+            clearInterval(interval);
+            window.removeEventListener("storage", checkUser);
+        };
+    }, [user]);
 
     useEffect(() => {
         if (!id) return;
@@ -35,20 +55,39 @@ const DetailRoom = ({ params }: DetailRoomProps) => {
         fetchData();
     }, [id]);
 
+    const handleReserveClick = () => {
+        setShowAuthNotice(true);
+        setTimeout(() => {
+            setShowAuthNotice(false);
+            window.dispatchEvent(
+                new CustomEvent("OPEN_AUTH_MODAL", {
+                    detail: { mode: "login" }
+                })
+            );
+        }, 2000);
+    };
+
+    const renderReserveButton = () => {
+        const commonClass = "w-full py-4 flex items-center justify-center rounded-xl bg-gradient-to-r from-rose-600 via-rose-500 to-pink-600 text-white font-bold text-lg shadow-xl transition-all duration-300 hover:shadow-2xl hover:brightness-110 active:scale-95 cursor-pointer";
+
+        if (!user) {
+            return (
+                <button onClick={handleReserveClick} className={commonClass}>
+                    Reserve Now
+                </button>
+            );
+        }
+
+        return (
+            <Link href={`/checkout/${id}`} className={commonClass}>
+                Reserve Now
+            </Link>
+        );
+    };
+
     const renderCityName = () => {
         const city = dataCity.find(c => c.id === Number(dataRoom?.maViTri));
         return <span>{city?.tenViTri || "-"}, {city?.tinhThanh || "-"}, {city?.quocGia || "-"}</span>;
-    };
-
-    const handleReserve = () => {
-        const user = localStorage.getItem("USER_LOGIN");
-        if (!user) {
-            setShowAuthNotice(true);
-            setTimeout(() => {
-                setShowAuthNotice(false);
-                window.dispatchEvent(new CustomEvent("OPEN_AUTH_MODAL", { detail: { mode: "register" } }));
-            }, 3000);
-        }
     };
 
     if (loading) return (
@@ -76,12 +115,11 @@ const DetailRoom = ({ params }: DetailRoomProps) => {
             <HomeHeader />
 
             <main className="app-container mx-auto py-6 md:py-10 text-slate-900">
-                {/* 1. Ảnh phòng */}
                 <section className="relative group overflow-hidden rounded-xl md:rounded-2xl mb-8 md:mb-12 border border-slate-100 shadow-sm cursor-pointer">
                     <img
                         src={dataRoom.hinhAnh}
                         alt={dataRoom.tenPhong}
-                        className="w-full h-64 sm:h-80 md:h-12500px] object-cover transition-all duration-700 group-hover:scale-[1.03]"
+                        className="w-full h-64 sm:h-80 md:h-125 object-cover transition-all duration-700 group-hover:scale-[1.03]"
                     />
                     <button className="absolute bottom-4 right-4 md:bottom-8 md:right-8 bg-white border border-slate-900 px-4 py-2 md:px-6 md:py-2.5 rounded-lg font-bold text-xs md:text-sm shadow-md transition-all duration-300 hover:bg-slate-50 flex items-center gap-2 cursor-pointer">
                         Show all photos
@@ -89,7 +127,6 @@ const DetailRoom = ({ params }: DetailRoomProps) => {
                 </section>
 
                 <section className="grid grid-cols-1 lg:grid-cols-3 gap-10 md:gap-14 xl:gap-24">
-                    {/* CỘT TRÁI: THÔNG TIN CHI TIẾT */}
                     <div className="lg:col-span-2 order-2 lg:order-1">
                         <section className="mb-6">
                             <h1 className="text-xl sm:text-2xl md:text-3xl xl:text-4xl font-bold mb-3 tracking-tight text-slate-800">
@@ -116,7 +153,6 @@ const DetailRoom = ({ params }: DetailRoomProps) => {
                             <span>{dataRoom.phongTam} baths</span>
                         </div>
 
-                        {/* Tiện ích đặc biệt */}
                         <div className="py-8 border-b space-y-8">
                             <div className="flex gap-4 md:gap-6">
                                 <Award className="text-slate-700 mt-1 shrink-0 w-6 h-6 md:w-7 md:h-7" />
@@ -134,7 +170,6 @@ const DetailRoom = ({ params }: DetailRoomProps) => {
                             </div>
                         </div>
 
-                        {/* Mô tả */}
                         <div className="py-8 border-b">
                             <h3 className="text-xl md:text-2xl font-semibold mb-4 text-slate-800">About this place</h3>
                             <p className="text-slate-600 leading-7 text-sm md:text-[17px] whitespace-pre-line">
@@ -142,7 +177,6 @@ const DetailRoom = ({ params }: DetailRoomProps) => {
                             </p>
                         </div>
 
-                        {/* Danh sách tiện nghi */}
                         <div className="py-8 border-b">
                             <h3 className="text-xl md:text-2xl font-semibold mb-6 text-slate-800 tracking-tight">What this place offers</h3>
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-4 md:gap-y-6 gap-x-12">
@@ -154,29 +188,8 @@ const DetailRoom = ({ params }: DetailRoomProps) => {
                                 ))}
                             </div>
                         </div>
-
-                        {/* ĐÂY NÈ: PHẦN TÍNH TOÁN CHI TIẾT TRÊN TRANG (Dành cho Mobile khi cuộn xuống) */}
-                        <div className="lg:hidden py-10">
-                            <h3 className="text-xl font-bold mb-6 text-slate-800">Price details</h3>
-                            <div className="space-y-4 bg-slate-50 p-6 rounded-2xl border border-slate-100">
-                                <div className="flex justify-between text-slate-600 font-medium text-base">
-                                    <span className="underline">${dataRoom.giaTien} x 5 nights</span>
-                                    <span>${dataRoom.giaTien * 5}</span>
-                                </div>
-                                <div className="flex justify-between text-slate-600 font-medium text-base">
-                                    <span className="underline">Cleaning fee</span>
-                                    <span>$20</span>
-                                </div>
-                                <hr className="border-slate-200" />
-                                <div className="flex justify-between font-bold text-xl text-slate-900 pt-2">
-                                    <span>Total (USD)</span>
-                                    <span className="text-rose-600">${totalPrice}</span>
-                                </div>
-                            </div>
-                        </div>
                     </div>
 
-                    {/* CỘT PHẢI: SIDEBAR (Sticky cho Desktop) */}
                     <div className="lg:col-span-1 order-1 lg:order-2">
                         <div className="hidden lg:block sticky top-28 rounded-3xl border border-slate-200 shadow-xl p-8 bg-white transition-all hover:shadow-2xl">
                             <div className="flex justify-between items-baseline mb-6">
@@ -186,7 +199,6 @@ const DetailRoom = ({ params }: DetailRoomProps) => {
                                 </div>
                             </div>
 
-                            {/* Inputs Group */}
                             <div className="border border-slate-400 rounded-xl mb-4 overflow-hidden focus-within:ring-2 focus-within:ring-slate-900 transition-all">
                                 <div className="grid grid-cols-2 border-b border-slate-400">
                                     <div className="p-3 border-r border-slate-400 hover:bg-slate-50 cursor-pointer">
@@ -204,12 +216,9 @@ const DetailRoom = ({ params }: DetailRoomProps) => {
                                 </div>
                             </div>
 
-                            <button onClick={handleReserve} className="w-full py-4 rounded-xl bg-linear-to-r from-rose-600 via-rose-500 to-pink-600 text-white font-bold text-lg shadow-lg active:scale-95 transition-all cursor-pointer mb-4">
-                                Reserve
-                            </button>
+                            {renderReserveButton()}
 
-                            {/* Bảng tính toán (Desktop Sidebar) */}
-                            <div className="space-y-4">
+                            <div className="space-y-4 mt-4">
                                 <div className="flex justify-between text-slate-600 font-medium">
                                     <span className="underline decoration-slate-300 underline-offset-4 cursor-pointer hover:text-slate-900">${dataRoom.giaTien} x 5 nights</span>
                                     <span>${dataRoom.giaTien * 5}</span>
@@ -229,10 +238,8 @@ const DetailRoom = ({ params }: DetailRoomProps) => {
                 </section>
             </main>
 
-            {/* MOBILE FIXED RESERVE BAR - ĐÚNG 3 HÀNG NHƯ YÊU CẦU */}
             <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 z-50 shadow-[0_-10px_40px_rgba(0,0,0,0.1)]">
                 <div className="px-5 py-4 space-y-4">
-                    {/* Hàng 1: Check-in, Checkout, Guests (Xếp dọc trên mobile hẹp, ngang trên mobile rộng) */}
                     <div className="flex flex-col sm:flex-row border border-slate-400 rounded-xl overflow-hidden">
                         <div className="flex flex-1 border-b sm:border-b-0 sm:border-r border-slate-400">
                             <div className="flex-1 p-2.5 border-r border-slate-400 bg-slate-50">
@@ -249,20 +256,11 @@ const DetailRoom = ({ params }: DetailRoomProps) => {
                             <div className="text-[11px] font-bold text-slate-900">1 guest</div>
                         </div>
                     </div>
-
-                    {/* Hàng 2: Giá tổng (Riêng 1 hàng) */}
                     <div className="flex justify-between items-center px-1">
                         <span className="text-sm font-bold text-slate-500 uppercase tracking-wider">Estimated Total</span>
                         <span className="text-2xl font-black text-slate-900">${totalPrice}</span>
                     </div>
-
-                    {/* Hàng 3: Nút Reserve (Riêng 1 hàng) */}
-                    <button
-                        onClick={handleReserve}
-                        className="w-full py-4 rounded-xl bg-linear-to-r from-rose-600 via-rose-500 to-pink-600 text-white font-bold text-lg shadow-xl active:scale-95 transition-all cursor-pointer"
-                    >
-                        Reserve Now
-                    </button>
+                    {renderReserveButton()}
                 </div>
             </div>
 
@@ -278,7 +276,6 @@ const DetailRoom = ({ params }: DetailRoomProps) => {
                 )}
             </AnimatePresence>
 
-            {/* Spacer cuối trang cho Mobile */}
             <div className="h-80 lg:hidden"></div>
             <HomeFooter />
         </div>
