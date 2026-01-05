@@ -245,11 +245,6 @@ const HomeHeader = ({ isHome = false, homeAnimationDone = false }: HeaderProps) 
                                 ) : (
                                     <div className="flex flex-col gap-2 px-2 py-1 text-sm text-gray-700">
                                         <div className="flex gap-3">
-                                            <span className="font-semibold w-28 shrink-0">ID:</span>
-                                            <span>{userLogin.content.user.id}</span>
-                                        </div>
-
-                                        <div className="flex gap-3">
                                             <span className="font-semibold w-28 shrink-0">Name:</span>
                                             <span>{userLogin.content.user.name}</span>
                                         </div>
