@@ -1,16 +1,15 @@
 "use client";
 
 import { useState, ChangeEvent, FormEvent } from "react";
-import Loader from "@/app/components/Loader/Loader";
 import api from "@/app/service/api";
 
 const Auth = () => {
-  const [user, setUser] = useState(
-    {
-      email: "",
-      password: "",
-    }
-  );
+  const [user, setUser] = useState({
+    email: "",
+    password: "",
+  });
+
+  const [error, setError] = useState("");
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -30,9 +29,17 @@ const Auth = () => {
         localStorage.setItem("TOKEN", userData.token);
 
         window.dispatchEvent(new Event("AUTH_SUCCESS"));
+        if (userData.user.role === "ADMIN") {
+          window.location.href = "/admin/dashboard";
+        } else {
+          setError("You do not have permission to access this page.");
+        }
       }
     } catch (err) {
-      console.error("Login Error:", err);
+      const message =
+        (err as any).response?.data?.message ||
+        "Login failed. Please check your information and try again.";
+      setError(message);
     }
   };
 
@@ -106,10 +113,11 @@ const Auth = () => {
               </button>
             </form>
 
-            {/* NẾU CÓ ERROR THÌ NÓ LÀ DÒNG NÀY NÈ */}
-            <div className="mt-6 rounded-xl border border-red-600 bg-red-500 px-4 py-3 text-sm text-white text-center">
-              Login failed. Please check your information and try again.
-            </div>
+            {error && (
+              <div className="mt-6 rounded-xl border border-red-600 bg-red-500 px-4 py-3 text-sm text-white text-center">
+                {error}
+              </div>
+            )}
           </div>
         </div>
       </div>
