@@ -15,6 +15,7 @@
     "@fortawesome/react-fontawesome": "^3.1.1",
     "@reduxjs/toolkit": "^2.11.2",
     "animate.css": "^4.1.1",
+    "antd": "^6.1.4",
     "axios": "^1.13.2",
     "embla-carousel": "^8.6.0",
     "embla-carousel-auto-scroll": "^8.6.0",
