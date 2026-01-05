@@ -9,7 +9,6 @@ import { Star, MapPin, ShieldCheck, Award, Lock, Wifi, Tv, Snowflake, Waves, Ute
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
     faClock,
-    faHotTubPerson,
     faCreditCard,
     faHouseCircleCheck,
     faBan,
@@ -18,7 +17,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { DetailRoomProps, TCity } from "@/app/type";
 import Link from "next/link";
-import CommentSection from "./CommentSection";
+import CommentSection from "./comment";
 
 const DetailRoom = ({ params }: DetailRoomProps) => {
     const { id } = React.use(params);
