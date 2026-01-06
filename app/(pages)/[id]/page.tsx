@@ -1,52 +1,69 @@
-import BackToTopButton from '@/app/components/BackToTop'
-import HomeFooter from '@/app/components/HomeFooter'
-import HomeHeader from '@/app/components/HomeHeader'
-import api from '@/app/service/api'
-import React from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faStar, faTag, faWifi, faTv, faWind, faSwimmingPool, faCar, faKitchenSet, faShirt, faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons'
-import Link from 'next/link'
-import { CityNameProps, TCity } from '@/app/type'
+"use client";
 
-const CityName = async ({ params }: CityNameProps) => {
-    const { id } = await params
-    let rooms: any[] = []
-    let dataCity: any[] = []
+import React, { useState, useEffect } from 'react';
+import BackToTopButton from '@/app/components/BackToTop';
+import HomeFooter from '@/app/components/HomeFooter';
+import HomeHeader from '@/app/components/HomeHeader';
+import api from '@/app/service/api';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faStar, faWifi, faTv, faWind, faSwimmingPool, faCar, faKitchenSet, faShirt, faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
+import Link from 'next/link';
+import { CityNameProps, TCity } from '@/app/type';
 
-    try {
-        const [roomResponse, cityResponse] = await Promise.all([
-            api.get(`phong-thue/lay-phong-theo-vi-tri?maViTri=${id}`),
-            api.get("vi-tri")
-        ])
+const CityName = ({ params }: CityNameProps) => {
+    const { id } = React.use(params);
+    const [rooms, setRooms] = useState<any[]>([]);
+    const [dataCity, setDataCity] = useState<TCity[]>([]);
+    const [loading, setLoading] = useState(true);
 
-        rooms = roomResponse.data?.content || []
-        dataCity = cityResponse.data?.content || []
-    } catch (error) {
-        console.log(error)
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                setLoading(true);
+                const [roomResponse, cityResponse] = await Promise.all([
+                    api.get(`phong-thue/lay-phong-theo-vi-tri?maViTri=${id}`),
+                    api.get("vi-tri")
+                ]);
+                setRooms(roomResponse.data?.content || []);
+                setDataCity(cityResponse.data?.content || []);
+            } catch (error) {
+                console.error(error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchData();
+    }, [id]);
+
+    if (loading) {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-white">
+                <div className="h-12 w-12 rounded-full border-4 border-slate-100 border-t-rose-500 animate-spin"></div>
+            </div>
+        );
     }
 
-    const renderCityName = () => {
-        const city = dataCity?.find((city: TCity) => Number(id) === city.id);
-        if (!city) return null;
+    const currentCity = dataCity?.find((city: TCity) => Number(id) === city.id);
 
+    const renderCityHero = () => {
+        if (!currentCity) return null;
         return (
-            <div className="relative w-full h-50 sm:h-70 md:h-80 lg:h-95 overflow-hidden">
+            <div className="relative w-full h-50 sm:h-70 md:h-80 lg:h-95 overflow-hidden group">
                 <img
-                    src={city.hinhAnh || "https://images.unsplash.com/photo-1506744038136-46273834b3fb"}
-                    alt={city.tenViTri}
+                    src={currentCity.hinhAnh || "https://images.unsplash.com/photo-1506744038136-46273834b3fb"}
+                    alt={currentCity.tenViTri}
                     className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-black/30" />
                 <div className="absolute inset-0 bg-linear-to-t from-black/60 to-transparent" />
-
                 <div className="absolute bottom-6 sm:bottom-10 left-0 w-full px-4 sm:px-6 md:px-10 lg:px-20">
                     <div className="max-w-360 mx-auto">
                         <div className="flex items-center gap-2 text-white/80 text-[10px] sm:text-xs font-bold uppercase tracking-widest mb-2">
                             <FontAwesomeIcon icon={faMapMarkerAlt} className="text-rose-500" />
-                            <span>{city.quocGia}</span>
+                            <span>{currentCity.quocGia}</span>
                         </div>
                         <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold text-white tracking-tight drop-shadow-lg">
-                            {city.tenViTri}, {city.tinhThanh}
+                            {currentCity.tenViTri}, {currentCity.tinhThanh}
                         </h1>
                     </div>
                 </div>
@@ -66,7 +83,7 @@ const CityName = async ({ params }: CityNameProps) => {
     );
 
     const renderRoomCard = (room: any) => {
-        const ratings = [2, 2.5, 3, 3.5, 4, 4.5, 5];
+        const ratings = [4, 4.5, 5];
         const rating = ratings[Math.floor(Math.random() * ratings.length)];
         const originalPrice = Math.round(room.giaTien / 0.8);
 
@@ -74,37 +91,33 @@ const CityName = async ({ params }: CityNameProps) => {
             <Link
                 key={room.id}
                 href={`/detail/${room.id}`}
-                className="group block bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden h-full transition-all duration-300 hover:shadow-xl hover:scale-[1.02]"
+                className="group block bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden h-full transition-all duration-300 hover:shadow-xl hover:scale-[1.01] cursor-pointer"
             >
-                <div className="flex flex-col sm:flex-col md:flex-row lg:flex-row xl:flex-row">
-                    <div className="relative w-full sm:w-full md:w-72 lg:w-80 xl:w-96 shrink-0 overflow-hidden">
+                <div className="flex flex-col md:flex-row">
+                    <div className="relative w-full md:w-72 lg:w-80 xl:w-96 shrink-0 overflow-hidden">
                         {room.hinhAnh ? (
                             <img
                                 src={room.hinhAnh}
                                 alt={room.tenPhong}
-                                className="w-full h-full object-cover transition-all duration-300 hover:scale-105"
+                                className="w-full h-full object-cover transition-all duration-300 group-hover:scale-105"
                             />
                         ) : (
-                            <div className="w-full h-full flex items-center justify-center bg-slate-100">
-                                <span className="text-slate-500 text-sm sm:text-base md:text-base font-medium uppercase tracking-wide">
-                                    No image available
-                                </span>
+                            <div className="w-full h-64 md:h-full flex items-center justify-center bg-slate-100">
+                                <span className="text-slate-500 text-sm font-medium uppercase tracking-wide">No image available</span>
                             </div>
                         )}
-                        {room.hinhAnh && (
-                            <div className="absolute top-3 left-3 bg-white text-rose-400 border border-rose-600 px-3 py-1 text-[10px] sm:text-[11px] md:text-[12px] font-bold shadow-lg flex items-center gap-1 uppercase tracking-tighter">
-                                Enjoy a Lovevery Play Kit
-                            </div>
-                        )}
+                        <div className="absolute top-3 left-3 bg-white text-rose-400 border border-rose-600 px-3 py-1 text-[10px] font-bold shadow-lg uppercase tracking-tighter">
+                            Enjoy a Lovevery Play Kit
+                        </div>
                     </div>
 
                     <div className="flex flex-col flex-1 p-4 sm:p-5 md:p-6 lg:p-7 xl:p-8">
                         <div className="flex flex-col sm:flex-row justify-between items-start gap-4 mb-4">
                             <div className="space-y-1.5 flex-1">
-                                <h3 className="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold text-black group-hover:text-rose-600 transition-all duration-300 line-clamp-1">
+                                <h3 className="text-base sm:text-lg md:text-xl lg:text-2xl font-bold text-black group-hover:text-rose-600 transition-all duration-300 line-clamp-1">
                                     {room.tenPhong}
                                 </h3>
-                                <div className="flex flex-wrap items-center gap-2 text-black text-[10px] sm:text-[11px] md:text-[12px] font-bold uppercase tracking-widest">
+                                <div className="flex flex-wrap items-center gap-2 text-black text-[10px] font-bold uppercase tracking-widest">
                                     <span>{room.khach} guests</span>
                                     <span>•</span>
                                     <span>{room.phongNgu} room</span>
@@ -114,7 +127,7 @@ const CityName = async ({ params }: CityNameProps) => {
                             </div>
                         </div>
 
-                        <p className="text-slate-500 text-sm sm:text-base md:text-base line-clamp-2 leading-relaxed font-medium mb-6">
+                        <p className="text-slate-500 text-sm sm:text-base line-clamp-2 leading-relaxed font-medium mb-6">
                             {room.moTa || 'Premium experience with high-end facilities and great view in the heart of the city.'}
                         </p>
 
@@ -130,29 +143,23 @@ const CityName = async ({ params }: CityNameProps) => {
 
                         <div className="flex flex-col sm:flex-row justify-between items-end mt-auto pt-6 border-t border-slate-50">
                             <div className="flex items-center gap-1 bg-slate-50 px-3 py-1.5 rounded-full border border-slate-100">
-                                <FontAwesomeIcon icon={faStar} className="text-amber-500 text-sm sm:text-base md:text-base" />
-                                <span className="text-[#7D3719] font-bold text-sm sm:text-base md:text-base">{rating}</span>
+                                <FontAwesomeIcon icon={faStar} className="text-amber-500" />
+                                <span className="text-[#7D3719] font-bold">{rating}</span>
                             </div>
 
-                            <div className="flex flex-col sm:flex-col md:flex-col lg:flex-col xl:flex-col items-end gap-2 w-full sm:w-auto">
+                            <div className="flex flex-col items-end gap-2 w-full sm:w-auto">
                                 <div className="flex flex-col items-end">
                                     <div className="flex items-center gap-2 mb-1">
-                                        <span className="bg-rose-600 text-white px-2 py-0.5 rounded text-[10px] sm:text-[11px] md:text-[12px] font-bold uppercase tracking-tighter">
-                                            -20%
-                                        </span>
-                                        <span className="text-rose-600 line-through text-[11px] sm:text-[12px] md:text-[13px] font-bold">${originalPrice}</span>
+                                        <span className="bg-rose-600 text-white px-2 py-0.5 rounded text-[10px] font-bold uppercase">-20%</span>
+                                        <span className="text-rose-600 line-through text-[12px] font-bold">${originalPrice}</span>
                                     </div>
                                     <div className="flex items-baseline gap-1">
-                                        <span className="text-black font-bold text-sm sm:text-base md:text-base lg:text-lg">
-                                            FROM
-                                        </span>
-                                        <span className="text-xl sm:text-2xl md:text-2xl lg:text-3xl font-bold text-black">${room.giaTien}</span>
-                                        <span className="text-black font-bold text-xs sm:text-sm md:text-sm lg:text-base">
-                                            per night
-                                        </span>
+                                        <span className="text-black font-bold text-sm">FROM</span>
+                                        <span className="text-xl sm:text-2xl font-bold text-black">${room.giaTien}</span>
+                                        <span className="text-black font-bold text-xs">per night</span>
                                     </div>
                                 </div>
-                                <div className="w-full sm:w-auto bg-linear-to-br from-blue-900 via-indigo-500 to-pink-500 text-white px-6 sm:px-8 py-2 sm:py-3 rounded-xl font-bold text-sm sm:text-base md:text-base shadow-md text-center mt-2 cursor-pointer transition-all duration-300 hover:scale-[1.03] hover:shadow-xl hover:brightness-110 active:scale-95">
+                                <div className="w-full sm:w-auto bg-slate-900 text-white px-6 py-2 rounded-xl font-bold text-sm shadow-md transition-all duration-300 hover:bg-rose-600 active:scale-95 cursor-pointer">
                                     Check Availability
                                 </div>
                             </div>
@@ -166,31 +173,24 @@ const CityName = async ({ params }: CityNameProps) => {
     return (
         <div className="bg-[#F8F9FA] min-h-screen font-sans">
             <HomeHeader />
-
             <main className="pb-20">
-                {renderCityName()}
-
+                {renderCityHero()}
                 <div className="app-container mx-auto pt-8">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
                         <div className="space-y-1">
                             <h2 className="text-2xl sm:text-3xl font-bold text-black">{rooms.length} stays available</h2>
-                            <p className="text-slate-500 text-sm sm:text-base font-medium">
-                                Book your perfect home in {dataCity?.find((c: TCity) => Number(id) === c.id)?.tenViTri}
-                            </p>
+                            <p className="text-slate-500 text-sm font-medium">Book your perfect home in {currentCity?.tenViTri}</p>
                         </div>
-                        <div className="flex items-center gap-2 bg-white px-4 sm:px-6 py-2 rounded-xl border border-slate-200 shadow-md self-start">
+                        <div className="flex items-center gap-2 bg-white px-4 py-2 rounded-xl border border-slate-200 shadow-md">
                             <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-                            <span className="text-slate-600 text-xs sm:text-sm font-bold uppercase tracking-tighter italic">
-                                20% Discount applied to all results
-                            </span>
+                            <span className="text-slate-600 text-xs font-bold uppercase italic">20% Discount applied</span>
                         </div>
                     </div>
-
                     <div className="flex flex-col gap-6">
                         {rooms.length > 0 ? rooms.map(renderRoomCard) : (
-                            <div className="text-center py-24 bg-white rounded-3xl border border-slate-200 shadow-sm">
-                                <h2 className="text-xl font-bold text-black uppercase tracking-widest">No vacancy found</h2>
-                                <Link href="/" className="mt-4 inline-block text-rose-500 font-bold underline">Discover other cities</Link>
+                            <div className="text-center py-24 bg-white rounded-3xl border border-slate-200">
+                                <h2 className="text-xl font-bold text-black uppercase">No vacancy found</h2>
+                                <Link href="/" className="mt-4 inline-block text-rose-500 font-bold underline cursor-pointer">Discover other cities</Link>
                             </div>
                         )}
                     </div>
@@ -201,7 +201,7 @@ const CityName = async ({ params }: CityNameProps) => {
 
             <HomeFooter />
         </div>
-    )
-}
+    );
+};
 
 export default CityName;

@@ -172,13 +172,17 @@ const Home = () => {
               </div>
             </div>
 
-            <div className="absolute bottom-32 left-1/2 -translate-x-1/2 flex gap-2 z-20">
+            <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-2 z-10">
               {scrollSnaps.map((_, index) => (
                 <button
                   key={index}
                   onClick={() => scrollTo(index)}
-                  className={`w-3 h-3 rounded-full transition-all duration-300 ${index === selectedIndex ? "bg-[#B99333] w-8" : "bg-white/50"
-                    }`}
+                  className={`
+        h-2 rounded-full transition-all duration-300
+        ${index === selectedIndex
+                      ? "w-8 bg-white shadow-md"
+                      : "w-2 bg-white/50 hover:bg-white/80"}
+      `}
                 />
               ))}
             </div>
