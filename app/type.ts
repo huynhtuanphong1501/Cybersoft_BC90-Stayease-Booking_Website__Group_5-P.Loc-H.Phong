@@ -17,7 +17,7 @@ export interface TUser {
     name: string;
     email: string;
     password: string;
-    phone: number | null;
+    phone: string | null;
     birthday: string;
     avatar: string | null;
     gender: boolean;
@@ -42,3 +42,11 @@ export interface DetailRoomProps {
     }>
 }
 
+export type ModalCmpsProps = {
+    open: boolean;
+    title?: React.ReactNode;
+    okText?: React.ReactNode;
+    onOk?: () => void;
+    onCancel?: () => void;
+    children: React.ReactNode;
+}
