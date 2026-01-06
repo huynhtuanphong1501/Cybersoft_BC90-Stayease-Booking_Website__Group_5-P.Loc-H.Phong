@@ -172,7 +172,7 @@ const Home = () => {
               </div>
             </div>
 
-            <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-2 z-20">
+            <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-2 z-10">
               {scrollSnaps.map((_, index) => (
                 <button
                   key={index}
