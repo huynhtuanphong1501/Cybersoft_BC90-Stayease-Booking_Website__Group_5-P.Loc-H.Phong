@@ -42,6 +42,8 @@ export interface DetailRoomProps {
     }>
 }
 
+
+// modal type
 export type ModalCmpsProps = {
     open: boolean;
     title?: React.ReactNode;
@@ -50,3 +52,22 @@ export type ModalCmpsProps = {
     onCancel?: () => void;
     children: React.ReactNode;
 }
+
+//Admin function types
+export type EditProps = {
+  open: boolean;
+  target: TUser| TCity | null;
+  onCancel: () => void;
+  onSuccess: () => void;
+};
+
+export type AddProps = {
+  onSuccess: () => void;
+};
+
+export type DeleteProps = {
+  id: number | null;
+  onSuccess: () => void;
+  children: React.ReactNode;
+};
+
