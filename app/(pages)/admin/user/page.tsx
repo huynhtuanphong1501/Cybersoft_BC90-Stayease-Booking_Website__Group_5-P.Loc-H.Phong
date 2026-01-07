@@ -1,5 +1,4 @@
 "use client";
-import ModalCmps from "../_cmps/modal/ModalCmps";
 import TableData from "./table/TableData";
 import AddUser from "./addUser/AddUser";
 import { useState } from "react";

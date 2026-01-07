@@ -2,21 +2,21 @@
 import { useEffect, useState } from "react";
 import { Table, Space } from "antd";
 import type { TableProps } from "antd";
-import type { TUser } from "@/app/type";
+import type { TCity } from "@/app/type";
 import api from "@/app/service/api";
-import EditUser from "../editUse/EditUser";
-import DelUser from "../deleteUser/DelUser";
+import EditLocation from "../editLocation/EditLocation";
+import DelLocation from "../deleteLocation/DelLocation";
 
 export default function TableData({ reload }: { reload: number }) {
-  const [data, setData] = useState<TUser[]>([]);
+  const [data, setData] = useState<TCity[]>([]);
   const [loading, setLoading] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
-  const [editingUser, setEditingUser] = useState<TUser | null>(null);
+  const [editingUser, setEditingUser] = useState<TCity | null>(null);
 
   const fetchUsers = async () => {
     setLoading(true);
     try {
-      const response = await api.get("/users");
+      const response = await api.get("/vi-tri");
       setData(response.data.content);
     } catch (error) {
       console.log(error);
@@ -25,7 +25,7 @@ export default function TableData({ reload }: { reload: number }) {
     }
   };
 
-  const handleEdit = (user: TUser) => {
+  const handleEdit = (user: TCity) => {
     setEditingUser(user);
     setOpenEdit(true);
   };
@@ -34,7 +34,7 @@ export default function TableData({ reload }: { reload: number }) {
     fetchUsers();
   }, [reload]);
 
-  const columns: TableProps<TUser>["columns"] = [
+  const columns: TableProps<TCity>["columns"] = [
     {
       title: "ID",
       dataIndex: "id",
@@ -42,29 +42,35 @@ export default function TableData({ reload }: { reload: number }) {
       width: 100,
     },
     {
-      title: "Name",
-      dataIndex: "name",
-      key: "name",
-      width: 180,
-    },
-    {
-      title: "Email",
-      dataIndex: "email",
-      key: "email",
+      title: "Location",
+      dataIndex: "tenViTri",
+      key: "tenViTri",
       width: 280,
     },
     {
-      title: "Gender",
-      dataIndex: "gender",
-      key: "gender",
-      render: (gender: boolean) => (gender ? "Male" : "Female"),
+      title: "Province",
+      dataIndex: "tinhThanh",
+      key: "tinhThanh",
+      width: 180,
+    },
+    {
+      title: "Country",
+      dataIndex: "quocGia",
+      key: "quocGia",
       width: 120,
     },
     {
-      title: "Role",
-      dataIndex: "role",
-      key: "role",
-      width: 160,
+      title: "Image",
+      dataIndex: "hinhAnh",
+      key: "hinhAnh",
+      render: (hinhAnh: string) => (
+        <img
+          src={hinhAnh}
+          alt="Location"
+          className="w-16 h-16 object-cover rounded"
+        />
+      ),
+      width: 120,
     },
     {
       title: "Action",
@@ -72,9 +78,9 @@ export default function TableData({ reload }: { reload: number }) {
       render: (_, record) => (
         <Space size="middle">
           <a onClick={() => handleEdit(record)}>Edit</a>
-          <DelUser id={record.id} onSuccess={() => fetchUsers()}>
+          <DelLocation id={record.id} onSuccess={() => fetchUsers()}>
             <a style={{ color: "red" }}>Delete</a>
-          </DelUser>
+          </DelLocation>
         </Space>
       ),
       width: 180,
@@ -90,7 +96,7 @@ export default function TableData({ reload }: { reload: number }) {
         rowKey="id"
         scroll={{ x: 1200 }}
       />
-      <EditUser
+      <EditLocation
         open={openEdit}
         target={editingUser}
         onCancel={() => setOpenEdit(false)}
