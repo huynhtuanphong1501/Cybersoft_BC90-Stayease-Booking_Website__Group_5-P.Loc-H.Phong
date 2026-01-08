@@ -62,9 +62,24 @@ export type TRooms = {
   banUi: boolean,
   maViTri: number,
   hinhAnh: string
+export interface TBooking {
+    id: number;
+    maPhong: number;
+    ngayDen: string;
+    ngayDi: string;
+    soLuongKhach: number;
+    roomDetails?: any;
+};
+
+export interface TComment {
+    id: number;
+    ngayBinhLuan: string;
+    noiDung: string;
+    saoBinhLuan: number;
+    tenNguoiBinhLuan: string;
+    avatar?: string;
 }
 
-// modal type
 export type ModalCmpsProps = {
     open: boolean;
     title?: React.ReactNode;
@@ -83,12 +98,12 @@ export type EditProps = {
 };
 
 export type AddProps = {
-  onSuccess: () => void;
+    onSuccess: () => void;
 };
 
 export type DeleteProps = {
-  id: number | null;
-  onSuccess: () => void;
-  children: React.ReactNode;
+    id: number | null;
+    onSuccess: () => void;
+    children: React.ReactNode;
 };
 

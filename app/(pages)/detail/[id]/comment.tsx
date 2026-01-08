@@ -4,15 +4,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Star, Send, ChevronLeft, ChevronRight, Lock, User } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import api from "@/app/service/api";
-
-interface TComment {
-    id: number;
-    ngayBinhLuan: string;
-    noiDung: string;
-    saoBinhLuan: number;
-    tenNguoiBinhLuan: string;
-    avatar?: string;
-}
+import { TComment } from "@/app/type";
 
 const CommentSection = ({ roomId }: { roomId: string }) => {
     const [comments, setComments] = useState<TComment[]>([]);
@@ -25,8 +17,9 @@ const CommentSection = ({ roomId }: { roomId: string }) => {
 
     const scrollRef = useRef<HTMLDivElement>(null);
 
+    // Đồng bộ User liên tục để tránh lỗi "đã login vẫn hiện thông báo"
     useEffect(() => {
-        if (typeof window !== "undefined") {
+        const checkUser = () => {
             const storedUser = localStorage.getItem("USER_LOGIN");
             if (storedUser) {
                 try {
@@ -34,8 +27,13 @@ const CommentSection = ({ roomId }: { roomId: string }) => {
                 } catch {
                     setUser(null);
                 }
+            } else {
+                setUser(null);
             }
-        }
+        };
+        checkUser();
+        const interval = setInterval(checkUser, 1000);
+        return () => clearInterval(interval);
     }, []);
 
     const fetchComments = async () => {
@@ -54,34 +52,44 @@ const CommentSection = ({ roomId }: { roomId: string }) => {
     }, [roomId]);
 
     const handlePostComment = async () => {
-        if (!user) {
+        // Fix lỗi: Check lại trực tiếp localStorage
+        const currentUser = localStorage.getItem("USER_LOGIN");
+
+        if (!currentUser) {
             setShowAuthNotice(true);
-            setTimeout(() => setShowAuthNotice(false), 2500);
+            setTimeout(() => {
+                setShowAuthNotice(false);
+                // Mở modal login
+                window.dispatchEvent(new CustomEvent("OPEN_AUTH_MODAL", { detail: { mode: "login" } }));
+            }, 2000);
             return;
         }
 
         if (!newComment.trim() || isSubmitting) return;
 
+        const parsedUser = JSON.parse(currentUser);
+        const userId = parsedUser?.content?.user?.id;
+
+        if (!userId) {
+            setShowAuthNotice(true);
+            return;
+        }
+
         setIsSubmitting(true);
-
         try {
-            const userData = user.user || user.content?.user;
-            const userId = userData?.id;
-
             const payload = {
                 id: 0,
                 maPhong: Number(roomId),
                 maNguoiBinhLuan: Number(userId),
                 ngayBinhLuan: new Date().toISOString(),
-                noiDung: newComment,
+                noiDung: newComment.trim(),
                 saoBinhLuan: rating,
             };
 
             await api.post("binh-luan", payload);
-
             setNewComment("");
             setRating(5);
-            await fetchComments();
+            fetchComments();
         } catch (error) {
             console.error(error);
             alert("Failed to post comment.");
@@ -113,10 +121,7 @@ const CommentSection = ({ roomId }: { roomId: string }) => {
                 <div className="h-8 w-48 bg-slate-200 animate-pulse rounded-md" />
                 <div className="flex gap-4 overflow-hidden">
                     {[1, 2, 3].map((i) => (
-                        <div
-                            key={i}
-                            className="min-w-75 h-40 bg-slate-100 animate-pulse rounded-2xl"
-                        />
+                        <div key={i} className="min-w-75 h-40 bg-slate-100 animate-pulse rounded-2xl" />
                     ))}
                 </div>
             </div>
@@ -124,19 +129,23 @@ const CommentSection = ({ roomId }: { roomId: string }) => {
     }
 
     return (
-        <section className="relative border-t border-slate-100">
+        <section className="relative border-t border-slate-100 pt-10">
+            {/* ĐỒNG BỘ AUTH NOTICE VỚI PAGE CHÍNH */}
             <AnimatePresence>
                 {showAuthNotice && (
                     <motion.div
                         initial={{ opacity: 0, y: -20, x: "-50%" }}
                         animate={{ opacity: 1, y: 0, x: "-50%" }}
                         exit={{ opacity: 0, y: -20, x: "-50%" }}
-                        className="fixed top-24 left-1/2 z-50 bg-slate-900 text-white shadow-2xl rounded-full px-6 py-3 flex items-center gap-3 whitespace-nowrap"
+                        className="fixed top-6 left-1/2 z-100 bg-white shadow-2xl rounded-2xl px-6 py-4 flex items-center gap-4 border border-slate-100 w-[90%] max-w-87.5"
                     >
-                        <Lock size={16} className="text-amber-400" />
-                        <span className="text-sm font-medium">
-                            Please log in to post a review
-                        </span>
+                        <div className="bg-amber-100 p-2 rounded-full shrink-0">
+                            <Lock className="text-amber-600" size={20} />
+                        </div>
+                        <div>
+                            <p className="font-bold text-black text-sm">Please log in</p>
+                            <p className="text-xs text-slate-500">You need to sign in to leave a review.</p>
+                        </div>
                     </motion.div>
                 )}
             </AnimatePresence>
@@ -150,123 +159,72 @@ const CommentSection = ({ roomId }: { roomId: string }) => {
                     </h3>
                 </div>
                 <div className="flex gap-2">
-                    <button
-                        onClick={() => scroll("left")}
-                        className="p-2 rounded-full border border-slate-200 bg-white hover:bg-slate-50 transition-colors shadow-sm active:scale-95"
-                    >
+                    <button onClick={() => scroll("left")} className="p-2 rounded-full border border-slate-200 bg-white hover:bg-slate-50 transition-colors shadow-sm active:scale-95">
                         <ChevronLeft size={18} />
                     </button>
-                    <button
-                        onClick={() => scroll("right")}
-                        className="p-2 rounded-full border border-slate-200 bg-white hover:bg-slate-50 transition-colors shadow-sm active:scale-95"
-                    >
+                    <button onClick={() => scroll("right")} className="p-2 rounded-full border border-slate-200 bg-white hover:bg-slate-50 transition-colors shadow-sm active:scale-95">
                         <ChevronRight size={18} />
                     </button>
                 </div>
             </div>
 
-            <div
-                ref={scrollRef}
-                className="flex gap-4 sm:gap-6 overflow-x-auto no-scrollbar snap-x snap-mandatory pb-4"
-            >
+            <div ref={scrollRef} className="flex gap-4 sm:gap-6 overflow-x-auto no-scrollbar snap-x snap-mandatory pb-4">
                 {comments.length > 0 ? (
                     comments.map((item) => (
-                        <div
-                            key={item.id}
-                            className="snap-start min-w-[90%] sm:min-w-100 p-5 sm:p-6 rounded-2xl border border-slate-100 bg-white shadow-sm flex flex-col justify-between"
-                        >
+                        <div key={item.id} className="snap-start min-w-[90%] sm:min-w-100 p-5 sm:p-6 rounded-2xl border border-slate-100 bg-white shadow-sm flex flex-col justify-between">
                             <div>
                                 <div className="flex items-center gap-4 mb-4">
                                     <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden bg-slate-100 flex items-center justify-center border border-slate-50">
-                                        {item.avatar ? (
-                                            <img
-                                                src={item.avatar}
-                                                alt={item.tenNguoiBinhLuan}
-                                                className="w-full h-full object-cover"
-                                            />
-                                        ) : (
-                                            <User
-                                                size={20}
-                                                className="text-slate-400"
-                                            />
-                                        )}
+                                        {item.avatar ? <img src={item.avatar} alt={item.tenNguoiBinhLuan} className="w-full h-full object-cover" /> : <User size={20} className="text-slate-400" />}
                                     </div>
                                     <div>
-                                        <h5 className="font-bold text-black leading-tight text-sm sm:text-base">
-                                            {item.tenNguoiBinhLuan}
-                                        </h5>
-                                        <p className="text-[10px] sm:text-xs text-slate-500 font-medium">
-                                            {new Date(item.ngayBinhLuan).toLocaleDateString("vi-VN", {
-                                                month: "long",
-                                                year: "numeric",
-                                            })}
-                                        </p>
+                                        <h5 className="font-bold text-black leading-tight text-sm sm:text-base">{item.tenNguoiBinhLuan}</h5>
+                                        <p className="text-xs text-slate-400 font-medium">{new Date(item.ngayBinhLuan).toLocaleDateString()}</p>
                                     </div>
                                 </div>
-
                                 <div className="flex gap-0.5 mb-3">
                                     {[...Array(5)].map((_, i) => (
-                                        <Star
-                                            key={i}
-                                            size={12}
-                                            className={
-                                                i < item.saoBinhLuan
-                                                    ? "fill-[#7D3719] text-[#7D3719]"
-                                                    : "text-slate-200"
-                                            }
-                                        />
+                                        <Star key={i} size={12} className={i < item.saoBinhLuan ? "fill-amber-400 text-amber-400" : "text-slate-200"} />
                                     ))}
                                 </div>
-
-                                <p className="text-slate-600 leading-relaxed text-sm sm:text-[15px] line-clamp-4">
-                                    {item.noiDung}
-                                </p>
+                                <p className="text-slate-600 text-sm sm:text-base leading-relaxed line-clamp-4 italic">"{item.noiDung}"</p>
                             </div>
                         </div>
                     ))
                 ) : (
-                    <div className="w-full py-10 text-center text-slate-400 border border-dashed rounded-2xl">
-                        No reviews yet for this room.
+                    <div className="w-full py-10 text-center border-2 border-dashed border-slate-100 rounded-3xl">
+                        <p className="text-slate-400 font-medium">No reviews yet for this room.</p>
                     </div>
                 )}
             </div>
 
-            <div className="mt-10 bg-slate-50/80 p-5 sm:p-8 rounded-3xl border border-slate-200">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-                    <h4 className="font-bold text-black text-lg">
-                        Leave your review
-                    </h4>
-                    <div className="flex gap-2 bg-white p-2.5 rounded-2xl shadow-sm border border-slate-100 w-fit">
+            <div className="mt-10 p-6 sm:p-8 rounded-3xl bg-slate-50 border border-slate-100">
+                <h4 className="text-lg font-bold text-black mb-6">Add a review</h4>
+                <div className="flex items-center gap-4 mb-6 bg-white p-4 rounded-2xl w-fit shadow-sm border border-slate-100">
+                    <span className="text-sm font-bold text-slate-500 uppercase tracking-wider">Rating</span>
+                    <div className="flex gap-1">
                         {[1, 2, 3, 4, 5].map((s) => (
-                            <Star
-                                key={s}
-                                onClick={() => setRating(s)}
-                                className={`w-6 h-6 cursor-pointer transition-all ${s <= rating
-                                    ? "fill-amber-400 text-amber-400 scale-110"
-                                    : "text-slate-200 hover:text-slate-300"
-                                    }`}
-                            />
+                            <button key={s} onClick={() => setRating(s)} className="transition-transform active:scale-125">
+                                <Star size={24} className={`${s <= rating ? "fill-amber-400 text-amber-400" : "text-slate-200"} transition-colors`} />
+                            </button>
                         ))}
                     </div>
                 </div>
 
-                <div className="relative">
+                <div className="relative group">
                     <textarea
                         value={newComment}
                         onChange={(e) => setNewComment(e.target.value)}
-                        placeholder="How was your stay? Share your experience..."
-                        className="w-full h-36 p-5 pr-14 rounded-2xl border border-slate-200 bg-white focus:ring-4 focus:ring-amber-500/5 focus:border-amber-400 outline-none transition-all resize-none text-[15px] shadow-sm"
+                        placeholder="Share your experience about this place..."
+                        className="w-full p-5 sm:p-6 rounded-2xl border border-slate-200 focus:border-black focus:ring-4 focus:ring-black/5 outline-none transition-all min-h-32 text-black bg-white shadow-sm"
                     />
                     <button
                         onClick={handlePostComment}
-                        disabled={!newComment.trim() || isSubmitting}
-                        className="absolute right-3 bottom-3 p-3 rounded-xl bg-slate-900 text-white hover:bg-black disabled:bg-slate-200 disabled:cursor-not-allowed transition-all shadow-lg active:scale-95"
+                        disabled={isSubmitting}
+                        className="absolute bottom-4 right-4 bg-black text-white p-3 sm:px-6 sm:py-3 rounded-xl font-bold flex items-center gap-2 hover:bg-slate-800 transition-all active:scale-95 disabled:opacity-50 disabled:scale-100 shadow-lg"
                     >
-                        {isSubmitting ? (
-                            <div className="w-5 h-5 border-2 border-white/30 border-t-white animate-spin rounded-full" />
-                        ) : (
-                            <Send size={20} />
-                        )}
+                        <span className="hidden sm:inline">{isSubmitting ? "Posting..." : "Post review"}</span>
+                        <Send size={18} className={isSubmitting ? "animate-pulse" : ""} />
                     </button>
                 </div>
             </div>
