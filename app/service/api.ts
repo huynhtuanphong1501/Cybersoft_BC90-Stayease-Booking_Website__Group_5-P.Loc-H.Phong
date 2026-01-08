@@ -12,12 +12,16 @@ api.interceptors.request.use((config) => {
         const user = localStorage.getItem("USER_LOGIN");
         const userData = user ? JSON.parse(user) : null;
 
-        if (userData?.content?.token) {
-            config.headers.Authorization = `Bearer ${userData.content.token}`;
+        const token =
+            userData?.token ||
+            userData?.content?.token;
+
+        if (token) {
+            config.headers.token = token;
         }
     }
 
-    config.headers.TokenCybersoft = TOKEN_CYBERSOFT;
+    config.headers.tokenCybersoft = TOKEN_CYBERSOFT;
     return config;
 });
 

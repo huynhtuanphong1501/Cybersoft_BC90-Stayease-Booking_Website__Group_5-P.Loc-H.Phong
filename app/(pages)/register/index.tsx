@@ -22,7 +22,7 @@ interface RegisterForm {
     role: string;
 }
 
-type RegisterErrors = {
+interface RegisterErrors {
     name?: string;
     email?: string;
     password?: string;

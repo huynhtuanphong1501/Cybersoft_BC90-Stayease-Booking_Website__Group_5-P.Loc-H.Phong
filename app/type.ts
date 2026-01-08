@@ -42,6 +42,15 @@ export interface DetailRoomProps {
     }>
 }
 
+export interface TBooking {
+    id: number;
+    maPhong: number;
+    ngayDen: string;
+    ngayDi: string;
+    soLuongKhach: number;
+    roomDetails?: any;
+};
+
 export type ModalCmpsProps = {
     open: boolean;
     title?: React.ReactNode;
