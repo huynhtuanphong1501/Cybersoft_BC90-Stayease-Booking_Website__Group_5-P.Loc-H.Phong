@@ -32,7 +32,6 @@ const HomeHeader = ({ isHome = false, homeAnimationDone = false }: HeaderProps) 
 
     const dropdownRef = useRef<HTMLDivElement>(null);
 
-    // Xử lý đóng dropdown khi bấm ra ngoài
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -55,12 +54,10 @@ const HomeHeader = ({ isHome = false, homeAnimationDone = false }: HeaderProps) 
         return () => window.removeEventListener("scroll", onScroll);
     }, [isHome]);
 
-    // Lắng nghe sự kiện mở Modal từ các trang khác (như DetailRoom)
     useEffect(() => {
         const handleOpenModal = (event: any) => {
             const mode = event.detail?.mode || "login";
             setAuthModal(mode);
-            // Đảm bảo đóng các menu linh tinh nếu đang mở
             setDropdownOpen(false);
             setIsMenuOpen(false);
         };
@@ -73,6 +70,7 @@ const HomeHeader = ({ isHome = false, homeAnimationDone = false }: HeaderProps) 
         localStorage.setItem("USER_LOGIN", JSON.stringify(userData));
         setUserLogin(userData);
         setAuthModal(null);
+        window.dispatchEvent(new Event("LOGIN_SUCCESS"));
         setToastMessage("Logged in successfully!");
         setShowToast(true);
         setTimeout(() => setShowToast(false), 3000);
@@ -82,6 +80,7 @@ const HomeHeader = ({ isHome = false, homeAnimationDone = false }: HeaderProps) 
         localStorage.removeItem("USER_LOGIN");
         setUserLogin(null);
         setDropdownOpen(false);
+        window.dispatchEvent(new Event("LOGIN_SUCCESS"));
     };
 
     const handleRegisterSuccess = () => {

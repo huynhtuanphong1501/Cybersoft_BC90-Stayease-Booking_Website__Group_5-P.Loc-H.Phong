@@ -52,6 +52,11 @@ const LoginModal = ({ onClose, onSwitchRegister, onLoginSuccess }: LoginModalPro
             setLoading(true);
             setErrors({});
             const response = await api.post("auth/signin", login);
+
+            localStorage.setItem("USER_LOGIN", JSON.stringify(response.data));
+
+            window.dispatchEvent(new Event("USER_LOGIN_SUCCESS"));
+
             onLoginSuccess(response.data);
         } catch (error: any) {
             setErrors({
@@ -110,7 +115,7 @@ const LoginModal = ({ onClose, onSwitchRegister, onLoginSuccess }: LoginModalPro
                 </button>
             </form>
 
-            <div className="flex flex-col lg:flex-row gap-3 my-6">
+            <div className="flex flex-row gap-3 my-6">
                 <button className="w-full py-3 rounded-xl border border-gray-300 flex items-center justify-center gap-2 bg-white text-[#DB4437] hover:bg-[#DB4437] hover:text-white transition cursor-pointer">
                     <FontAwesomeIcon icon={faGoogle} />
                     Google
