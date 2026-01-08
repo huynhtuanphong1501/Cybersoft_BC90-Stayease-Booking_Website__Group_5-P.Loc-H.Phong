@@ -9,12 +9,17 @@ const api = axios.create({
 
 api.interceptors.request.use((config) => {
     if (typeof window !== "undefined") {
-        const user = localStorage.getItem("USER_LOGIN");
-        const userData = user ? JSON.parse(user) : null;
+        const userLogin = localStorage.getItem("USER_LOGIN");
+        const userAdmin = localStorage.getItem("USER_ADMIN");
+
+        const userLoginData = userLogin ? JSON.parse(userLogin) : null;
+        const userAdminData = userAdmin ? JSON.parse(userAdmin) : null;
 
         const token =
-            userData?.token ||
-            userData?.content?.token;
+            userLoginData?.token ||
+            userLoginData?.content?.token ||
+            userAdminData?.token ||
+            userAdminData?.content?.token;
 
         if (token) {
             config.headers.token = token;
