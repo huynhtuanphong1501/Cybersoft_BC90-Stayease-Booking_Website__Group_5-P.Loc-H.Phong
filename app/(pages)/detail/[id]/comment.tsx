@@ -4,15 +4,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Star, Send, ChevronLeft, ChevronRight, Lock, User } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import api from "@/app/service/api";
-
-interface TComment {
-    id: number;
-    ngayBinhLuan: string;
-    noiDung: string;
-    saoBinhLuan: number;
-    tenNguoiBinhLuan: string;
-    avatar?: string;
-}
+import { TComment } from "@/app/type";
 
 const CommentSection = ({ roomId }: { roomId: string }) => {
     const [comments, setComments] = useState<TComment[]>([]);

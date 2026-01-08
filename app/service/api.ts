@@ -21,6 +21,8 @@ api.interceptors.request.use((config) => {
             userAdminData?.token ||
             userAdminData?.content?.token;
 
+        if (!token) delete config.headers.token;
+
         if (token) {
             config.headers.token = token;
         }
