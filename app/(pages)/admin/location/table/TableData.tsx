@@ -65,7 +65,7 @@ export default function TableData({ reload }: { reload: number }) {
       key: "hinhAnh",
       render: (hinhAnh: string) => (
         <img
-          src={hinhAnh}
+          src={hinhAnh || "/img/default/default.png"}
           alt="Location"
           className="w-16 h-16 object-cover rounded"
         />
