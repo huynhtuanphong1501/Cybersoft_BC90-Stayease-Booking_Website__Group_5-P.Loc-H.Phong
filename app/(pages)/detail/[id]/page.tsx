@@ -38,6 +38,32 @@ const DetailRoom = ({ params }: DetailRoomProps) => {
     const [guests, setGuests] = useState(1);
     const [showSuccessPopup, setShowSuccessPopup] = useState(false);
 
+    const calculateBooking = () => {
+        if (!dataRoom || !checkIn || !checkOut) return null;
+
+        const start = new Date(checkIn);
+        const end = new Date(checkOut);
+
+        if (end <= start) return null;
+
+        const days = Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24));
+        const roomPriceTotal = dataRoom.giaTien * days;
+
+        let extraGuestFee = 0;
+        if (guests > 4) {
+            extraGuestFee = (guests - 4) * (dataRoom.giaTien * 0.1) * days;
+        }
+
+        return {
+            days,
+            roomPriceTotal,
+            extraGuestFee,
+            total: roomPriceTotal + extraGuestFee
+        };
+    };
+
+    const bookingDetails = calculateBooking();
+
     useEffect(() => {
         const checkUser = () => {
             const currentUser = localStorage.getItem("USER_LOGIN");
@@ -88,7 +114,6 @@ const DetailRoom = ({ params }: DetailRoomProps) => {
         }
 
         const loginData = JSON.parse(user);
-
         const userId = loginData?.content?.user?.id;
 
         if (!userId) {
@@ -116,7 +141,6 @@ const DetailRoom = ({ params }: DetailRoomProps) => {
             alert("Booking failed. Please try again.");
         }
     };
-
 
     const handleReserveClick = () => {
         setShowAuthNotice(true);
@@ -149,16 +173,16 @@ const DetailRoom = ({ params }: DetailRoomProps) => {
         { label: "Iron", icon: <Shirt size={24} />, ok: dataRoom.banLa },
     ];
 
-    const totalPrice = dataRoom.giaTien * 5 + 20;
-
     return (
         <div className="bg-white min-h-screen">
             <HomeHeader />
 
             <main className="app-container mx-auto py-6 md:py-10 text-black">
-                <section className="relative group overflow-hidden rounded-xl md:rounded-2xl mb-8 md:mb-12 border border-slate-100 shadow-sm">
-                    <img src={dataRoom.hinhAnh} alt={dataRoom.tenPhong} className="w-full h-62.5 sm:h-100 md:h-125 object-cover" />
-                    <button className="absolute bottom-4 right-4 bg-white border border-slate-900 px-4 py-2 rounded-lg font-bold text-xs shadow-md">Show all photos</button>
+                <section className="relative group overflow-hidden rounded-xl md:rounded-2xl mb-8 md:mb-12 border shadow-sm">
+                    <img src={dataRoom.hinhAnh} className="w-full object-cover" />
+                    <button className="absolute bottom-4 right-4 bg-white border px-4 py-2 rounded-lg font-bold text-xs shadow-md cursor-pointer transition-all duration-300 hover:bg-black hover:text-white">
+                        Show all photos
+                    </button>
                 </section>
 
                 <section className="grid grid-cols-1 lg:grid-cols-3 gap-10 md:gap-14">
@@ -183,29 +207,33 @@ const DetailRoom = ({ params }: DetailRoomProps) => {
                             <span>{dataRoom.phongTam} baths</span>
                         </div>
 
-                        <div className="lg:hidden mt-8 p-6 bg-slate-50 rounded-2xl border border-slate-200">
-                            <div className="flex justify-between items-baseline mb-4">
-                                <h3 className="text-lg font-bold">Price details</h3>
-                                <div>
-                                    <span className="text-lg font-bold">${dataRoom.giaTien}</span>
-                                    <span className="text-sm text-slate-500"> / night</span>
+                        {bookingDetails && (
+                            <div className="lg:hidden mt-8 p-6 bg-slate-50 rounded-2xl border border-slate-200">
+                                <div className="flex justify-between items-baseline mb-4">
+                                    <h3 className="text-lg font-bold">Price details</h3>
+                                    <div>
+                                        <span className="text-lg font-bold">${dataRoom.giaTien}</span>
+                                        <span className="text-sm text-slate-500"> / night</span>
+                                    </div>
+                                </div>
+                                <div className="space-y-3">
+                                    <div className="flex justify-between text-slate-600">
+                                        <span className="underline">${dataRoom.giaTien} x {bookingDetails.days} nights</span>
+                                        <span>${bookingDetails.roomPriceTotal}</span>
+                                    </div>
+                                    {bookingDetails.extraGuestFee > 0 && (
+                                        <div className="flex justify-between text-rose-600 font-medium">
+                                            <span className="underline">Extra guest fee ({guests - 4} people)</span>
+                                            <span>+${bookingDetails.extraGuestFee.toFixed(0)}</span>
+                                        </div>
+                                    )}
+                                    <div className="flex justify-between font-bold text-xl text-black border-t border-slate-300 pt-3">
+                                        <span>Total</span>
+                                        <span>${bookingDetails.total.toFixed(0)}</span>
+                                    </div>
                                 </div>
                             </div>
-                            <div className="space-y-3">
-                                <div className="flex justify-between text-slate-600">
-                                    <span className="underline">${dataRoom.giaTien} x 5 nights</span>
-                                    <span>${dataRoom.giaTien * 5}</span>
-                                </div>
-                                <div className="flex justify-between text-slate-600">
-                                    <span className="underline">Cleaning fee</span>
-                                    <span>$20</span>
-                                </div>
-                                <div className="flex justify-between font-bold text-xl text-black border-t border-slate-300 pt-3">
-                                    <span>Total</span>
-                                    <span>${totalPrice}</span>
-                                </div>
-                            </div>
-                        </div>
+                        )}
 
                         <div className="py-8 border-b space-y-8">
                             <div className="flex gap-4">
@@ -254,6 +282,8 @@ const DetailRoom = ({ params }: DetailRoomProps) => {
                                     <h4 className="flex items-center gap-2 font-semibold text-black mb-2"><FontAwesomeIcon icon={faHouseCircleCheck} /> Rules</h4>
                                     <ul className="list-disc pl-5 text-slate-600 text-sm space-y-1">
                                         <li>Non-smoking, no pets, no parties</li>
+                                        <li>Maximum 4 guests per room</li>
+                                        <li className="text-rose-600 font-medium">Extra guest fee: 10% per additional person</li>
                                     </ul>
                                 </div>
                                 <div>
@@ -298,22 +328,35 @@ const DetailRoom = ({ params }: DetailRoomProps) => {
                                 </div>
                             </div>
                             <button onClick={handleBooking} className="w-full py-4 rounded-xl bg-linear-to-r from-rose-600 to-pink-600 text-white font-bold text-lg shadow-xl mb-4">Reserve Now</button>
-                            <div className="space-y-4">
-                                <div className="flex justify-between text-slate-600"><span className="underline">${dataRoom.giaTien} x 5 nights</span><span>${dataRoom.giaTien * 5}</span></div>
-                                <div className="flex justify-between text-slate-600"><span className="underline">Cleaning fee</span><span>$20</span></div>
-                                <div className="flex justify-between font-bold text-xl text-black border-t pt-2"><span>Total</span><span>${totalPrice}</span></div>
-                            </div>
+
+                            {bookingDetails && (
+                                <div className="space-y-4">
+                                    <div className="flex justify-between text-slate-600">
+                                        <span className="underline">${dataRoom.giaTien} x {bookingDetails.days} nights</span>
+                                        <span>${bookingDetails.roomPriceTotal}</span>
+                                    </div>
+                                    {bookingDetails.extraGuestFee > 0 && (
+                                        <div className="flex justify-between text-rose-600 font-medium">
+                                            <span className="underline">Extra guest fee</span>
+                                            <span>+${bookingDetails.extraGuestFee.toFixed(0)}</span>
+                                        </div>
+                                    )}
+                                    <div className="flex justify-between font-bold text-xl text-black border-t pt-2">
+                                        <span>Total</span>
+                                        <span>${bookingDetails.total.toFixed(0)}</span>
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </section>
             </main>
 
             <BackToTopButton />
-
             <HomeFooter />
 
             <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 p-3 z-50 shadow-[0_-10px_30px_rgba(0,0,0,0.1)]">
-                <div className="max-w-4xl mx-auto flex flex-col gap-3">
+                <div className="w-full mx-auto flex flex-col gap-3">
                     <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
                         <div className="border border-slate-300 rounded-lg p-2">
                             <label className="text-[9px] font-bold uppercase text-slate-500">Check-in</label>
@@ -335,24 +378,28 @@ const DetailRoom = ({ params }: DetailRoomProps) => {
                         </div>
                     </div>
 
-                    <div className="flex justify-between items-center gap-4 border-t border-slate-100 pt-2">
-                        <div className="shrink-0">
-                            <span className="text-xl font-bold">${totalPrice}</span>
-                            <span className="text-xs text-slate-500 font-medium ml-1">Total</span>
-                        </div>
-                        <button onClick={handleBooking} className="flex-1 py-3.5 bg-linear-to-r from-rose-600 to-pink-600 text-white font-bold rounded-xl text-sm shadow-lg active:scale-95 transition-all">
-                            Reserve Now
-                        </button>
-                    </div>
+                    <button
+                        onClick={handleBooking}
+                        className="w-full py-4 bg-linear-to-r from-rose-600 to-pink-600 text-white rounded-xl shadow-lg active:scale-95 transition-all flex items-center justify-center gap-2"
+                    >
+                        <span className="text-sm font-bold uppercase tracking-wider">Reserve Now</span>
+                        <span className="text-sm font-light opacity-60">|</span>
+                        <span className="text-base font-bold">
+                            {bookingDetails
+                                ? `$${bookingDetails.total.toFixed(0)}`
+                                : `$${dataRoom.giaTien}/night`
+                            }
+                        </span>
+                    </button>
                 </div>
             </div>
 
             <AnimatePresence>
                 {showSuccessPopup && (
-                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm px-4">
-                        <div className="bg-white rounded-3xl p-8 flex flex-col items-center max-w-sm w-full shadow-2xl text-center">
+                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-100 flex items-center justify-center bg-black/40 backdrop-blur-sm px-4">
+                        <div className="bg-white rounded-3xl p-8 flex flex-col items-center max-w-sm w-full shadow-2xl text-center text-black">
                             <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4"><CheckCircle2 className="text-green-600" size={40} /></div>
-                            <h2 className="text-2xl font-bold mb-2 text-black">Booking Successful!</h2>
+                            <h2 className="text-2xl font-bold mb-2">Booking Successful!</h2>
                             <p className="text-slate-500 text-sm">Your reservation has been confirmed.</p>
                         </div>
                     </motion.div>
@@ -361,7 +408,7 @@ const DetailRoom = ({ params }: DetailRoomProps) => {
 
             <AnimatePresence>
                 {showAuthNotice && (
-                    <motion.div initial={{ opacity: 0, y: -20, x: "-50%" }} animate={{ opacity: 1, y: 0, x: "-50%" }} exit={{ opacity: 0, y: -20, x: "-50%" }} className="fixed top-6 left-1/2 z-50 bg-white shadow-2xl rounded-2xl px-6 py-4 flex items-center gap-4 border border-slate-100">
+                    <motion.div initial={{ opacity: 0, y: -20, x: "-50%" }} animate={{ opacity: 1, y: 0, x: "-50%" }} exit={{ opacity: 0, y: -20, x: "-50%" }} className="fixed top-6 left-1/2 z-100 bg-white shadow-2xl rounded-2xl px-6 py-4 flex items-center gap-4 border border-slate-100">
                         <div className="bg-rose-100 p-2 rounded-full"><Lock className="text-rose-600" size={20} /></div>
                         <div><p className="font-bold text-black text-sm">Please login</p><p className="text-xs text-slate-500">You need an account to book.</p></div>
                     </motion.div>

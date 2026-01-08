@@ -76,7 +76,7 @@ const CityName = ({ params }: CityNameProps) => {
             <div className="p-2 bg-slate-100 text-slate-500 rounded-lg transition-all duration-300 group-hover/tool:bg-black group-hover/tool:text-white">
                 <FontAwesomeIcon icon={icon} className="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-5 md:h-5 lg:w-5 lg:h-5 xl:w-6 xl:h-6" />
             </div>
-            <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-[10px] sm:text-[11px] md:text-[12px] px-2 py-1 rounded opacity-0 group-hover/tool:opacity-100 transition-all duration-300 whitespace-nowrap z-10 pointer-events-none font-medium">
+            <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-[10px] sm:text-[11px] md:text-[12px] px-2 py-1 rounded opacity-0 group-hover/tool:opacity-100 transition-all duration-300 whitespace-nowrap z-10 pointer-events-none font-medium">
                 {label}
             </div>
         </div>
@@ -159,7 +159,7 @@ const CityName = ({ params }: CityNameProps) => {
                                         <span className="text-black font-bold text-xs">per night</span>
                                     </div>
                                 </div>
-                                <div className="w-full sm:w-auto bg-slate-900 text-white px-6 py-2 rounded-xl font-bold text-sm shadow-md transition-all duration-300 hover:bg-rose-600 active:scale-95 cursor-pointer">
+                                <div className="w-full sm:w-auto bg-black text-white px-6 py-2 rounded-xl font-bold text-sm shadow-md transition-all duration-300 hover:bg-rose-600 active:scale-95 cursor-pointer">
                                     Check Availability
                                 </div>
                             </div>

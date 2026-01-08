@@ -10,15 +10,20 @@ const api = axios.create({
 api.interceptors.request.use((config: InternalAxiosRequestConfig<any>) => {
     const TOKEN = localStorage.getItem("TOKEN");
     if (typeof window !== "undefined") {
-        const userAdmin = localStorage.getItem("USER_ADMIN");
         const userLogin = localStorage.getItem("USER_LOGIN");
-        
+        const userAdmin = localStorage.getItem("USER_ADMIN");
 
-        const adminToken = userAdmin ? JSON.parse(userAdmin).accessToken : "";
-        const loginToken = userLogin ? JSON.parse(userLogin).accessToken : "";
+        const userLoginData = userLogin ? JSON.parse(userLogin) : null;
+        const userAdminData = userAdmin ? JSON.parse(userAdmin) : null;
 
-        if (adminToken || loginToken) {
-            config.headers["Authorization"] = `Bearer ${adminToken || loginToken}`;
+        const token =
+            userLoginData?.token ||
+            userLoginData?.content?.token ||
+            userAdminData?.token ||
+            userAdminData?.content?.token;
+
+        if (token) {
+            config.headers.token = token;
         }
     }
     if (TOKEN) {
@@ -26,6 +31,7 @@ api.interceptors.request.use((config: InternalAxiosRequestConfig<any>) => {
     }
     config.headers["TokenCybersoft"] = TOKEN_CYBERSOFT;
 
+    config.headers.tokenCybersoft = TOKEN_CYBERSOFT;
     return config;
 });
 
