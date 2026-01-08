@@ -133,22 +133,23 @@ const Home = () => {
         <motion.div
           initial={{ y: 0 }}
           animate={splashDone ? { y: "-100%" } : {}}
-          transition={{ duration: 0.75, ease: [0.4, 0, 0.2, 1] }}
+          transition={{ duration: 0.45, ease: "linear" }}
           className="absolute top-0 left-0 w-full h-1/2 bg-[#1C1C1C]"
         />
+
         <motion.div
           initial={{ y: 0 }}
           animate={splashDone ? { y: "100%" } : {}}
-          transition={{ duration: 0.75, ease: [0.4, 0, 0.2, 1] }}
+          transition={{ duration: 0.45, ease: "linear" }}
           className="absolute bottom-0 left-0 w-full h-1/2 bg-[#1C1C1C]"
         />
       </div>
 
       <motion.div
         className="relative w-full bg-white origin-center"
-        initial={{ scale: 0.7, opacity: 0, y: 40 }}
+        initial={{ scale: 0.7, opacity: 0, y: 30 }}
         animate={splashDone ? { scale: 1, opacity: 1, y: 0 } : {}}
-        transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
         onAnimationComplete={() => setHomeReady(true)}
       >
         <HomeHeader isHome homeAnimationDone={homeReady} />

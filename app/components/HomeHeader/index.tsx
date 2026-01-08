@@ -304,7 +304,6 @@ const HomeHeader = ({ isHome = false, homeAnimationDone = false }: HeaderProps) 
 
     return (
         <>
-            {/* Toast Notification */}
             <AnimatePresence>
                 {showToast && (
                     <div className="fixed top-[5%] left-0 w-full flex justify-center z-50 pointer-events-none">
@@ -366,14 +365,13 @@ const HomeHeader = ({ isHome = false, homeAnimationDone = false }: HeaderProps) 
                 )}
             </AnimatePresence>
 
-            {/* Main Header */}
             {isHome ? (
                 <AnimatePresence>
                     {homeAnimationDone && (
                         <motion.header
                             initial={{ y: -60, opacity: 0 }}
                             animate={{ y: 0, opacity: 1 }}
-                            transition={{ duration: 0.6 }}
+                            transition={{ duration: 0.5, ease: [0.33, 1, 0.68, 1] }}
                             className={`fixed top-0 left-0 w-full z-40 transition-all duration-300 rounded-b-2xl sm:rounded-b-3xl lg:rounded-b-4xl xl:rounded-b-[2.5rem] ${showBg ? "bg-[#C3DFE3] shadow-md" : "bg-white/30 backdrop-blur-sm"
                                 }`}
                         >
@@ -387,7 +385,6 @@ const HomeHeader = ({ isHome = false, homeAnimationDone = false }: HeaderProps) 
                 </header>
             )}
 
-            {/* Auth Modals */}
             <AnimatePresence>
                 {authModal && (
                     <motion.div

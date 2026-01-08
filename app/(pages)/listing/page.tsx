@@ -6,11 +6,13 @@ import HomeHeader from "@/app/components/HomeHeader";
 import api from "@/app/service/api";
 import { TBooking, TUser } from "@/app/type";
 import React, { useEffect, useState, useCallback } from "react";
+import EditProfilePopUp from "./editProfile";
 
 const Listing = () => {
     const [user, setUser] = useState<TUser | null>(null);
     const [bookings, setBookings] = useState<TBooking[]>([]);
     const [loading, setLoading] = useState(true);
+    const [isEditOpen, setIsEditOpen] = useState(false);
 
     const calculateTotal = (checkIn: string, checkOut: string, price: number, guests: number) => {
         const start = new Date(checkIn);
@@ -24,6 +26,100 @@ const Listing = () => {
         }
 
         return { days, total: (days * finalPrice).toLocaleString() };
+    };
+
+    // --- Arrow function to render each booking card ---
+    const renderBookingCard = (item: TBooking) => {
+        const { days, total } = calculateTotal(
+            item.ngayDen,
+            item.ngayDi,
+            item.roomDetails?.giaTien || 0,
+            item.soLuongKhach
+        );
+
+        return (
+            <div
+                key={item.id}
+                className="group bg-white rounded-4xl border overflow-hidden flex flex-col md:flex-row hover:shadow-xl transition-all duration-300 cursor-pointer"
+            >
+                <div className="relative w-full md:w-65 xl:w-85 h-56 md:h-auto overflow-hidden">
+                    {item.roomDetails?.hinhAnh ? (
+                        <img
+                            src={item.roomDetails.hinhAnh}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                            alt="Room"
+                        />
+                    ) : (
+                        <div className="w-full h-full flex items-center justify-center bg-gray-100">
+                            <i className="fa-solid fa-hotel text-4xl text-gray-300"></i>
+                        </div>
+                    )}
+                    {/* Confirmation Label */}
+                    <div className="absolute top-4 left-4 bg-green-500 text-white px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider shadow-sm">
+                        Booking Confirmed
+                    </div>
+                </div>
+
+                <div className="p-6 md:p-8 flex-1 flex flex-col">
+                    <h3 className="text-xl md:text-2xl font-black group-hover:text-rose-500 transition-colors duration-300">
+                        {item.roomDetails?.tenPhong || `Room ${item.maPhong}`}
+                    </h3>
+
+                    <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div className="flex items-center gap-3 bg-gray-50 px-4 py-3 rounded-xl hover:bg-gray-100 transition-all duration-300">
+                            <i className="fa-solid fa-right-to-bracket text-rose-500"></i>
+                            <div>
+                                <p className="text-[10px] uppercase font-black text-gray-400">Check-in</p>
+                                <p className="font-bold text-sm">
+                                    {new Date(item.ngayDen).toLocaleDateString("en-US", {
+                                        month: "short",
+                                        day: "numeric",
+                                        year: "numeric",
+                                    })}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div className="flex items-center gap-3 bg-gray-50 px-4 py-3 rounded-xl hover:bg-gray-100 transition-all duration-300">
+                            <i className="fa-solid fa-right-from-bracket text-blue-500"></i>
+                            <div>
+                                <p className="text-[10px] uppercase font-black text-gray-400">Check-out</p>
+                                <p className="font-bold text-sm">
+                                    {new Date(item.ngayDi).toLocaleDateString("en-US", {
+                                        month: "short",
+                                        day: "numeric",
+                                        year: "numeric",
+                                    })}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="mt-4 flex flex-wrap gap-3">
+                        <span className="bg-gray-50 px-4 py-2 rounded-full text-xs font-bold">
+                            {days} Nights
+                        </span>
+                        <span className="bg-gray-50 px-4 py-2 rounded-full text-xs font-bold">
+                            {item.soLuongKhach} Guests
+                        </span>
+                        <span className="ml-auto text-green-600 text-xs font-bold flex items-center gap-1">
+                            <i className="fa-solid fa-circle-check"></i> Confirmed
+                        </span>
+                    </div>
+
+                    <div className="mt-auto pt-6 border-t flex items-center justify-between">
+                        <div>
+                            <p className="text-[10px] uppercase font-black text-gray-400">
+                                Total Amount
+                            </p>
+                            <p className="text-3xl font-black text-rose-500">
+                                ${total}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
     };
 
     const fetchData = useCallback(async () => {
@@ -68,6 +164,25 @@ const Listing = () => {
         return () => window.removeEventListener("LOGIN_SUCCESS", fetchData);
     }, [fetchData]);
 
+    const handleEditProfile = async () => {
+        try {
+            const raw = localStorage.getItem("USER_LOGIN");
+            if (!raw) {
+                setUser(null);
+                setBookings([]);
+                return;
+            }
+            const parsed = JSON.parse(raw);
+            const currentUser = parsed?.content?.user;
+            if (!currentUser?.id) return;
+            setUser(currentUser);
+            await api.get(`users/${currentUser.id}`);
+        } catch (error) {
+            console.log(error);
+        }
+        setIsEditOpen(true);
+    };
+
     if (loading) {
         return (
             <div className="flex items-center justify-center h-screen bg-white">
@@ -83,7 +198,6 @@ const Listing = () => {
         return (
             <div className="bg-white min-h-screen">
                 <HomeHeader />
-
                 <main className="flex flex-col items-center justify-center px-6 py-20 text-center">
                     <div className="w-24 h-24 bg-gray-50 rounded-full flex items-center justify-center mb-6">
                         <i className="fa-solid fa-user-lock text-3xl text-gray-400"></i>
@@ -105,7 +219,6 @@ const Listing = () => {
                         Login Now
                     </button>
                 </main>
-
                 <HomeFooter />
             </div>
         );
@@ -117,12 +230,11 @@ const Listing = () => {
 
             <main className="app-container mx-auto py-6 md:py-10">
                 <div className="flex flex-col lg:flex-row gap-8 xl:gap-14">
-
                     <aside className="w-full lg:w-[320px] xl:w-95 shrink-0">
                         <div className="bg-white rounded-4xl p-6 md:p-8 shadow-sm border lg:sticky lg:top-28">
                             <div className="flex items-center lg:flex-col gap-5 text-center">
                                 <img
-                                    src=""
+                                    src="/img/avatarLogo.jpg"
                                     alt={user.name}
                                     className="w-24 h-24 xl:w-32 xl:h-32 rounded-full object-cover shadow-lg ring-4 ring-rose-50 cursor-pointer transition-all duration-300 hover:scale-105"
                                 />
@@ -140,7 +252,9 @@ const Listing = () => {
                                 </div>
                             </div>
 
-                            <button className="w-full mt-8 bg-gray-900 py-4 rounded-2xl font-bold text-white hover:bg-rose-500 transition-all duration-300 cursor-pointer active:scale-95">
+                            <button
+                                onClick={handleEditProfile}
+                                className="w-full mt-8 bg-gray-900 py-4 rounded-2xl font-bold text-white hover:bg-rose-500 transition-all duration-300 cursor-pointer active:scale-95">
                                 Edit Profile
                             </button>
                         </div>
@@ -157,97 +271,20 @@ const Listing = () => {
                         </div>
 
                         <div className="grid gap-6 md:gap-8">
-                            {bookings.map((item) => {
-                                const { days, total } = calculateTotal(
-                                    item.ngayDen,
-                                    item.ngayDi,
-                                    item.roomDetails?.giaTien || 0,
-                                    item.soLuongKhach
-                                );
-
-                                return (
-                                    <div
-                                        key={item.id}
-                                        className="group bg-white rounded-4xl border overflow-hidden flex flex-col md:flex-row hover:shadow-xl transition-all duration-300 cursor-pointer"
-                                    >
-                                        <div className="relative w-full md:w-65 xl:w-85 h-56 md:h-auto overflow-hidden">
-                                            {item.roomDetails?.hinhAnh ? (
-                                                <img
-                                                    src={item.roomDetails.hinhAnh}
-                                                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                                                />
-                                            ) : (
-                                                <div className="w-full h-full flex items-center justify-center bg-gray-100">
-                                                    <i className="fa-solid fa-hotel text-4xl text-gray-300"></i>
-                                                </div>
-                                            )}
-                                        </div>
-
-                                        <div className="p-6 md:p-8 flex-1 flex flex-col">
-                                            <h3 className="text-xl md:text-2xl font-black group-hover:text-rose-500 transition-colors duration-300">
-                                                {item.roomDetails?.tenPhong || `Room ${item.maPhong}`}
-                                            </h3>
-
-                                            <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                                <div className="flex items-center gap-3 bg-gray-50 px-4 py-3 rounded-xl hover:bg-gray-100 transition-all duration-300">
-                                                    <i className="fa-solid fa-right-to-bracket text-rose-500"></i>
-                                                    <div>
-                                                        <p className="text-[10px] uppercase font-black text-gray-400">Check-in</p>
-                                                        <p className="font-bold text-sm">
-                                                            {new Date(item.ngayDen).toLocaleDateString("en-US", {
-                                                                month: "short",
-                                                                day: "numeric",
-                                                                year: "numeric",
-                                                            })}
-                                                        </p>
-                                                    </div>
-                                                </div>
-
-                                                <div className="flex items-center gap-3 bg-gray-50 px-4 py-3 rounded-xl hover:bg-gray-100 transition-all duration-300">
-                                                    <i className="fa-solid fa-right-from-bracket text-blue-500"></i>
-                                                    <div>
-                                                        <p className="text-[10px] uppercase font-black text-gray-400">Check-out</p>
-                                                        <p className="font-bold text-sm">
-                                                            {new Date(item.ngayDi).toLocaleDateString("en-US", {
-                                                                month: "short",
-                                                                day: "numeric",
-                                                                year: "numeric",
-                                                            })}
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div className="mt-4 flex flex-wrap gap-3">
-                                                <span className="bg-gray-50 px-4 py-2 rounded-full text-xs font-bold">
-                                                    {days} Nights
-                                                </span>
-                                                <span className="bg-gray-50 px-4 py-2 rounded-full text-xs font-bold">
-                                                    {item.soLuongKhach} Guests
-                                                </span>
-                                            </div>
-
-                                            <div className="mt-auto pt-6 border-t flex items-center justify-between">
-                                                <div>
-                                                    <p className="text-[10px] uppercase font-black text-gray-400">
-                                                        Total Amount
-                                                    </p>
-                                                    <p className="text-3xl font-black text-rose-500">
-                                                        ${total}
-                                                    </p>
-                                                </div>
-                                                <button className="px-6 py-3 bg-gray-900 text-white rounded-xl hover:bg-rose-500 transition-all duration-300 cursor-pointer active:scale-95">
-                                                    View Receipt
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                );
-                            })}
+                            {/* Call the arrow function here */}
+                            {bookings.map((item) => renderBookingCard(item))}
                         </div>
                     </section>
                 </div>
             </main>
+
+            {isEditOpen && (
+                <EditProfilePopUp
+                    userId={user.id}
+                    onClose={() => setIsEditOpen(false)}
+                    onUpdateSuccess={fetchData}
+                />
+            )}
 
             <BackToTopButton />
             <HomeFooter />
