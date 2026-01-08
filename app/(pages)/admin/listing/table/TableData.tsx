@@ -120,7 +120,6 @@ export default function TableData({ reload }: { reload: number }) {
             "tivi",
             "dieuHoa",
             "wifi",
-
             "bep",
             "doXe",
             "hoBoi",
