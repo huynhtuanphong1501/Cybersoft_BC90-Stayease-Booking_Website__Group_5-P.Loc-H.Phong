@@ -51,6 +51,15 @@ export interface TBooking {
     roomDetails?: any;
 };
 
+export interface TComment {
+    id: number;
+    ngayBinhLuan: string;
+    noiDung: string;
+    saoBinhLuan: number;
+    tenNguoiBinhLuan: string;
+    avatar?: string;
+}
+
 export type ModalCmpsProps = {
     open: boolean;
     title?: React.ReactNode;
@@ -62,19 +71,19 @@ export type ModalCmpsProps = {
 
 //Admin function types
 export type EditProps = {
-  open: boolean;
-  target: TUser| TCity | null;
-  onCancel: () => void;
-  onSuccess: () => void;
+    open: boolean;
+    target: TUser | TCity | null;
+    onCancel: () => void;
+    onSuccess: () => void;
 };
 
 export type AddProps = {
-  onSuccess: () => void;
+    onSuccess: () => void;
 };
 
 export type DeleteProps = {
-  id: number | null;
-  onSuccess: () => void;
-  children: React.ReactNode;
+    id: number | null;
+    onSuccess: () => void;
+    children: React.ReactNode;
 };
 
