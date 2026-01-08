@@ -47,7 +47,7 @@ export default function AdminHeader({
             Location
           </Link>
           <Link href="/admin/listing" className={linkClass("/admin/listing")}>
-            Rooms
+            Listing
           </Link>
           <Link href="/admin/booking" className={linkClass("/admin/booking")}>
             Booking

@@ -27,16 +27,14 @@ export default function EditList({
 
   useEffect(() => {
     if (target && open) {
-      if (target && open) {
-        const ulti = UTILITIES.map((item) => item.value).filter(
-          (key) => target[key as keyof typeof target]
-        );
+      const ulti = UTILITIES.map((item) => item.value).filter(
+        (key) => target[key as keyof typeof target]
+      );
 
-        form.setFieldsValue({
-          ...target,
-          ulti,
-        });
-      }
+      form.setFieldsValue({
+        ...target,
+        ulti,
+      });
     }
   }, [target, open, form]);
 

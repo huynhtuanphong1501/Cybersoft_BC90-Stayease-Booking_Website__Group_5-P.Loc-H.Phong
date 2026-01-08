@@ -42,8 +42,12 @@ export default function TableData({ reload }: { reload: number }) {
         return "purple";
       case "tivi":
         return "blue";
+      case "dieuHoa":
+        return "yellow";
       case "wifi":
         return "geekblue";
+      case "bep":
+        return "red";
       case "doXe":
         return "green";
       case "hoBoi":
@@ -93,7 +97,7 @@ export default function TableData({ reload }: { reload: number }) {
       width: 100,
     },
     {
-      title: "Descrription",
+      title: "Description",
       dataIndex: "moTa",
       key: "moTa",
       width: 400,
@@ -110,7 +114,17 @@ export default function TableData({ reload }: { reload: number }) {
       width: 300,
       render: (_, record: TRooms) => (
         <Flex gap="small" wrap>
-          {["mayGiat", "banLa", "tivi", "wifi", "doXe", "hoBoi", "banUi"]
+          {[
+            "mayGiat",
+            "banLa",
+            "tivi",
+            "dieuHoa",
+            "wifi",
+            "bep",
+            "doXe",
+            "hoBoi",
+            "banUi",
+          ]
             .filter((key) => record[key as keyof TRooms])
             .map((key) => (
               <Tag color={getColor(key)} key={key}>
