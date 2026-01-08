@@ -5,7 +5,7 @@ import ModalCmps from "@/app/(pages)/admin/_cmps/modal/ModalCmps";
 import api from "@/app/service/api";
 import type { AddProps } from "@/app/type";
 
-export default function AddUser({ onSuccess }: AddProps) {
+export default function AddLocation({ onSuccess }: AddProps) {
   const [open, setOpen] = useState(false);
   const [form] = Form.useForm();
 
@@ -13,12 +13,11 @@ export default function AddUser({ onSuccess }: AddProps) {
     try {
       const values = await form.validateFields();
 
-      await api.post("/users", {
+      await api.post("/vi-tri", {
         ...values,
-        role: "USER",
       });
 
-      message.success("Create user success");
+      message.success("Create location success");
       onSuccess();
       setOpen(false);
       form.resetFields();
@@ -36,12 +35,12 @@ export default function AddUser({ onSuccess }: AddProps) {
           form.resetFields();
         }}
       >
-        Create User
+        Create Location
       </Button>
 
       <ModalCmps
         open={open}
-        title="Create User"
+        title="Create Location"
         okText="Create"
         onOk={handleSubmit}
         onCancel={() => {
@@ -57,47 +56,34 @@ export default function AddUser({ onSuccess }: AddProps) {
           }}
         >
           <Form.Item
-            name="name"
-            label="Name"
-            rules={[{ required: true, message: "Please input name" }]}
+            name="tenViTri"
+            label="Location"
+            rules={[{ required: true, message: "Please input location" }]}
           >
             <Input />
           </Form.Item>
 
           <Form.Item
-            name="email"
-            label="Email"
-            rules={[
-              { required: true, message: "Please input email" },
-              { type: "email", message: "Invalid email" },
-            ]}
+            name="tinhThanh"
+            label="Province"
+            rules={[{ required: true, message: "Please input province" }]}
           >
             <Input />
           </Form.Item>
 
           <Form.Item
-            name="password"
-            label="Password"
-            rules={[{ required: true, message: "Please input password" }]}
+            name="quocGia"
+            label="Country"
+            rules={[{ required: true, message: "Please input country" }]}
           >
-            <Input.Password />
-          </Form.Item>
-
-          <Form.Item name="birthday" label="Birthday">
-            <Input placeholder="YYYY-MM-DD" />
-          </Form.Item>
-
-          <Form.Item name="phone" label="Phone">
             <Input />
           </Form.Item>
-
-          <Form.Item name="gender" label="Gender" className="mb-10">
-            <Select
-              options={[
-                { label: "Male", value: true },
-                { label: "Female", value: false },
-              ]}
-            />
+          <Form.Item
+            name="hinhAnh"
+            label="Image"
+            rules={[{ required: true, message: "Please input image" }]}
+          >
+            <Input />
           </Form.Item>
         </Form>
       </ModalCmps>
