@@ -4,6 +4,10 @@ export type AuthUser = {
     password: string;
 }
 
+export type TApiResponse<T> = {
+    content: T[]
+}
+
 export interface TDestination {
     id: number;
     tenViTri: string;
@@ -82,6 +86,26 @@ export interface TComment {
     avatar?: string;
 }
 
+export type TBooking2 = {
+    id: number,
+    maPhong: number,
+    ngayDen: string,
+    ngayDi: string,
+    soLuongKhach: number,
+    maNguoiDung: number,
+}
+
+export type TBookingView = {
+    id: number,
+    maPhong: number,
+    ngayDen: string,
+    ngayDi: string,
+    soLuongKhach: number,
+    maNguoiDung: number,
+    roomName?: string ,
+    userName?: string
+}
+
 export type ModalCmpsProps = {
     open: boolean;
     title?: React.ReactNode;
@@ -94,7 +118,7 @@ export type ModalCmpsProps = {
 //Admin function types
 export type EditProps = {
   open: boolean;
-  target: TUser| TCity | TRooms|null;
+  target: TUser | TCity | TRooms | TBookingView | null;
   onCancel: () => void;
   onSuccess: () => void;
 };
