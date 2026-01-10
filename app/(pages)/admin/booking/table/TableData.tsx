@@ -14,11 +14,18 @@ import dayjs from "dayjs";
 import EditBooking from "../editBooking/EditBooking";
 import DelBooking from "../deleteBooking/DelBooking";
 
-export default function TableData({ reload }: { reload: number }) {
+export default function TableData({
+  reload,
+  keyword,
+}: {
+  reload: number;
+  keyword: string;
+}) {
   const [data, setData] = useState<TBookingView[]>([]);
   const [loading, setLoading] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
   const [editingUser, setEditingUser] = useState<TBooking2 | null>(null);
+  const [filteredData, setFilteredData] = useState<TBookingView[]>([]);
 
   const fetchUsers = async () => {
     setLoading(true);
@@ -60,6 +67,21 @@ export default function TableData({ reload }: { reload: number }) {
   useEffect(() => {
     fetchUsers();
   }, [reload]);
+
+  useEffect(() => {
+    let result = data;
+
+    if (keyword.trim()) {
+      const lower = keyword.toLowerCase();
+      result = result.filter(
+        (booking) =>
+          booking.roomName?.toLowerCase().includes(lower) ||
+          booking.userName?.toLowerCase().includes(lower)
+      );
+    }
+
+    setFilteredData(result);
+  }, [keyword, data]);
 
   const columns: TableProps<TBookingView>["columns"] = [
     {
@@ -129,7 +151,7 @@ export default function TableData({ reload }: { reload: number }) {
     <div className="w-full overflow-x-auto">
       <Table
         columns={columns}
-        dataSource={data}
+        dataSource={filteredData}
         loading={loading}
         rowKey="id"
         scroll={{ x: 1200 }}

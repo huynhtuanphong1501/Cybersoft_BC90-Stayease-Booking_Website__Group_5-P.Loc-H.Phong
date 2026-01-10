@@ -7,17 +7,25 @@ import api from "@/app/service/api";
 import EditUser from "../editUse/EditUser";
 import DelUser from "../deleteUser/DelUser";
 
-export default function TableData({ reload }: { reload: number }) {
+export default function TableData({
+  reload,
+  keyword,
+}: {
+  reload: number;
+  keyword: string;
+}) {
   const [data, setData] = useState<TUser[]>([]);
   const [loading, setLoading] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
   const [editingUser, setEditingUser] = useState<TUser | null>(null);
+  const [filteredData, setFilteredData] = useState<TUser[]>([]);
 
   const fetchUsers = async () => {
     setLoading(true);
     try {
       const response = await api.get("/users");
       setData(response.data.content);
+      setFilteredData(response.data.content);
     } catch (error) {
       console.log(error);
     } finally {
@@ -33,6 +41,17 @@ export default function TableData({ reload }: { reload: number }) {
   useEffect(() => {
     fetchUsers();
   }, [reload]);
+
+  useEffect(() => {
+    const lower = keyword.toLowerCase();
+    setFilteredData(
+      data.filter(
+        (user) =>
+          user.name.toLowerCase().includes(lower) ||
+          user.email.toLowerCase().includes(lower)
+      )
+    );
+  }, [keyword, data]);
 
   const columns: TableProps<TUser>["columns"] = [
     {
@@ -85,7 +104,7 @@ export default function TableData({ reload }: { reload: number }) {
     <div className="w-full overflow-x-auto">
       <Table
         columns={columns}
-        dataSource={data}
+        dataSource={filteredData}
         loading={loading}
         rowKey="id"
         scroll={{ x: 1200 }}
