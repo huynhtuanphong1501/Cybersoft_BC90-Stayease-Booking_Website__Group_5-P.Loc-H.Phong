@@ -7,11 +7,18 @@ import api from "@/app/service/api";
 import EditLocation from "../editLocation/EditLocation";
 import DelLocation from "../deleteLocation/DelLocation";
 
-export default function TableData({ reload }: { reload: number }) {
+export default function TableData({
+  reload,
+  keyword,
+}: {
+  reload: number;
+  keyword: string;
+}) {
   const [data, setData] = useState<TCity[]>([]);
   const [loading, setLoading] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
   const [editingUser, setEditingUser] = useState<TCity | null>(null);
+  const [filteredData, setFilteredData] = useState<TCity[]>([]);
 
   const fetchUsers = async () => {
     setLoading(true);
@@ -33,6 +40,18 @@ export default function TableData({ reload }: { reload: number }) {
   useEffect(() => {
     fetchUsers();
   }, [reload]);
+
+  useEffect(() => {
+    const lower = keyword.toLowerCase();
+    setFilteredData(
+      data.filter(
+        (city) =>
+          city.tenViTri.toLowerCase().includes(lower) ||
+          city.tinhThanh.toLowerCase().includes(lower) ||
+          city.quocGia.toLowerCase().includes(lower)
+      )
+    );
+  }, [keyword, data]);
 
   const columns: TableProps<TCity>["columns"] = [
     {
@@ -91,7 +110,7 @@ export default function TableData({ reload }: { reload: number }) {
     <div className="w-full overflow-x-auto">
       <Table
         columns={columns}
-        dataSource={data}
+        dataSource={filteredData}
         loading={loading}
         rowKey="id"
         scroll={{ x: 1200 }}

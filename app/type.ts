@@ -133,3 +133,8 @@ export type DeleteProps = {
     children: React.ReactNode;
 };
 
+// search props
+export type SearchCmpsProps = {
+  placeholder: string;
+  onSearch: (value: string) => void;
+};

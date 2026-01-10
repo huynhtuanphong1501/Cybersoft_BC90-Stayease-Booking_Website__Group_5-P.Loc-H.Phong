@@ -7,11 +7,20 @@ import api from "@/app/service/api";
 import EditList from "../editList/EditList";
 import DelList from "../deleteList/DelLocation";
 
-export default function TableData({ reload }: { reload: number }) {
+export default function TableData({
+  reload,
+  keyword,
+  utilities,
+}: {
+  reload: number;
+  keyword: string;
+  utilities: string[];
+}) {
   const [data, setData] = useState<TRooms[]>([]);
   const [loading, setLoading] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
   const [editingUser, setEditingUser] = useState<TRooms | null>(null);
+  const [filteredData, setFilteredData] = useState<TRooms[]>([]);
 
   const fetchUsers = async () => {
     setLoading(true);
@@ -33,6 +42,27 @@ export default function TableData({ reload }: { reload: number }) {
   useEffect(() => {
     fetchUsers();
   }, [reload]);
+
+  useEffect(() => {
+    let result = data;
+
+    if (keyword.trim()) {
+      const lower = keyword.toLowerCase();
+      result = result.filter(
+        (room) =>
+          room.tenPhong.toLowerCase().includes(lower) ||
+          room.moTa.toLowerCase().includes(lower)
+      );
+    }
+
+    if (utilities.length > 0) {
+      result = result.filter((room) =>
+        utilities.every((u) => room[u as keyof TRooms] === true)
+      );
+    }
+
+    setFilteredData(result);
+  }, [keyword, utilities, data]);
 
   const getColor = (key: string): string => {
     switch (key) {
@@ -166,7 +196,7 @@ export default function TableData({ reload }: { reload: number }) {
     <div className="w-full overflow-x-auto">
       <Table
         columns={columns}
-        dataSource={data}
+        dataSource={filteredData}
         loading={loading}
         rowKey="id"
         scroll={{ x: 1200 }}
