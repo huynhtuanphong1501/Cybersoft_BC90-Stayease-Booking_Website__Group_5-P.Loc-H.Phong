@@ -8,7 +8,7 @@ import SearchList from "./searchByUltilies/SeachList";
 const Listings = () => {
   const [reload, setReload] = useState(0);
   const [keyword, setKeyword] = useState("");
-  const [utilities, setUtilities] = useState<string[]>([]); // ✅ THÊM
+  const [utilities, setUtilities] = useState<string[]>([]);
 
   return (
     <div className="space-y-8 px-3 sm:px-4 md:px-6 lg:px-8 xl:px-12 bg-gray-50 min-h-screen">

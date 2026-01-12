@@ -135,6 +135,21 @@ export type DeleteProps = {
 
 // search props
 export type SearchCmpsProps = {
-  placeholder: string;
-  onSearch: (value: string) => void;
+    placeholder: string;
+    onSearch: (value: string) => void;
+};
+
+//dash board data
+export type DashData = {
+    users: number;
+    bookings: number;
+    rooms: number;
+    total: number;
+}
+
+// countUp Props
+export type CountUpProps = {
+    value: number;
+    duration?: number ;
+    prefix?: string;
 };
