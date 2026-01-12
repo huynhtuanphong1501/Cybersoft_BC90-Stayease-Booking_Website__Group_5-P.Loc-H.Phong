@@ -57,11 +57,9 @@ const EditProfilePopUp = ({ userId, onClose, onUpdateSuccess }: Props) => {
         try {
             await api.put(`users/${userId}`, formData);
 
-            // LẤY DATA MỚI
             const res = await api.get(`users/${userId}`);
             const newUser = res.data.content;
 
-            // UPDATE LOCAL STORAGE
             const raw = localStorage.getItem("USER_LOGIN");
             if (raw) {
                 const parsed = JSON.parse(raw);
@@ -69,7 +67,7 @@ const EditProfilePopUp = ({ userId, onClose, onUpdateSuccess }: Props) => {
                 localStorage.setItem("USER_LOGIN", JSON.stringify(parsed));
             }
 
-            onUpdateSuccess(); // gọi fetchData
+            onUpdateSuccess();
             onClose();
         } catch (error) {
             console.error(error);
@@ -79,11 +77,9 @@ const EditProfilePopUp = ({ userId, onClose, onUpdateSuccess }: Props) => {
     };
 
     return (
-        <div className="fixed inset-0 z-100 flex items-center justify-center p-4">
-            {/* Dark Overlay */}
+        <div className="fixed inset-0 z-1 flex items-center justify-center p-4">
             <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose}></div>
 
-            {/* Modal Content */}
             <div className="relative bg-white w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl xl:max-w-3xl rounded-3xl shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-300">
                 <div className="p-6 md:p-10">
                     <div className="flex justify-between items-center mb-8">
@@ -95,7 +91,6 @@ const EditProfilePopUp = ({ userId, onClose, onUpdateSuccess }: Props) => {
 
                     <form onSubmit={handleSubmit} className="space-y-5">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                            {/* Name */}
                             <div>
                                 <label className="block text-xs font-black uppercase text-gray-400 mb-2">Full Name</label>
                                 <input
@@ -107,7 +102,6 @@ const EditProfilePopUp = ({ userId, onClose, onUpdateSuccess }: Props) => {
                                 {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
                             </div>
 
-                            {/* Email */}
                             <div>
                                 <label className="block text-xs font-black uppercase text-gray-400 mb-2">Email Address</label>
                                 <input
@@ -119,7 +113,6 @@ const EditProfilePopUp = ({ userId, onClose, onUpdateSuccess }: Props) => {
                                 {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
                             </div>
 
-                            {/* Phone */}
                             <div>
                                 <label className="block text-xs font-black uppercase text-gray-400 mb-2">Phone Number</label>
                                 <input
@@ -131,7 +124,6 @@ const EditProfilePopUp = ({ userId, onClose, onUpdateSuccess }: Props) => {
                                 {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone}</p>}
                             </div>
 
-                            {/* Birthday */}
                             <div>
                                 <label className="block text-xs font-black uppercase text-gray-400 mb-2">Birthday</label>
                                 <input
@@ -144,7 +136,6 @@ const EditProfilePopUp = ({ userId, onClose, onUpdateSuccess }: Props) => {
                             </div>
                         </div>
 
-                        {/* Gender */}
                         <div>
                             <label className="block text-xs font-black uppercase text-gray-400 mb-2">Gender</label>
                             <div className="flex gap-4">

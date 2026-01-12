@@ -12,7 +12,7 @@ const HomeFooter = () => {
             >
                 <div className="absolute inset-0 bg-black/40"></div>
 
-                <div className="relative z-10 py-16">
+                <div className="relative z-1 py-16">
                     <div className="app-container mx-auto">
                         <div className="flex flex-col lg:flex-row items-center justify-between gap-10">
                             <div className="w-full lg:w-3/5 text-center lg:text-left">
