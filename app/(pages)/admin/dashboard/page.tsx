@@ -1,4 +1,5 @@
 "use client";
+import GetData from "./CallData/GetData";
 
 const Dashboard = () => {
   return (
@@ -7,35 +8,7 @@ const Dashboard = () => {
         Dashboard
       </h2>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 gap-4 sm:gap-5 md:gap-6">
-        <div className="bg-white rounded-2xl p-4 sm:p-5 md:p-6 shadow hover:shadow-lg transition">
-          <p className="text-xs sm:text-sm text-gray-500">Total Users</p>
-          <p className="mt-2 text-xl sm:text-2xl md:text-3xl font-bold text-gray-800">
-            1,245
-          </p>
-        </div>
-
-        <div className="bg-white rounded-2xl p-4 sm:p-5 md:p-6 shadow hover:shadow-lg transition">
-          <p className="text-xs sm:text-sm text-gray-500">Active Listings</p>
-          <p className="mt-2 text-xl sm:text-2xl md:text-3xl font-bold text-gray-800">
-            320
-          </p>
-        </div>
-
-        <div className="bg-white rounded-2xl p-4 sm:p-5 md:p-6 shadow hover:shadow-lg transition">
-          <p className="text-xs sm:text-sm text-gray-500">Total Bookings</p>
-          <p className="mt-2 text-xl sm:text-2xl md:text-3xl font-bold text-gray-800">
-            742
-          </p>
-        </div>
-
-        <div className="bg-white rounded-2xl p-4 sm:p-5 md:p-6 shadow hover:shadow-lg transition">
-          <p className="text-xs sm:text-sm text-gray-500">Monthly Revenue</p>
-          <p className="mt-2 text-xl sm:text-2xl md:text-3xl font-bold text-gray-800">
-            $18,450
-          </p>
-        </div>
-      </div>
+      <GetData></GetData>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 bg-white rounded-2xl p-4 sm:p-5 md:p-6 shadow">
