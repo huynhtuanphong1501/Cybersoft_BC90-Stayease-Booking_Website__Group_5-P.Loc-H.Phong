@@ -34,3 +34,9 @@ body {
 .swiper-wrapper {
   transition-timing-function: linear !important;
 }
+
+.rdp-day.booked {
+  background: #f43f5e !important;
+  color: white !important;
+  cursor: not-allowed;
+}

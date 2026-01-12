@@ -130,14 +130,13 @@ const CommentSection = ({ roomId }: { roomId: string }) => {
 
     return (
         <section className="relative border-t border-slate-100 pt-10">
-            {/* ĐỒNG BỘ AUTH NOTICE VỚI PAGE CHÍNH */}
             <AnimatePresence>
                 {showAuthNotice && (
                     <motion.div
                         initial={{ opacity: 0, y: -20, x: "-50%" }}
                         animate={{ opacity: 1, y: 0, x: "-50%" }}
                         exit={{ opacity: 0, y: -20, x: "-50%" }}
-                        className="fixed top-6 left-1/2 z-100 bg-white shadow-2xl rounded-2xl px-6 py-4 flex items-center gap-4 border border-slate-100 w-[90%] max-w-87.5"
+                        className="fixed top-6 left-1/2 z-50 bg-white shadow-2xl rounded-2xl px-6 py-4 flex items-center gap-4 border border-slate-100 w-[90%] max-w-87.5"
                     >
                         <div className="bg-amber-100 p-2 rounded-full shrink-0">
                             <Lock className="text-amber-600" size={20} />
