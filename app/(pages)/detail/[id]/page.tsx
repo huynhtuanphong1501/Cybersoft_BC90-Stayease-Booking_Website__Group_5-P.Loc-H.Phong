@@ -141,37 +141,37 @@ const DetailRoom = ({ params }: DetailRoomProps) => {
     };
 
     const PriceCalculationUI = ({ isSidebar = false }: { isSidebar?: boolean }) => (
-        <div className={`mt-6 p-6 bg-slate-50 rounded-2xl border border-slate-200 ${!isSidebar ? "mb-6" : ""}`}>
+        <div className={`mt-6 p-6 bg-white rounded-2xl border border-[#335765]  ${!isSidebar ? "mb-6" : ""}`}>
             <div className="flex justify-between items-start mb-4">
                 <div className="flex flex-col">
-                    <span className="text-slate-400 line-through text-sm font-bold">${originalPrice}</span>
+                    <span className="text-[#65727D]  line-through text-sm font-bold">${originalPrice}</span>
                     <div className="flex items-center gap-2">
                         <span className="text-2xl font-black text-black">${dataRoom.giaTien}</span>
-                        <span className="text-sm font-bold text-slate-500">/ night</span>
-                        <span className="bg-rose-500 text-white text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-tighter">Sale 20%</span>
+                        <span className="text-sm font-bold text-[#65727D] ">/ night</span>
+                        <span className="bg-linear-to-br from-[#ED1B24] via-[#E91A24] to-[#B30520] text-white text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-tighter">Sale 20%</span>
                     </div>
                 </div>
             </div>
-            <div className="pt-4 border-t border-slate-200">
+            <div className="pt-4 border-t border-[#B6D9E0] ">
                 {bookingDetails ? (
                     <div className="space-y-4 animate-in fade-in duration-300">
-                        <div className="flex justify-between text-slate-600 font-bold text-sm underline cursor-help">
+                        <div className="flex justify-between text-[#65727D]  font-bold text-sm underline cursor-help">
                             <span>${dataRoom.giaTien} x {bookingDetails.days} nights</span>
                             <span>${bookingDetails.roomPriceTotal}</span>
                         </div>
                         {bookingDetails.extraGuestFee > 0 && (
-                            <div className="flex justify-between text-rose-600 font-black text-sm underline cursor-help">
+                            <div className="flex justify-between text-[#ED1B24]  font-black text-sm underline cursor-help">
                                 <span>Extra guest fee ({guests - 4} pax)</span>
                                 <span>+${bookingDetails.extraGuestFee.toFixed(0)}</span>
                             </div>
                         )}
-                        <div className="flex justify-between font-black text-xl text-black pt-4 border-t border-slate-300">
+                        <div className="flex justify-between font-black text-xl text-black pt-4 border-t border-[#B6D9E0] ">
                             <span>Total</span>
                             <span>${bookingDetails.total.toFixed(0)}</span>
                         </div>
                     </div>
                 ) : (
-                    <p className="text-xs text-slate-400 italic text-center">Select dates to see total price</p>
+                    <p className="text-xs text-[#65727D]  italic text-center">Select dates to see total price</p>
                 )}
             </div>
         </div>
@@ -185,32 +185,32 @@ const DetailRoom = ({ params }: DetailRoomProps) => {
                         e.stopPropagation();
                         setIsCalendarOpen(true);
                     }}
-                    className={`border border-slate-400 rounded-xl bg-white shadow-sm overflow-hidden flex cursor-pointer hover:border-rose-500 transition-colors ${!isSidebar ? "sm:col-span-2" : ""}`}
+                    className={`border border-[#335765]  rounded-xl bg-white shadow-sm overflow-hidden flex cursor-pointer hover:border-[#ED1B24] transition-colors ${!isSidebar ? "sm:col-span-2" : ""}`}
                 >
-                    <div className="flex-1 p-3 border-r border-slate-400 hover:bg-slate-50 transition-all">
-                        <label className="flex items-center gap-2 text-[9px] font-black uppercase text-slate-500 mb-1 cursor-pointer">
-                            <CalendarIcon size={12} className="text-rose-500" /> Check-in
+                    <div className="flex-1 p-3 border-r border-[#65727D]  hover:bg-white transition-all">
+                        <label className="flex items-center gap-2 text-[9px] font-black uppercase text-[#65727D]  mb-1 cursor-pointer">
+                            <CalendarIcon size={12} className="text-[#ED1B24] " /> Check-in
                         </label>
                         <div className="text-xs font-black">{checkIn ? format(checkIn, "dd/MM/yyyy") : "Add date"}</div>
                     </div>
-                    <div className="flex-1 p-3 hover:bg-slate-50 transition-all">
-                        <label className="flex items-center gap-2 text-[9px] font-black uppercase text-slate-500 mb-1 cursor-pointer">
-                            <CalendarIcon size={12} className="text-rose-500" /> Checkout
+                    <div className="flex-1 p-3 hover:bg-white transition-all">
+                        <label className="flex items-center gap-2 text-[9px] font-black uppercase text-[#65727D]  mb-1 cursor-pointer">
+                            <CalendarIcon size={12} className="text-[#ED1B24] " /> Checkout
                         </label>
                         <div className="text-xs font-black">{checkOut ? format(checkOut, "dd/MM/yyyy") : "Add date"}</div>
                     </div>
                 </div>
 
-                <div className={`border border-slate-400 rounded-xl bg-white shadow-sm p-3 ${!isSidebar ? "sm:col-span-1 lg:w-full" : ""}`}>
-                    <label className="text-[9px] font-black uppercase text-slate-500 mb-1 flex items-center gap-2">
-                        <Users size={12} className="text-rose-500" /> Guests
+                <div className={`border border-[#335765]  rounded-xl bg-white shadow-sm p-3 ${!isSidebar ? "sm:col-span-1 lg:w-full" : ""}`}>
+                    <label className="text-[9px] font-black uppercase text-[#65727D]  mb-1 flex items-center gap-2">
+                        <Users size={12} className="text-[#ED1B24] " /> Guests
                     </label>
                     <div className="flex items-center justify-between">
                         <div className="flex items-center gap-1">
                             <button
                                 type="button"
                                 onClick={(e) => { e.stopPropagation(); setGuests(Math.max(1, guests - 1)); }}
-                                className="w-6 h-6 rounded-full border border-slate-300 flex items-center justify-center font-bold hover:border-black disabled:opacity-30 cursor-pointer"
+                                className="w-6 h-6 rounded-full border border-[#335765]  flex items-center justify-center font-bold hover:border-black disabled:opacity-30 cursor-pointer"
                                 disabled={guests <= 1}
                             >
                                 -
@@ -219,7 +219,7 @@ const DetailRoom = ({ params }: DetailRoomProps) => {
                             <button
                                 type="button"
                                 onClick={(e) => { e.stopPropagation(); setGuests(guests + 1); }}
-                                className="w-6 h-6 rounded-full border border-slate-300 flex items-center justify-center font-bold hover:border-black cursor-pointer"
+                                className="w-6 h-6 rounded-full border border-[#335765]  flex items-center justify-center font-bold hover:border-black cursor-pointer"
                             >
                                 +
                             </button>
@@ -229,7 +229,10 @@ const DetailRoom = ({ params }: DetailRoomProps) => {
             </div>
 
             <div className="w-full">
-                <button onClick={(e) => { e.stopPropagation(); handleBooking(); }} className="w-full py-4 bg-linear-to-r from-rose-600 to-pink-600 text-white font-black rounded-xl shadow-lg hover:brightness-110 active:scale-95 transition-all flex items-center justify-center gap-2 uppercase tracking-widest text-sm relative z-5 cursor-pointer">
+                <button
+                    onClick={(e) => { e.stopPropagation(); handleBooking(); }}
+                    className="w-full py-4 bg-linear-to-br from-blue-900 via-indigo-500 to-pink-500 text-white font-black rounded-xl shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 active:scale-95 flex items-center justify-center gap-2 uppercase tracking-widest text-sm relative z-5 cursor-pointer"
+                >
                     <span>Reserve Now</span>
                     {bookingDetails && (
                         <>
@@ -257,19 +260,19 @@ const DetailRoom = ({ params }: DetailRoomProps) => {
                                 animate={{ opacity: 1, scale: 1, y: 0 }}
                                 exit={{ opacity: 0, scale: 0.9, y: 20 }}
                                 transition={{ duration: 0.3 }}
-                                className="relative z-6 bg-white rounded-3xl p-6 shadow-2xl w-[95%] max-w-100 h-fit border border-slate-200"
+                                className="relative z-6 bg-white rounded-3xl p-6 shadow-2xl w-[95%] max-w-100 h-fit border border-[#335765] "
                             >
                                 <div className="flex justify-between items-center mb-4 pb-2 border-b">
                                     <h3 className="font-black text-lg text-black">Select dates</h3>
                                     <button
                                         onClick={() => setIsCalendarOpen(false)}
-                                        className="text-slate-400 hover:text-black text-xl cursor-pointer p-2"
+                                        className="text-[#65727D]  hover:text-black text-xl cursor-pointer p-2"
                                     >
                                         ✕
                                     </button>
                                 </div>
 
-                                <div className="flex justify-center bg-slate-50 rounded-xl p-2">
+                                <div className="flex justify-center bg-white rounded-xl p-2">
                                     <DayPicker
                                         mode="range"
                                         selected={{ from: checkIn, to: checkOut }}
@@ -286,10 +289,10 @@ const DetailRoom = ({ params }: DetailRoomProps) => {
                                     />
                                 </div>
 
-                                <div className="flex justify-between items-center mt-6 pt-4 border-t border-slate-100">
+                                <div className="flex justify-between items-center mt-6 pt-4 border-t border-[#B6D9E0] ">
                                     <button
                                         onClick={() => { setCheckIn(undefined); setCheckOut(undefined); }}
-                                        className="text-xs font-black uppercase underline text-rose-500 cursor-pointer"
+                                        className="text-xs font-black uppercase underline text-[#ED1B24]  cursor-pointer"
                                     >
                                         Clear
                                     </button>
@@ -309,7 +312,7 @@ const DetailRoom = ({ params }: DetailRoomProps) => {
         </div>
     );
 
-    if (loading) return <div className="min-h-screen flex items-center justify-center bg-white"><div className="h-12 w-12 rounded-full border-4 border-slate-100 border-t-rose-500 animate-spin"></div></div>;
+    if (loading) return <div className="min-h-screen flex items-center justify-center bg-white"><div className="h-12 w-12 rounded-full border-4 border-[#65727D]  border-t-rose-500 animate-spin"></div></div>;
     if (!dataRoom) return null;
 
     const amenities = [
@@ -328,9 +331,9 @@ const DetailRoom = ({ params }: DetailRoomProps) => {
 
             <AnimatePresence>
                 {showAuthNotice && (
-                    <motion.div initial={{ opacity: 0, y: -100, x: "-50%" }} animate={{ opacity: 1, y: 0, x: "-50%" }} exit={{ opacity: 0, y: -100, x: "-50%" }} className="fixed top-6 left-1/2 z-5 bg-white shadow-2xl rounded-2xl px-6 py-4 flex items-center gap-4 border border-slate-100 w-[90%] max-w-sm">
-                        <div className="bg-rose-100 p-3 rounded-full shrink-0"><Lock className="text-rose-600" size={24} /></div>
-                        <div className="flex-1"><p className="font-black text-black text-sm">Action Required</p><p className="text-xs text-slate-500 font-bold">Please login to continue.</p></div>
+                    <motion.div initial={{ opacity: 0, y: -100, x: "-50%" }} animate={{ opacity: 1, y: 0, x: "-50%" }} exit={{ opacity: 0, y: -100, x: "-50%" }} className="fixed top-6 left-1/2 z-5 bg-white shadow-2xl rounded-2xl px-6 py-4 flex items-center gap-4 border border-[#335765]  w-[90%] max-w-sm">
+                        <div className="bg-[#47242B] p-3 rounded-full shrink-0"><Lock className="text-[#ED1B24] " size={24} /></div>
+                        <div className="flex-1"><p className="font-black text-black text-sm">Action Required</p><p className="text-xs text-[#65727D]  font-bold">Please login to continue.</p></div>
                     </motion.div>
                 )}
             </AnimatePresence>
@@ -346,36 +349,68 @@ const DetailRoom = ({ params }: DetailRoomProps) => {
                         <div>
                             <h1 className="text-2xl md:text-4xl font-black mb-4 tracking-tight leading-tight">{dataRoom.tenPhong}</h1>
                             <div className="flex flex-wrap items-center gap-4 text-sm font-bold">
-                                <div className="flex items-center gap-1"><Star size={16} className="fill-rose-500 text-rose-500" /><span>4.95 ·</span><span className="underline cursor-pointer">{commentCount} reviews</span></div>
-                                <div className="flex items-center gap-1 underline cursor-pointer"><MapPin size={16} />{dataCity.find(c => c.id === Number(dataRoom?.maViTri))?.tinhThanh}</div>
+                                <div className="flex items-center gap-1"><Star size={16} className="fill-amber-500 text-amber-500 " />
+                                    <span className="text-[#7D6834] ">4.95 ·</span>
+                                    <span className="underline cursor-pointer">{commentCount} reviews</span>
+                                </div>
+
+                                <div className="group flex items-center gap-2 text-sm font-medium cursor-pointer transition-all duration-300">
+                                    <div className="p-1.5 bg-[#B6D9E0]/30 rounded-full group-hover:bg-[#B6D9E0] transition-colors">
+                                        <MapPin size={16} className="text-[#E76F51] group-hover:scale-110 transition-transform" />
+                                    </div>
+
+                                    <div className="flex flex-col sm:flex-row sm:items-center">
+                                        {(() => {
+                                            const location = dataCity.find(
+                                                c => c.id === Number(dataRoom?.maViTri)
+                                            );
+
+                                            if (!location) return (
+                                                <span className="text-[#65727D] italic">Đang cập nhật vị trí...</span>
+                                            );
+
+                                            return (
+                                                <div className="flex items-center flex-wrap gap-1">
+                                                    <span className="text-[#143944] font-bold underline underline-offset-4 decoration-[#E76F51]/30 group-hover:decoration-[#E76F51] group-hover:text-[#E76F51] transition-all">
+                                                        {location.tenViTri}
+                                                    </span>
+                                                    <span className="mx-1 text-[#65727D] opacity-40">•</span>
+                                                    <span className="text-[#65727D] group-hover:text-[#143944] transition-colors">
+                                                        {location.tinhThanh}
+                                                    </span>
+                                                </div>
+                                            );
+                                        })()}
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
-                        <div className="flex flex-wrap gap-4 text-slate-500 font-bold border-b pb-8">
+                        <div className="flex flex-wrap gap-4 text-[#65727D]  font-bold border-b pb-8">
                             <span>{dataRoom.khach} guests ·</span><span>{dataRoom.phongNgu} bedrooms ·</span><span>{dataRoom.giuong} beds ·</span><span>{dataRoom.phongTam} baths</span>
                         </div>
 
                         <div className="py-8 border-b space-y-6">
                             <div className="flex gap-4">
-                                <Award className="text-slate-700 shrink-0 w-6 h-6" />
-                                <div><h4 className="font-black">Self check-in</h4><p className="text-sm text-slate-500">Check yourself in with the keypad easily.</p></div>
+                                <Award className="text-[#65727D]  shrink-0 w-6 h-6" />
+                                <div><h4 className="font-black">Self check-in</h4><p className="text-sm text-[#65727D] ">Check yourself in with the keypad easily.</p></div>
                             </div>
                             <div className="flex gap-4">
-                                <ShieldCheck className="text-slate-700 shrink-0 w-6 h-6" />
-                                <div><h4 className="font-black">Professional Host</h4><p className="text-sm text-slate-500">Experienced hosts for a worry-free stay.</p></div>
+                                <ShieldCheck className="text-[#65727D]  shrink-0 w-6 h-6" />
+                                <div><h4 className="font-black">Professional Host</h4><p className="text-sm text-[#65727D] ">Experienced hosts for a worry-free stay.</p></div>
                             </div>
                         </div>
 
                         <div className="py-8 border-b">
                             <h3 className="text-xl font-black mb-4">About this place</h3>
-                            <p className="text-slate-600 leading-7 whitespace-pre-line text-sm md:text-base font-medium">{dataRoom.moTa}</p>
+                            <p className="text-[#65727D]  leading-7 whitespace-pre-line text-sm md:text-base font-medium">{dataRoom.moTa}</p>
                         </div>
 
                         <div className="py-8 border-b">
                             <h3 className="text-xl font-black mb-6">What this place offers</h3>
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-4">
                                 {amenities.map((a, idx) => (
-                                    <div key={idx} className={`flex gap-4 items-center ${a.ok ? "text-slate-700" : "text-slate-200"}`}>
+                                    <div key={idx} className={`flex gap-4 items-center ${a.ok ? "text-[#65727D] " : "text-[#65727D] "}`}>
                                         <span>{a.icon}</span><span className={`text-sm font-bold ${!a.ok && "line-through"}`}>{a.label}</span>
                                     </div>
                                 ))}
@@ -392,30 +427,30 @@ const DetailRoom = ({ params }: DetailRoomProps) => {
                                 <div className="space-y-4">
                                     <div className="space-y-2">
                                         <h4 className="flex items-center gap-2 font-black"><FontAwesomeIcon icon={faClock} /> Timing</h4>
-                                        <ul className="list-disc pl-5 text-slate-600"><li>Check-in from 14:00</li><li>Check-out by 12:00</li></ul>
+                                        <ul className="list-disc pl-5 text-[#65727D] "><li>Check-in from 14:00</li><li>Check-out by 12:00</li></ul>
                                     </div>
                                     <div className="space-y-2">
                                         <h4 className="flex items-center gap-2 font-black"><FontAwesomeIcon icon={faCreditCard} /> Payment</h4>
-                                        <ul className="list-disc pl-5 text-slate-600"><li>25% down payment required</li></ul>
+                                        <ul className="list-disc pl-5 text-[#65727D] "><li>25% down payment required</li></ul>
                                     </div>
                                 </div>
                                 <div className="space-y-4">
                                     <div className="space-y-2">
                                         <h4 className="flex items-center gap-2 font-black"><FontAwesomeIcon icon={faHouseCircleCheck} /> Rules</h4>
-                                        <ul className="list-disc pl-5 text-slate-600">
+                                        <ul className="list-disc pl-5 text-[#65727D] ">
                                             <li>Non-smoking, no pets allowed</li>
-                                            <li className="text-rose-600">Extra fee: 10% after 4 pax</li>
+                                            <li className="text-[#ED1B24] ">Extra fee: 10% after 4 pax</li>
                                         </ul>
                                     </div>
                                     <div className="space-y-2">
                                         <h4 className="flex items-center gap-2 font-black"><FontAwesomeIcon icon={faBan} /> Cancellation</h4>
-                                        <ul className="list-disc pl-5 text-slate-600"><li>Free refund up to 30 days</li></ul>
+                                        <ul className="list-disc pl-5 text-[#65727D] "><li>Free refund up to 30 days</li></ul>
                                     </div>
                                 </div>
                             </div>
                             <div className="mt-8 flex items-start gap-4 p-6 rounded-2xl bg-black text-white">
                                 <FontAwesomeIcon icon={faCircleInfo} className="mt-1" />
-                                <div><h4 className="font-bold mb-1">Stay with confidence</h4><p className="text-slate-300 text-xs font-medium leading-relaxed">We provide 24/7 support. In the rare event of an issue we can’t resolve, we’ll help you find a similar or better place.</p></div>
+                                <div><h4 className="font-bold mb-1">Stay with confidence</h4><p className="text-[#65727D]  text-xs font-medium leading-relaxed">We provide 24/7 support. In the rare event of an issue we can’t resolve, we’ll help you find a similar or better place.</p></div>
                             </div>
                         </div>
 
@@ -423,7 +458,7 @@ const DetailRoom = ({ params }: DetailRoomProps) => {
                     </div>
 
                     <aside className="w-full order-2 relative">
-                        <div className="hidden lg:block sticky top-28 bg-white border border-slate-200 rounded-3xl p-8 shadow-2xl">
+                        <div className="hidden lg:block sticky top-28 bg-white border border-[#335765]  rounded-3xl p-8 shadow-2xl">
                             <BookingInputs isSidebar={true} />
                             <PriceCalculationUI isSidebar={true} />
                         </div>
@@ -431,7 +466,7 @@ const DetailRoom = ({ params }: DetailRoomProps) => {
                 </section>
             </main>
 
-            <section className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 p-4 z-5 shadow-[0_-10px_30px_rgba(0,0,0,0.1)]">
+            <section className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-[#B6D9E0]  p-4 z-5 shadow-[0_-10px_30px_rgba(0,0,0,0.1)]">
                 <div className="app-container mx-auto">
                     <BookingInputs isSidebar={false} />
                 </div>
@@ -446,7 +481,7 @@ const DetailRoom = ({ params }: DetailRoomProps) => {
                         <motion.div initial={{ scale: 0.9 }} animate={{ scale: 1 }} className="bg-white rounded-3xl p-10 max-w-sm w-full shadow-2xl text-center">
                             <CheckCircle2 className="text-green-600 mb-4 mx-auto" size={60} />
                             <h2 className="text-2xl font-black mb-2 tracking-tight">Booking Confirmed!</h2>
-                            <p className="text-slate-500 font-bold">Your reservation request has been sent.</p>
+                            <p className="text-[#65727D]  font-bold">Your reservation request has been sent.</p>
                         </motion.div>
                     </motion.div>
                 )}

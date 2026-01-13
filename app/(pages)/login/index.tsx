@@ -6,22 +6,9 @@ import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { faGoogle, faFacebook } from "@fortawesome/free-brands-svg-icons";
 import api from "@/app/service/api";
 
-interface LoginModalProps {
-    onClose: () => void;
-    onSwitchRegister: () => void;
-    onLoginSuccess: (userData: any) => void;
-}
+import { LoginData, LoginErrors, LoginModalProps } from "@/app/type";
 
-interface LoginData {
-    email: string;
-    password: string;
-}
-
-interface LoginErrors {
-    email?: string;
-    password?: string;
-    form?: string;
-}
+import { signIn } from "next-auth/react";
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const passwordRegex = /^.{6,}$/;
@@ -69,7 +56,7 @@ const LoginModal = ({ onClose, onSwitchRegister, onLoginSuccess }: LoginModalPro
 
     return (
         <section className="app-container mx-auto sm:max-w-md md:max-w-lg lg:max-w-md xl:max-w-lg bg-white rounded-2xl p-5 sm:p-6 md:p-8 lg:p-8 xl:p-10 relative shadow-lg" onClick={(e) => e.stopPropagation()}>
-            <button onClick={onClose} className="absolute right-4 top-4 text-[#272B45] hover:text-red-600 transition cursor-pointer">
+            <button onClick={onClose} className="absolute right-4 top-4 text-[#272B45] hover:text-[#ED1B24]  transition cursor-pointer">
                 <FontAwesomeIcon icon={faXmark} size="lg" />
             </button>
 
@@ -89,7 +76,7 @@ const LoginModal = ({ onClose, onSwitchRegister, onLoginSuccess }: LoginModalPro
                         }}
                         className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#B99333] text-[#272B45]"
                     />
-                    {errors.email && <p className="mt-1 text-sm text-red-500">{errors.email}</p>}
+                    {errors.email && <p className="mt-1 text-sm text-[#ED1B24] ">{errors.email}</p>}
                 </div>
 
                 <div>
@@ -103,11 +90,11 @@ const LoginModal = ({ onClose, onSwitchRegister, onLoginSuccess }: LoginModalPro
                         }}
                         className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#B99333] text-[#272B45]"
                     />
-                    {errors.password && <p className="mt-1 text-sm text-red-500">{errors.password}</p>}
+                    {errors.password && <p className="mt-1 text-sm text-[#ED1B24] ">{errors.password}</p>}
                 </div>
 
                 {errors.form && (
-                    <p className="text-sm text-red-600 text-center">{errors.form}</p>
+                    <p className="text-sm text-[#ED1B24]  text-center">{errors.form}</p>
                 )}
 
                 <button type="submit" disabled={loading} className="w-full py-3 rounded-xl bg-[#B99333] text-white font-semibold hover:bg-[#a37f2c] transition cursor-pointer disabled:opacity-70">
@@ -116,12 +103,16 @@ const LoginModal = ({ onClose, onSwitchRegister, onLoginSuccess }: LoginModalPro
             </form>
 
             <div className="flex flex-row gap-3 my-6">
-                <button className="w-full py-3 rounded-xl border border-gray-300 flex items-center justify-center gap-2 bg-white text-[#DB4437] hover:bg-[#DB4437] hover:text-white transition cursor-pointer">
+                <button
+                    onClick={() => signIn("google")}
+                    className="w-full py-3 rounded-xl border border-gray-300 flex items-center justify-center gap-2 bg-white text-[#DB4437] hover:bg-[#DB4437] hover:text-white transition cursor-pointer">
                     <FontAwesomeIcon icon={faGoogle} />
                     Google
                 </button>
 
-                <button className="w-full py-3 rounded-xl border border-gray-300 flex items-center justify-center gap-2 bg-white text-[#1877F2] hover:bg-[#1877F2] hover:text-white transition cursor-pointer">
+                <button
+                    onClick={() => signIn("facebook")}
+                    className="w-full py-3 rounded-xl border border-gray-300 flex items-center justify-center gap-2 bg-white text-[#1877F2] hover:bg-[#1877F2] hover:text-white transition cursor-pointer">
                     <FontAwesomeIcon icon={faFacebook} />
                     Facebook
                 </button>

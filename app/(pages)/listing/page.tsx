@@ -7,6 +7,8 @@ import api from "@/app/service/api";
 import { TBooking, TUser } from "@/app/type";
 import React, { useEffect, useState, useCallback } from "react";
 import EditProfilePopUp from "./editProfile";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUserLock } from "@fortawesome/free-solid-svg-icons";
 
 const Listing = () => {
     const [user, setUser] = useState<TUser | null>(null);
@@ -28,7 +30,6 @@ const Listing = () => {
         return { days, total: (days * finalPrice).toLocaleString() };
     };
 
-    // --- Arrow function to render each booking card ---
     const renderBookingCard = (item: TBooking) => {
         const { days, total } = calculateTotal(
             item.ngayDen,
@@ -54,20 +55,19 @@ const Listing = () => {
                             <i className="fa-solid fa-hotel text-4xl text-gray-300"></i>
                         </div>
                     )}
-                    {/* Confirmation Label */}
                     <div className="absolute top-4 left-4 bg-green-500 text-white px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider shadow-sm">
                         Booking Confirmed
                     </div>
                 </div>
 
                 <div className="p-6 md:p-8 flex-1 flex flex-col">
-                    <h3 className="text-xl md:text-2xl font-black group-hover:text-rose-500 transition-colors duration-300">
+                    <h3 className="text-xl md:text-2xl font-black group-hover:text-[#ED1B24]  transition-colors duration-300">
                         {item.roomDetails?.tenPhong || `Room ${item.maPhong}`}
                     </h3>
 
                     <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <div className="flex items-center gap-3 bg-gray-50 px-4 py-3 rounded-xl hover:bg-gray-100 transition-all duration-300">
-                            <i className="fa-solid fa-right-to-bracket text-rose-500"></i>
+                            <i className="fa-solid fa-right-to-bracket text-[#ED1B24] "></i>
                             <div>
                                 <p className="text-[10px] uppercase font-black text-gray-400">Check-in</p>
                                 <p className="font-bold text-sm">
@@ -112,7 +112,7 @@ const Listing = () => {
                             <p className="text-[10px] uppercase font-black text-gray-400">
                                 Total Amount
                             </p>
-                            <p className="text-3xl font-black text-rose-500">
+                            <p className="text-3xl font-black text-[#ED1B24] ">
                                 ${total}
                             </p>
                         </div>
@@ -198,27 +198,32 @@ const Listing = () => {
         return (
             <div className="bg-white min-h-screen">
                 <HomeHeader />
-                <main className="flex flex-col items-center justify-center px-6 py-20 text-center">
-                    <div className="w-24 h-24 bg-gray-50 rounded-full flex items-center justify-center mb-6">
-                        <i className="fa-solid fa-user-lock text-3xl text-gray-400"></i>
+                <main className="flex flex-col items-center justify-center px-4 sm:px-6 md:px-10 py-16 sm:py-20 text-center">
+
+                    <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gray-50 rounded-full flex items-center justify-center mb-5 sm:mb-6">
+                        <FontAwesomeIcon icon={faUserLock} className="text-2xl sm:text-3xl text-gray-400" />
                     </div>
-                    <h2 className="text-3xl font-extrabold text-gray-900 mb-3">
+
+                    <h2 className="font-extrabold text-gray-900 mb-3 text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl">
                         Login to see your bookings
                     </h2>
-                    <p className="text-gray-500 max-w-md mb-8">
+
+                    <p className="text-gray-500 mb-8 max-w-xs sm:max-w-sm md:max-w-md text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl">
                         Manage your trips and booking history after logging in.
                     </p>
+
                     <button
                         onClick={() =>
                             window.dispatchEvent(
                                 new CustomEvent("OPEN_AUTH_MODAL", { detail: { mode: "login" } })
                             )
                         }
-                        className="px-10 py-4 bg-rose-500 text-white rounded-2xl font-bold hover:bg-rose-600 transition-all duration-300 cursor-pointer active:scale-95 shadow-lg"
+                        className="px-8 sm:px-10 py-3 sm:py-4 bg-linear-to-br from-[#F0944D] to-[#ACCAD5] text-black rounded-2xl font-bold shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:brightness-110 active:scale-95 cursor-pointer"
                     >
                         Login Now
                     </button>
                 </main>
+
                 <HomeFooter />
             </div>
         );
@@ -265,7 +270,7 @@ const Listing = () => {
 
                             <button
                                 onClick={handleEditProfile}
-                                className="w-full mt-5 lg:mt-6 bg-gray-900 py-3 sm:py-3.5 rounded-xl sm:rounded-2xl font-bold text-white text-xs sm:text-sm md:text-base hover:bg-rose-500 transition-all duration-300 cursor-pointer active:scale-95 shadow-md"
+                                className="w-full mt-5 lg:mt-6 bg-gray-900 py-3 sm:py-3.5 rounded-xl sm:rounded-2xl font-bold text-white text-xs sm:text-sm md:text-base hover:bg-[#47242B] transition-all duration-300 cursor-pointer active:scale-95 shadow-md"
                             >
                                 Edit Profile
                             </button>

@@ -101,44 +101,44 @@ const EditProfilePopUp = ({ userId, onClose, onUpdateSuccess }: Props) => {
                                 <label className="block text-[10px] font-black uppercase text-gray-400 mb-1 ml-1">Full Name</label>
                                 <input
                                     type="text"
-                                    className={`w-full p-2.5 sm:p-3 md:p-4 bg-gray-50 border text-sm rounded-xl sm:rounded-2xl focus:ring-2 focus:ring-rose-500 outline-none transition-all ${errors.name ? 'border-red-500' : 'border-transparent'}`}
+                                    className={`w-full p-2.5 sm:p-3 md:p-4 bg-gray-50 border text-sm rounded-xl sm:rounded-2xl focus:ring-2 focus:ring-rose-500 outline-none transition-all ${errors.name ? 'border-[#ED1B24] ' : 'border-transparent'}`}
                                     value={formData.name}
                                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                                 />
-                                {errors.name && <p className="text-red-500 text-[10px] mt-1 ml-1">{errors.name}</p>}
+                                {errors.name && <p className="text-[#ED1B24] text-[10px] mt-1 ml-1">{errors.name}</p>}
                             </div>
 
                             <div>
                                 <label className="block text-[10px] font-black uppercase text-gray-400 mb-1 ml-1">Email Address</label>
                                 <input
                                     type="email"
-                                    className={`w-full p-2.5 sm:p-3 md:p-4 bg-gray-50 border text-sm rounded-xl sm:rounded-2xl focus:ring-2 focus:ring-rose-500 outline-none transition-all ${errors.email ? 'border-red-500' : 'border-transparent'}`}
+                                    className={`w-full p-2.5 sm:p-3 md:p-4 bg-gray-50 border text-sm rounded-xl sm:rounded-2xl focus:ring-2 focus:ring-rose-500 outline-none transition-all ${errors.email ? 'border-[#ED1B24] ' : 'border-transparent'}`}
                                     value={formData.email}
                                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                                 />
-                                {errors.email && <p className="text-red-500 text-[10px] mt-1 ml-1">{errors.email}</p>}
+                                {errors.email && <p className="text-[#ED1B24] text-[10px] mt-1 ml-1">{errors.email}</p>}
                             </div>
 
                             <div>
                                 <label className="block text-[10px] font-black uppercase text-gray-400 mb-1 ml-1">Phone Number</label>
                                 <input
                                     type="text"
-                                    className={`w-full p-2.5 sm:p-3 md:p-4 bg-gray-50 border text-sm rounded-xl sm:rounded-2xl focus:ring-2 focus:ring-rose-500 outline-none transition-all ${errors.phone ? 'border-red-500' : 'border-transparent'}`}
+                                    className={`w-full p-2.5 sm:p-3 md:p-4 bg-gray-50 border text-sm rounded-xl sm:rounded-2xl focus:ring-2 focus:ring-rose-500 outline-none transition-all ${errors.phone ? 'border-[#ED1B24] ' : 'border-transparent'}`}
                                     value={formData.phone || ""}
                                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                                 />
-                                {errors.phone && <p className="text-red-500 text-[10px] mt-1 ml-1">{errors.phone}</p>}
+                                {errors.phone && <p className="text-[#ED1B24] text-[10px] mt-1 ml-1">{errors.phone}</p>}
                             </div>
 
                             <div>
                                 <label className="block text-[10px] font-black uppercase text-gray-400 mb-1 ml-1">Birthday</label>
                                 <input
                                     type="date"
-                                    className={`w-full p-2.5 sm:p-3 md:p-4 bg-gray-50 border text-sm rounded-xl sm:rounded-2xl focus:ring-2 focus:ring-rose-500 outline-none transition-all ${errors.birthday ? 'border-red-500' : 'border-transparent'}`}
+                                    className={`w-full p-2.5 sm:p-3 md:p-4 bg-gray-50 border text-sm rounded-xl sm:rounded-2xl focus:ring-2 focus:ring-rose-500 outline-none transition-all ${errors.birthday ? 'border-[#ED1B24] ' : 'border-transparent'}`}
                                     value={formData.birthday?.split('T')[0]}
                                     onChange={(e) => setFormData({ ...formData, birthday: e.target.value })}
                                 />
-                                {errors.birthday && <p className="text-red-500 text-[10px] mt-1 ml-1">{errors.birthday}</p>}
+                                {errors.birthday && <p className="text-[#ED1B24] text-[10px] mt-1 ml-1">{errors.birthday}</p>}
                             </div>
                         </div>
 
@@ -148,12 +148,12 @@ const EditProfilePopUp = ({ userId, onClose, onUpdateSuccess }: Props) => {
                                 <button
                                     type="button"
                                     onClick={() => setFormData({ ...formData, gender: true })}
-                                    className={`flex-1 py-2.5 sm:py-3 md:py-4 rounded-xl sm:rounded-2xl font-bold text-xs sm:text-sm md:text-base transition-all cursor-pointer active:scale-95 ${formData.gender ? 'bg-rose-500 text-white shadow-md' : 'bg-gray-100 text-gray-500'}`}
+                                    className={`flex-1 py-2.5 sm:py-3 md:py-4 rounded-xl sm:rounded-2xl font-bold text-xs sm:text-sm md:text-base transition-all cursor-pointer active:scale-95 ${formData.gender ? 'bg-[#47242B] text-white shadow-md' : 'bg-gray-100 text-gray-500'}`}
                                 > Male </button>
                                 <button
                                     type="button"
                                     onClick={() => setFormData({ ...formData, gender: false })}
-                                    className={`flex-1 py-2.5 sm:py-3 md:py-4 rounded-xl sm:rounded-2xl font-bold text-xs sm:text-sm md:text-base transition-all cursor-pointer active:scale-95 ${!formData.gender ? 'bg-rose-500 text-white shadow-md' : 'bg-gray-100 text-gray-500'}`}
+                                    className={`flex-1 py-2.5 sm:py-3 md:py-4 rounded-xl sm:rounded-2xl font-bold text-xs sm:text-sm md:text-base transition-all cursor-pointer active:scale-95 ${!formData.gender ? 'bg-[#47242B] text-white shadow-md' : 'bg-gray-100 text-gray-500'}`}
                                 > Female </button>
                             </div>
                         </div>
@@ -162,7 +162,7 @@ const EditProfilePopUp = ({ userId, onClose, onUpdateSuccess }: Props) => {
                             <button
                                 disabled={loading}
                                 type="submit"
-                                className="w-full bg-gray-900 py-3 sm:py-4 md:py-5 rounded-xl sm:rounded-2xl font-bold text-white text-sm md:text-base hover:bg-rose-600 transition-all cursor-pointer active:scale-[0.98] flex items-center justify-center gap-2 shadow-lg"
+                                className="w-full bg-gray-900 py-3 sm:py-4 md:py-5 rounded-xl sm:rounded-2xl font-bold text-white text-sm md:text-base hover:bg-[#47242B] transition-all cursor-pointer active:scale-[0.98] flex items-center justify-center gap-2 shadow-lg"
                             >
                                 {loading ? (
                                     <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
