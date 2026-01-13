@@ -69,6 +69,40 @@ const Home = () => {
     return () => clearTimeout(t);
   }, []);
 
+  const renderLoctionBanner = () => {
+    return groupedCities.map((group, index) => (
+      <div
+        ref={heroRef}
+        className="absolute inset-0 overflow-hidden"
+      >
+        <div className="flex h-full">
+          {groupedCities.map((group) => (
+            <div
+              key={group?.key}
+              className="flex-[0_0_100%] h-full relative"
+            >
+              <img
+                src={group.hinhAnh || "/img/Carousel/default.jpg"}
+                className="w-full h-full object-cover"
+              />
+
+              <div className="hidden absolute inset-0 bg-black/20 lg:flex flex-col items-center text-white justify-center">
+                <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold">
+                  {group.tinhThanh}
+                </h2>
+                <p className="text-lg sm:text-xl md:text-2xl italic">
+                  {group.quocGia}
+                </p>
+
+                <div className="w-16 h-1 bg-primary mt-4 rounded-full shadow-lg"></div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    ));
+  };
+
   const groupedCities = useMemo(() => {
     const map = new Map<string, any>();
     cities.forEach((city) => {
@@ -107,22 +141,32 @@ const Home = () => {
           <h3 className="text-white text-3xl font-bold">{group.tinhThanh}</h3>
           <span className="text-white text-xl italic">{group.quocGia}</span>
         </div>
-        <div className="absolute top-0 right-0 h-full w-1/2 bg-white text-black backdrop-blur-sm translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-out p-5">
+
+        <div className="absolute top-0 right-0 h-full w-1/2 bg-white text-black backdrop-blur-sm translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-out p-5 flex flex-col">
+
           <p className="text-sm font-semibold mb-3 uppercase tracking-wide">
             Popular locations
           </p>
-          <ul className="text-sm space-y-2 overflow-y-auto max-h-full pr-1">
+
+          <ul className="
+    text-sm space-y-2 pr-1
+    overflow-y-auto
+    flex-1
+    max-h-full
+  ">
             {group.locations.map((loc: any) => (
               <Link
                 key={loc.id}
                 href={`/${loc.id}`}
-                className="flex text-black items-center gap-2 hover:text-[#7D6834] transition-all duration-300"
+                className="flex text-black items-center gap-2 hover:text-[#47242B] hover:font-bold transition-all duration-300"
               >
                 {loc.name}
               </Link>
             ))}
           </ul>
+
         </div>
+
       </div>
     ));
   };
@@ -158,31 +202,21 @@ const Home = () => {
           <section className="relative h-screen">
             <div className="absolute inset-0 overflow-hidden" ref={heroRef}>
               <div className="flex h-full">
-                <div className="flex-[0_0_100%] h-full">
-                  <img
-                    src="/img/Carousel/carousel1.jpg"
-                    className="w-full h-full object-cover animate__animated animate__fadeIn"
-                  />
-                </div>
-                <div className="flex-[0_0_100%] h-full">
-                  <img
-                    src="/img/Carousel/carousel2.jpg"
-                    className="w-full h-full object-cover animate__animated animate__fadeIn"
-                  />
-                </div>
+                {renderLoctionBanner()}
               </div>
             </div>
 
-            <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-2 z-1">
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-3 z-10">
               {scrollSnaps.map((_, index) => (
                 <button
                   key={index}
                   onClick={() => scrollTo(index)}
+                  aria-label={`Go to slide ${index + 1}`}
                   className={`
         h-2 rounded-full transition-all duration-300
         ${index === selectedIndex
-                      ? "w-8 bg-white shadow-md"
-                      : "w-2 bg-white/50 hover:bg-white/80"}
+                      ? "w-8 bg-white shadow-lg"
+                      : "w-2 bg-white/50 hover:bg-white"}
       `}
                 />
               ))}

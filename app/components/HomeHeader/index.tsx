@@ -234,7 +234,7 @@ const HomeHeader = ({ isHome = false, homeAnimationDone = false }: HeaderProps) 
                                         <button
                                             onClick={handleLogout}
                                             className="w-full px-4 py-2 text-left cursor-pointer 
-                            text-red-500 hover:bg-red-50 rounded-xl 
+                            text-[#ED1B24] hover:bg-[#47242B] rounded-xl 
                             flex items-center gap-3 transition-all font-medium"
                                         >
                                             <FontAwesomeIcon icon={faRightFromBracket} />
@@ -268,7 +268,7 @@ const HomeHeader = ({ isHome = false, homeAnimationDone = false }: HeaderProps) 
                                         <button
                                             onClick={handleLogout}
                                             className="w-full px-4 py-2 text-left cursor-pointer 
-                            text-red-500 hover:bg-red-50 rounded-xl 
+                            text-[#ED1B24] hover:bg-[#47242B] rounded-xl 
                             flex items-center gap-3 transition-all font-medium"
                                         >
                                             <FontAwesomeIcon icon={faRightFromBracket} />

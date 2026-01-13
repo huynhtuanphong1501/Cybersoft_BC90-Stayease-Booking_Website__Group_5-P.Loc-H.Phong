@@ -124,7 +124,7 @@ const RegisterModal = ({ onClose, onSwitchLogin, onRegisterSuccess }: RegisterMo
         >
             <button
                 onClick={onClose}
-                className="absolute right-3 top-3 sm:right-4 sm:top-4 text-[#272B45] hover:text-red-600 transition cursor-pointer"
+                className="absolute right-3 top-3 sm:right-4 sm:top-4 text-[#272B45] hover:text-[#ED1B24]  transition cursor-pointer"
             >
                 <FontAwesomeIcon icon={faXmark} className="text-lg sm:text-xl" />
             </button>
@@ -134,7 +134,7 @@ const RegisterModal = ({ onClose, onSwitchLogin, onRegisterSuccess }: RegisterMo
             </h3>
 
             {errors.form && (
-                <div className="mb-4 rounded-xl border border-red-300 bg-red-50 p-3 sm:p-4 text-xs sm:text-sm text-red-600">
+                <div className="mb-4 rounded-xl border border-[#ED1B24]  bg-[#47242B] p-3 sm:p-4 text-xs sm:text-sm text-[#ED1B24] ">
                     {errors.form}{" "}
                     <span
                         onClick={onSwitchLogin}
@@ -153,9 +153,9 @@ const RegisterModal = ({ onClose, onSwitchLogin, onRegisterSuccess }: RegisterMo
                             value={register.name}
                             onChange={handleChange}
                             placeholder="Full name"
-                            className={`w-full px-3 py-2.5 sm:px-4 sm:py-3 text-sm sm:text-base rounded-xl border ${errors.name ? 'border-red-500' : 'border-gray-300'} focus:ring-2 focus:ring-[#B99333] outline-none`}
+                            className={`w-full px-3 py-2.5 sm:px-4 sm:py-3 text-sm sm:text-base rounded-xl border ${errors.name ? 'border-[#ED1B24] ' : 'border-gray-300'} focus:ring-2 focus:ring-[#B99333] outline-none`}
                         />
-                        {errors.name && <p className="text-[10px] sm:text-xs text-red-500 mt-1">{errors.name}</p>}
+                        {errors.name && <p className="text-[10px] sm:text-xs text-[#ED1B24]  mt-1">{errors.name}</p>}
                     </div>
 
                     <div className="md:col-span-1">
@@ -164,9 +164,9 @@ const RegisterModal = ({ onClose, onSwitchLogin, onRegisterSuccess }: RegisterMo
                             value={register.email}
                             onChange={handleChange}
                             placeholder="Email"
-                            className={`w-full px-3 py-2.5 sm:px-4 sm:py-3 text-sm sm:text-base rounded-xl border ${errors.email ? 'border-red-500' : 'border-gray-300'} focus:ring-2 focus:ring-[#B99333] outline-none`}
+                            className={`w-full px-3 py-2.5 sm:px-4 sm:py-3 text-sm sm:text-base rounded-xl border ${errors.email ? 'border-[#ED1B24] ' : 'border-gray-300'} focus:ring-2 focus:ring-[#B99333] outline-none`}
                         />
-                        {errors.email && <p className="text-[10px] sm:text-xs text-red-500 mt-1">{errors.email}</p>}
+                        {errors.email && <p className="text-[10px] sm:text-xs text-[#ED1B24]  mt-1">{errors.email}</p>}
                     </div>
 
                     <div className="md:col-span-1">
@@ -176,9 +176,9 @@ const RegisterModal = ({ onClose, onSwitchLogin, onRegisterSuccess }: RegisterMo
                             value={register.password}
                             onChange={handleChange}
                             placeholder="Password"
-                            className={`w-full px-3 py-2.5 sm:px-4 sm:py-3 text-sm sm:text-base rounded-xl border ${errors.password ? 'border-red-500' : 'border-gray-300'} focus:ring-2 focus:ring-[#B99333] outline-none`}
+                            className={`w-full px-3 py-2.5 sm:px-4 sm:py-3 text-sm sm:text-base rounded-xl border ${errors.password ? 'border-[#ED1B24] ' : 'border-gray-300'} focus:ring-2 focus:ring-[#B99333] outline-none`}
                         />
-                        {errors.password && <p className="text-[10px] sm:text-xs text-red-500 mt-1">{errors.password}</p>}
+                        {errors.password && <p className="text-[10px] sm:text-xs text-[#ED1B24]  mt-1">{errors.password}</p>}
                     </div>
 
                     <div className="md:col-span-1">
@@ -187,9 +187,9 @@ const RegisterModal = ({ onClose, onSwitchLogin, onRegisterSuccess }: RegisterMo
                             value={register.phone}
                             onChange={handleChange}
                             placeholder="Phone number"
-                            className={`w-full px-3 py-2.5 sm:px-4 sm:py-3 text-sm sm:text-base rounded-xl border ${errors.phone ? 'border-red-500' : 'border-gray-300'} focus:ring-2 focus:ring-[#B99333] outline-none`}
+                            className={`w-full px-3 py-2.5 sm:px-4 sm:py-3 text-sm sm:text-base rounded-xl border ${errors.phone ? 'border-[#ED1B24] ' : 'border-gray-300'} focus:ring-2 focus:ring-[#B99333] outline-none`}
                         />
-                        {errors.phone && <p className="text-[10px] sm:text-xs text-red-500 mt-1">{errors.phone}</p>}
+                        {errors.phone && <p className="text-[10px] sm:text-xs text-[#ED1B24]  mt-1">{errors.phone}</p>}
                     </div>
 
                     <div className="md:col-span-1">
@@ -198,9 +198,9 @@ const RegisterModal = ({ onClose, onSwitchLogin, onRegisterSuccess }: RegisterMo
                             type="date"
                             value={register.birthday}
                             onChange={handleChange}
-                            className={`w-full px-3 py-2.5 sm:px-4 sm:py-3 text-sm sm:text-base rounded-xl border ${errors.birthday ? 'border-red-500' : 'border-gray-300'} focus:ring-2 focus:ring-[#B99333] outline-none`}
+                            className={`w-full px-3 py-2.5 sm:px-4 sm:py-3 text-sm sm:text-base rounded-xl border ${errors.birthday ? 'border-[#ED1B24] ' : 'border-gray-300'} focus:ring-2 focus:ring-[#B99333] outline-none`}
                         />
-                        {errors.birthday && <p className="text-[10px] sm:text-xs text-red-500 mt-1">{errors.birthday}</p>}
+                        {errors.birthday && <p className="text-[10px] sm:text-xs text-[#ED1B24]  mt-1">{errors.birthday}</p>}
                     </div>
 
                     <div className="md:col-span-1">

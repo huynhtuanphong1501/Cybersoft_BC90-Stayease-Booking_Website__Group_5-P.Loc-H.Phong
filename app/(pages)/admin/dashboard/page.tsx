@@ -66,7 +66,7 @@ const Dashboard = () => {
             </div>
             <div className="flex justify-between">
               <span className="text-gray-600">System Alerts</span>
-              <span className="text-red-500 font-medium">1</span>
+              <span className="text-[#ED1B24] font-medium">1</span>
             </div>
           </div>
         </div>

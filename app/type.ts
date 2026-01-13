@@ -95,6 +95,23 @@ export interface TComment {
     avatar?: string;
 }
 
+export interface LoginModalProps {
+    onClose: () => void;
+    onSwitchRegister: () => void;
+    onLoginSuccess: (userData: any) => void;
+}
+
+export interface LoginData {
+    email: string;
+    password: string;
+}
+
+export interface LoginErrors {
+    email?: string;
+    password?: string;
+    form?: string;
+}
+
 export type TBooking2 = {
     id: number,
     maPhong: number,

@@ -7,7 +7,7 @@ const CheckOut = () => {
         <div className="bg-white min-h-screen">
             <HomeHeader />
             <main className="app-container mx-auto py-6 md:py-10 text-black">
-                <section className="relative group overflow-hidden rounded-xl md:rounded-2xl mb-8 md:mb-12 border border-slate-100 shadow-sm cursor-pointer">
+                <section className="relative group overflow-hidden rounded-xl md:rounded-2xl mb-8 md:mb-12 border border-[#335765] shadow-sm cursor-pointer">
                 </section>
             </main>
             <HomeFooter />

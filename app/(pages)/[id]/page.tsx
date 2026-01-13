@@ -82,14 +82,14 @@ const CityName = ({ params }: CityNameProps) => {
     if (loading) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-white">
-                <div className="h-12 w-12 rounded-full border-4 border-slate-100 border-t-rose-500 animate-spin"></div>
+                <div className="h-12 w-12 rounded-full border-4 border-[#65727D]  border-t-[#ED1B24] animate-spin"></div>
             </div>
         );
     }
 
     const AmenityIcon = ({ icon, label }: { icon: any; label: string }) => (
         <div className="group/tool relative cursor-pointer">
-            <div className="p-2 bg-slate-50 text-slate-400 rounded-lg transition-all duration-300 group-hover/tool:bg-black group-hover/tool:text-white">
+            <div className="p-2 bg-white  text-[#65727D] rounded-lg transition-all duration-300 group-hover/tool:bg-black group-hover/tool:text-white">
                 <FontAwesomeIcon icon={icon} className="w-3.5 h-3.5" />
             </div>
             <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-[10px] px-2 py-1 rounded opacity-0 group-hover/tool:opacity-100 transition-all duration-300 whitespace-nowrap z-1 pointer-events-none font-medium">
@@ -124,11 +124,11 @@ const CityName = ({ params }: CityNameProps) => {
                     </div>
                 )}
 
-                <div className="sticky top-0 z-1 bg-white border-b border-slate-200 py-4 shadow-sm">
+                <div className="sticky top-0 z-1 bg-white border-b border-[#B6D9E0] py-4 shadow-sm">
                     <div className="app-container mx-auto">
                         <div className='flex flex-col gap-3'>
-                            <div className="flex items-center gap-2 pr-3 border-r border-slate-200 shrink-0">
-                                <FontAwesomeIcon icon={faSlidersH} className="text-slate-400 text-sm" />
+                            <div className="flex items-center gap-2 pr-3 shrink-0">
+                                <FontAwesomeIcon icon={faSlidersH} className="text-[#65727D] text-sm" />
                                 <span className="text-[10px] sm:text-xs font-black uppercase text-black">Filters</span>
                             </div>
                             <div className="flex flex-wrap gap-2">
@@ -139,7 +139,7 @@ const CityName = ({ params }: CityNameProps) => {
                                         className={`flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border transition-all duration-300 whitespace-nowrap cursor-pointer text-[10px] sm:text-[11px] font-bold uppercase
                                         ${selectedFilters.includes(filter.id)
                                                 ? 'bg-black text-white border-black'
-                                                : 'bg-white text-slate-500 border-slate-200 hover:border-black'}`}
+                                                : 'bg-white text-[#65727D] border-[#65727D]  hover:border-black'}`}
                                     >
                                         <FontAwesomeIcon icon={filter.icon} />
                                         {filter.label}
@@ -154,8 +154,8 @@ const CityName = ({ params }: CityNameProps) => {
                     <div className="flex flex-col lg:flex-row gap-6 xl:gap-10">
                         <div className="w-full lg:w-3/5 order-2 lg:order-1">
                             <div className="mb-6">
-                                <h2 className="text-lg sm:text-xl md:text-2xl font-black text-black">{filteredRooms.length} stays found</h2>
-                                <p className="text-slate-500 text-xs sm:text-sm">Prices include a 20% membership discount.</p>
+                                <h2 className="text-lg sm:text-xl md:text-2xl font-black text-[#143944] ">{filteredRooms.length} stays found</h2>
+                                <p className="text-[#65727D] text-xs sm:text-sm">Prices include a 20% membership discount.</p>
                             </div>
 
                             <div className="grid grid-cols-1 gap-6">
@@ -166,19 +166,19 @@ const CityName = ({ params }: CityNameProps) => {
                                             <Link
                                                 key={room.id}
                                                 href={`/detail/${room.id}`}
-                                                className="group block bg-white rounded-2xl border border-slate-200 overflow-hidden transition-all duration-300 hover:shadow-xl cursor-pointer"
+                                                className="group block bg-white rounded-2xl border border-[#335765]  overflow-hidden transition-all duration-300 hover:shadow-xl cursor-pointer"
                                             >
                                                 <div className="flex flex-col sm:flex-row h-full">
                                                     <div className="relative w-full sm:w-56 md:w-64 lg:w-72 shrink-0 overflow-hidden h-48 sm:h-auto">
                                                         <img
                                                             src={room.hinhAnh && room.hinhAnh !== "" ? room.hinhAnh : "https://via.placeholder.com/400x300?text=No+Image"}
                                                             alt={room.tenPhong}
-                                                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                                            className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
                                                         />
                                                     </div>
                                                     <div className="p-4 sm:p-5 flex flex-col flex-1">
-                                                        <h3 className="text-base sm:text-lg font-bold text-black group-hover:text-rose-600 transition-colors duration-300 line-clamp-1 mb-1">{room.tenPhong}</h3>
-                                                        <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3">
+                                                        <h3 className="text-base sm:text-lg font-bold text-[#143944] hover:text-[#335765] transition-colors duration-300 line-clamp-1 mb-1">{room.tenPhong}</h3>
+                                                        <div className="text-[10px] font-bold text-[#65727D] uppercase tracking-widest mb-3">
                                                             {room.khach} guests • {room.phongNgu} room • {room.giuong} beds
                                                         </div>
                                                         <div className="flex flex-wrap gap-2 mb-4">
@@ -188,20 +188,20 @@ const CityName = ({ params }: CityNameProps) => {
                                                             {room.doXe && <AmenityIcon icon={faCar} label="Parking" />}
                                                             {room.tivi && <AmenityIcon icon={faTv} label="TV" />}
                                                         </div>
-                                                        <div className="mt-auto pt-4 border-t border-slate-50 flex flex-col justify-between sm:justify-end items-end gap-2">
+                                                        <div className="mt-auto pt-4 border-t border-[#B6D9E0] flex flex-col justify-between sm:justify-end items-end gap-2">
                                                             <div className="flex flex-col items-end">
-                                                                <span className="text-slate-400 line-through text-[10px] sm:text-xs font-bold">${originalPrice}</span>
+                                                                <span className="text-[#65727D] line-through text-[10px] sm:text-xs font-bold">${originalPrice}</span>
                                                                 <div className="flex items-baseline gap-1">
-                                                                    <span className="text-lg sm:text-xl font-black text-black">${room.giaTien}</span>
-                                                                    <span className="text-[9px] sm:text-[10px] font-bold text-slate-500 uppercase">/ night</span>
+                                                                    <span className="text-lg sm:text-xl font-black text-[#47242B] ">${room.giaTien}</span>
+                                                                    <span className="text-[9px] sm:text-[10px] font-bold text-[#65727D] uppercase">/ night</span>
                                                                 </div>
                                                             </div>
                                                             <div className="flex items-center justify-between w-full sm:mt-1">
-                                                                <div className="flex items-center gap-1.5 bg-slate-50 px-2 py-1 sm:px-2.5 rounded-lg">
+                                                                <div className="flex items-center gap-1.5 bg-white  px-2 py-1 sm:px-2.5 rounded-lg">
                                                                     <FontAwesomeIcon icon={faStar} className="text-amber-500 text-[10px] sm:text-xs" />
-                                                                    <span className="text-[10px] sm:text-xs font-black">{getRandomRating()}</span>
+                                                                    <span className="text-[10px] sm:text-xs font-black text-[#7D6834] ">{getRandomRating()}</span>
                                                                 </div>
-                                                                <div className="bg-black text-white px-4 sm:px-6 py-2 sm:py-2.5 rounded-xl font-bold text-[10px] sm:text-xs hover:bg-rose-600 transition-all duration-300 active:scale-95 shadow-lg shadow-black/10">
+                                                                <div className="bg-linear-to-br from-[#ACCAD5] to-[#F0944D] text-black px-4 sm:px-6 py-2 sm:py-2.5 rounded-xl font-bold text-[10px] sm:text-xs hover:bg-linear-to-br hover:from-[#F0944D] hover:to-black hover:text-white transition-all active:scale-95 shadow-lg shadow-black/10">
                                                                     Check Availability
                                                                 </div>
                                                             </div>
@@ -212,16 +212,16 @@ const CityName = ({ params }: CityNameProps) => {
                                         );
                                     })
                                 ) : (
-                                    <div className="text-center py-16 sm:py-20 bg-white rounded-2xl border border-dashed border-slate-300">
-                                        <p className="text-slate-400 font-bold uppercase tracking-widest text-xs sm:text-sm">No matching stays</p>
-                                        <button onClick={() => setSelectedFilters([])} className="mt-2 text-rose-600 font-bold underline cursor-pointer text-xs sm:text-sm transition-colors duration-300 hover:text-rose-700">Reset filters</button>
+                                    <div className="text-center py-16 sm:py-20 bg-white rounded-2xl border border-dashed border-[#65727D] ">
+                                        <p className="text-[#65727D] font-bold uppercase tracking-widest text-xs sm:text-sm">No matching stays</p>
+                                        <button onClick={() => setSelectedFilters([])} className="mt-2 text-[#ED1B24]  font-bold underline cursor-pointer text-xs sm:text-sm transition-colors duration-300 hover:text-[#ED1B24] ">Reset filters</button>
                                     </div>
                                 )}
                             </div>
                         </div>
 
                         <div className="w-full lg:w-2/5 order-1 lg:order-2">
-                            <div className="lg:sticky lg:top-32 h-62.5 sm:h-87.5 md:h-112.5 lg:h-[calc(100vh-140px)] rounded-2xl overflow-hidden border border-slate-200 z-1 shadow-md">
+                            <div className="lg:sticky lg:top-32 h-62.5 sm:h-87.5 md:h-112.5 lg:h-[calc(100vh-140px)] rounded-2xl overflow-hidden border border-[#335765]  z-1 shadow-md">
                                 {mapUrl ? (
                                     <iframe
                                         width="100%"
@@ -231,8 +231,8 @@ const CityName = ({ params }: CityNameProps) => {
                                         src={mapUrl}
                                     ></iframe>
                                 ) : (
-                                    <div className="w-full h-full bg-slate-100 flex items-center justify-center">
-                                        <span className="text-slate-400 font-bold">Map unavailable</span>
+                                    <div className="w-full h-full bg-white flex items-center justify-center">
+                                        <span className="text-[#65727D] font-bold">Map unavailable</span>
                                     </div>
                                 )}
                             </div>
