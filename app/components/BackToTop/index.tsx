@@ -43,7 +43,7 @@ const BackToTopButton = () => {
             <button
                 onClick={scrollToTop}
                 aria-label="Back to top"
-                className="fixed bottom-[50%] sm:bottom-[30%] md:bottom-[30%] lg:bottom-[5%] right-[1.5%] w-9 h-9 sm:w-10 sm:h-10 md:w-11 md:h-11 lg:w-12 lg:h-12 bg-black/70 backdrop-blur text-white flex items-center justify-center rounded-full shadow-xl transition-all duration-300 z-10 cursor-pointer opacity-40 hover:opacity-100 hover:bg-rose-500 hover:scale-110"
+                className="fixed bottom-[50%] sm:bottom-[30%] md:bottom-[30%] lg:bottom-[5%] right-[1.5%] w-9 h-9 sm:w-10 sm:h-10 md:w-11 md:h-11 lg:w-12 lg:h-12 bg-black/70 backdrop-blur text-white flex items-center justify-center rounded-full shadow-xl transition-all duration-300 z-2 cursor-pointer opacity-40 hover:opacity-100 hover:bg-rose-500 hover:scale-110"
             >
                 <FontAwesomeIcon icon={faChevronUp} className="text-xs sm:text-sm md:text-lg lg:text-xl" />
             </button>

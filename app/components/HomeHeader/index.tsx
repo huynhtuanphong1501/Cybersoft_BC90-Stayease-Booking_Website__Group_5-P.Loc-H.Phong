@@ -215,7 +215,7 @@ const HomeHeader = ({ isHome = false, homeAnimationDone = false }: HeaderProps) 
                             className={`absolute right-0 top-12 sm:top-14 
             ${userLogin ? "w-105 xl:w-120" : "w-44"} 
             bg-white/95 backdrop-blur-md 
-            rounded-2xl shadow-2xl border border-gray-100 z-50 p-4`}
+            rounded-2xl shadow-2xl border border-gray-100 z-2 p-4`}
                         >
                             {userLogin ? (
                                 userLogin.content.user.role === "ADMIN" ? (
@@ -306,7 +306,7 @@ const HomeHeader = ({ isHome = false, homeAnimationDone = false }: HeaderProps) 
         <>
             <AnimatePresence>
                 {showToast && (
-                    <div className="fixed top-[5%] left-0 w-full flex justify-center z-50 pointer-events-none">
+                    <div className="fixed top-[5%] left-0 w-full flex justify-center z-2 pointer-events-none">
                         <motion.div
                             initial={{ opacity: 0, y: -40 }}
                             animate={{ opacity: 1, y: 0 }}
@@ -328,7 +328,7 @@ const HomeHeader = ({ isHome = false, homeAnimationDone = false }: HeaderProps) 
                         <motion.div
                             initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
                             onClick={() => setIsMenuOpen(false)}
-                            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 lg:hidden"
+                            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-2 lg:hidden"
                         />
                         <motion.div
                             initial={{ x: "-100%" }}
@@ -336,7 +336,7 @@ const HomeHeader = ({ isHome = false, homeAnimationDone = false }: HeaderProps) 
                             exit={{ x: "-100%" }}
                             transition={{ type: "spring", damping: 25, stiffness: 200 }}
                             className="fixed top-0 left-0 h-full w-70 sm:w-[320px] 
-    bg-white z-101 shadow-2xl p-6 lg:hidden"
+    bg-white z-2 shadow-2xl p-6 lg:hidden"
                         >
                             <div className="flex justify-between items-center mb-10">
                                 <img src="/img/logo.png" className="h-8" alt="Logo" />
@@ -372,7 +372,7 @@ const HomeHeader = ({ isHome = false, homeAnimationDone = false }: HeaderProps) 
                             initial={{ y: -60, opacity: 0 }}
                             animate={{ y: 0, opacity: 1 }}
                             transition={{ duration: 0.5, ease: [0.33, 1, 0.68, 1] }}
-                            className={`fixed top-0 left-0 w-full z-40 transition-all duration-300 rounded-b-2xl sm:rounded-b-3xl lg:rounded-b-4xl xl:rounded-b-[2.5rem] ${showBg ? "bg-[#C3DFE3] shadow-md" : "bg-white/30 backdrop-blur-sm"
+                            className={`fixed top-0 left-0 w-full z-2 transition-all duration-300 rounded-b-2xl sm:rounded-b-3xl lg:rounded-b-4xl xl:rounded-b-[2.5rem] ${showBg ? "bg-[#C3DFE3] shadow-md" : "bg-white/30 backdrop-blur-sm"
                                 }`}
                         >
                             <div className="app-container mx-auto">{HeaderContent}</div>
@@ -380,7 +380,7 @@ const HomeHeader = ({ isHome = false, homeAnimationDone = false }: HeaderProps) 
                     )}
                 </AnimatePresence>
             ) : (
-                <header className="sticky top-0 z-40 bg-[#C3DFE3] shadow-md rounded-b-lg sm:rounded-b-xl md:rounded-b-2xl lg:rounded-b-3xl xl:rounded-b-4xl">
+                <header className="sticky top-0 z-2 bg-[#C3DFE3] shadow-md rounded-b-lg sm:rounded-b-xl md:rounded-b-2xl lg:rounded-b-3xl xl:rounded-b-4xl">
                     <div className="app-container mx-auto">{HeaderContent}</div>
                 </header>
             )}
@@ -389,7 +389,7 @@ const HomeHeader = ({ isHome = false, homeAnimationDone = false }: HeaderProps) 
                 {authModal && (
                     <motion.div
                         initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                        className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4"
+                        className="fixed inset-0 z-10 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4"
                         onClick={() => setAuthModal(null)}
                     >
                         <div onClick={(e) => e.stopPropagation()} className="app-container mx-auto">

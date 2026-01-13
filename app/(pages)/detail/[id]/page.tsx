@@ -17,7 +17,7 @@ import {
     faBan,
     faCircleInfo,
 } from "@fortawesome/free-solid-svg-icons";
-import { DetailRoomProps, TCity } from "@/app/type";
+import { DetailRoomProps, IBooking, TCity } from "@/app/type";
 import { useRouter } from "next/navigation";
 import CommentSection from "./comment";
 import BackToTopButton from "@/app/components/BackToTop";
@@ -26,14 +26,7 @@ import { DayPicker } from "react-day-picker";
 import { format } from "date-fns";
 import "react-day-picker/dist/style.css";
 
-interface IBooking {
-    id: number;
-    maPhong: number;
-    ngayDen: string;
-    ngayDi: string;
-    soLuongKhach: number;
-    maNguoiDung: number;
-}
+import { createPortal } from "react-dom";
 
 const DetailRoom = ({ params }: DetailRoomProps) => {
     const { id } = React.use(params);
@@ -53,6 +46,7 @@ const DetailRoom = ({ params }: DetailRoomProps) => {
     const [isCalendarOpen, setIsCalendarOpen] = useState(false);
     const calendarRef = useRef<HTMLDivElement>(null);
     const [bookedRanges, setBookedRanges] = useState<IBooking[]>([]);
+    const [mounted, setMounted] = useState(false);
 
     const calculateBooking = () => {
         if (!dataRoom || !checkIn || !checkOut) return null;
@@ -107,6 +101,10 @@ const DetailRoom = ({ params }: DetailRoomProps) => {
         };
         fetchData();
     }, [id]);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
 
     const disabledDays = [
         { before: new Date() },
@@ -231,7 +229,7 @@ const DetailRoom = ({ params }: DetailRoomProps) => {
             </div>
 
             <div className="w-full">
-                <button onClick={(e) => { e.stopPropagation(); handleBooking(); }} className="w-full py-4 bg-linear-to-r from-rose-600 to-pink-600 text-white font-black rounded-xl shadow-lg hover:brightness-110 active:scale-95 transition-all flex items-center justify-center gap-2 uppercase tracking-widest text-sm relative z-10 cursor-pointer">
+                <button onClick={(e) => { e.stopPropagation(); handleBooking(); }} className="w-full py-4 bg-linear-to-r from-rose-600 to-pink-600 text-white font-black rounded-xl shadow-lg hover:brightness-110 active:scale-95 transition-all flex items-center justify-center gap-2 uppercase tracking-widest text-sm relative z-5 cursor-pointer">
                     <span>Reserve Now</span>
                     {bookingDetails && (
                         <>
@@ -242,66 +240,72 @@ const DetailRoom = ({ params }: DetailRoomProps) => {
                 </button>
             </div>
 
-            <AnimatePresence>
-                {isCalendarOpen && (
-                    <>
-                        <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 cursor-pointer"
-                            onClick={() => setIsCalendarOpen(false)}
-                        />
+            {mounted && createPortal(
+                <AnimatePresence>
+                    {isCalendarOpen && (
+                        <div className="fixed inset-0 z-5 flex items-center justify-center">
+                            <motion.div
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                className="absolute inset-0 bg-black/50 backdrop-blur-sm cursor-pointer"
+                                onClick={() => setIsCalendarOpen(false)}
+                            />
 
-                        <motion.div
-                            initial={{ opacity: 0, scale: 0.9, y: 20 }}
-                            animate={{ opacity: 1, scale: 1, y: 0 }}
-                            exit={{ opacity: 0, scale: 0.9, y: 20 }}
-                            transition={{ duration: 0.3 }}
-                            className="fixed inset-0 m-auto z-10 bg-white rounded-3xl p-6 shadow-2xl w-[95%] max-w-95 h-fit border border-slate-200"
-                        >
-                            <div className="flex justify-between items-center mb-4 pb-2 border-b">
-                                <div>
+                            <motion.div
+                                initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                                animate={{ opacity: 1, scale: 1, y: 0 }}
+                                exit={{ opacity: 0, scale: 0.9, y: 20 }}
+                                transition={{ duration: 0.3 }}
+                                className="relative z-6 bg-white rounded-3xl p-6 shadow-2xl w-[95%] max-w-100 h-fit border border-slate-200"
+                            >
+                                <div className="flex justify-between items-center mb-4 pb-2 border-b">
                                     <h3 className="font-black text-lg text-black">Select dates</h3>
+                                    <button
+                                        onClick={() => setIsCalendarOpen(false)}
+                                        className="text-slate-400 hover:text-black text-xl cursor-pointer p-2"
+                                    >
+                                        ✕
+                                    </button>
                                 </div>
-                                <button onClick={() => setIsCalendarOpen(false)} className="text-slate-400 hover:text-black text-xl cursor-pointer">✕</button>
-                            </div>
 
-                            <div className="flex justify-center bg-slate-50 rounded-xl p-2">
-                                <DayPicker
-                                    mode="range"
-                                    selected={{ from: checkIn, to: checkOut }}
-                                    onSelect={(range) => {
-                                        setCheckIn(range?.from);
-                                        setCheckOut(range?.to);
-                                        if (range?.from && range?.to) {
-                                            setTimeout(() => setIsCalendarOpen(false), 300);
-                                        }
-                                    }}
-                                    disabled={disabledDays}
-                                    numberOfMonths={1}
-                                    className="text-black"
-                                />
-                            </div>
+                                <div className="flex justify-center bg-slate-50 rounded-xl p-2">
+                                    <DayPicker
+                                        mode="range"
+                                        selected={{ from: checkIn, to: checkOut }}
+                                        onSelect={(range) => {
+                                            setCheckIn(range?.from);
+                                            setCheckOut(range?.to);
+                                            if (range?.from && range?.to) {
+                                                setTimeout(() => setIsCalendarOpen(false), 300);
+                                            }
+                                        }}
+                                        disabled={disabledDays}
+                                        numberOfMonths={1}
+                                        className="text-black"
+                                    />
+                                </div>
 
-                            <div className="flex justify-between items-center mt-6 pt-4 border-t border-slate-100">
-                                <button
-                                    onClick={() => { setCheckIn(undefined); setCheckOut(undefined); }}
-                                    className="text-xs font-black uppercase underline text-rose-500 cursor-pointer"
-                                >
-                                    Clear
-                                </button>
-                                <button
-                                    onClick={() => setIsCalendarOpen(false)}
-                                    className="bg-black text-white px-8 py-3 rounded-xl text-xs font-black uppercase cursor-pointer"
-                                >
-                                    Close
-                                </button>
-                            </div>
-                        </motion.div>
-                    </>
-                )}
-            </AnimatePresence>
+                                <div className="flex justify-between items-center mt-6 pt-4 border-t border-slate-100">
+                                    <button
+                                        onClick={() => { setCheckIn(undefined); setCheckOut(undefined); }}
+                                        className="text-xs font-black uppercase underline text-rose-500 cursor-pointer"
+                                    >
+                                        Clear
+                                    </button>
+                                    <button
+                                        onClick={() => setIsCalendarOpen(false)}
+                                        className="bg-black text-white px-8 py-3 rounded-xl text-xs font-black uppercase cursor-pointer"
+                                    >
+                                        Close
+                                    </button>
+                                </div>
+                            </motion.div>
+                        </div>
+                    )}
+                </AnimatePresence>,
+                document.body
+            )}
         </div>
     );
 
@@ -324,7 +328,7 @@ const DetailRoom = ({ params }: DetailRoomProps) => {
 
             <AnimatePresence>
                 {showAuthNotice && (
-                    <motion.div initial={{ opacity: 0, y: -100, x: "-50%" }} animate={{ opacity: 1, y: 0, x: "-50%" }} exit={{ opacity: 0, y: -100, x: "-50%" }} className="fixed top-6 left-1/2 z-50 bg-white shadow-2xl rounded-2xl px-6 py-4 flex items-center gap-4 border border-slate-100 w-[90%] max-w-sm">
+                    <motion.div initial={{ opacity: 0, y: -100, x: "-50%" }} animate={{ opacity: 1, y: 0, x: "-50%" }} exit={{ opacity: 0, y: -100, x: "-50%" }} className="fixed top-6 left-1/2 z-5 bg-white shadow-2xl rounded-2xl px-6 py-4 flex items-center gap-4 border border-slate-100 w-[90%] max-w-sm">
                         <div className="bg-rose-100 p-3 rounded-full shrink-0"><Lock className="text-rose-600" size={24} /></div>
                         <div className="flex-1"><p className="font-black text-black text-sm">Action Required</p><p className="text-xs text-slate-500 font-bold">Please login to continue.</p></div>
                     </motion.div>
@@ -427,8 +431,8 @@ const DetailRoom = ({ params }: DetailRoomProps) => {
                 </section>
             </main>
 
-            <section className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 p-4 z-40 shadow-[0_-10px_30px_rgba(0,0,0,0.1)]">
-                <div className="max-w-3xl mx-auto">
+            <section className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 p-4 z-5 shadow-[0_-10px_30px_rgba(0,0,0,0.1)]">
+                <div className="app-container mx-auto">
                     <BookingInputs isSidebar={false} />
                 </div>
             </section>
@@ -438,7 +442,7 @@ const DetailRoom = ({ params }: DetailRoomProps) => {
 
             <AnimatePresence>
                 {showSuccessPopup && (
-                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm px-4">
+                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-5 flex items-center justify-center bg-black/60 backdrop-blur-sm px-4">
                         <motion.div initial={{ scale: 0.9 }} animate={{ scale: 1 }} className="bg-white rounded-3xl p-10 max-w-sm w-full shadow-2xl text-center">
                             <CheckCircle2 className="text-green-600 mb-4 mx-auto" size={60} />
                             <h2 className="text-2xl font-black mb-2 tracking-tight">Booking Confirmed!</h2>

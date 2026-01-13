@@ -129,7 +129,7 @@ const Home = () => {
 
   return (
     <div className="w-full min-h-screen bg-linear-to-b from-[#C6C6C6] via-[#8D8D8D] to-[#383838] relative overflow-hidden">
-      <div className="fixed inset-0 z-50 pointer-events-none">
+      <div className="fixed inset-0 z-1 pointer-events-none">
         <motion.div
           initial={{ y: 0 }}
           animate={splashDone ? { y: "-100%" } : {}}
@@ -173,7 +173,7 @@ const Home = () => {
               </div>
             </div>
 
-            <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-2 z-10">
+            <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-2 z-1">
               {scrollSnaps.map((_, index) => (
                 <button
                   key={index}
@@ -189,7 +189,7 @@ const Home = () => {
             </div>
 
             {homeReady && (
-              <div className="absolute bottom-10 w-full left-0 z-10 animate__animated animate__fadeInUp">
+              <div className="absolute bottom-10 w-full left-0 z-1 animate__animated animate__fadeInUp">
                 <div className="w-[90%] xl:w-[80%] 2xl:w-[85%] mx-auto">
                   <DestinationBar />
                 </div>
@@ -201,7 +201,7 @@ const Home = () => {
                 initial={{ x: -40, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
                 transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
-                className="fixed left-1 bottom-[20%] z-10"
+                className="fixed left-1 bottom-[20%] z-1"
               >
                 <SocialMedia />
               </motion.div>
