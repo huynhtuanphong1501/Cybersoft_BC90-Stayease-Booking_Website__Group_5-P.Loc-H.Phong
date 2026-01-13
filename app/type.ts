@@ -77,6 +77,15 @@ export interface TBooking {
     roomDetails?: any;
 };
 
+export interface IBooking {
+    id: number;
+    maPhong: number;
+    ngayDen: string;
+    ngayDi: string;
+    soLuongKhach: number;
+    maNguoiDung: number;
+}
+
 export interface TComment {
     id: number;
     ngayBinhLuan: string;
@@ -102,7 +111,7 @@ export type TBookingView = {
     ngayDi: string,
     soLuongKhach: number,
     maNguoiDung: number,
-    roomName?: string ,
+    roomName?: string,
     userName?: string
 }
 
@@ -117,10 +126,10 @@ export type ModalCmpsProps = {
 
 //Admin function types
 export type EditProps = {
-  open: boolean;
-  target: TUser | TCity | TRooms | TBookingView | null;
-  onCancel: () => void;
-  onSuccess: () => void;
+    open: boolean;
+    target: TUser | TCity | TRooms | TBookingView | null;
+    onCancel: () => void;
+    onSuccess: () => void;
 };
 
 export type AddProps = {
@@ -150,6 +159,6 @@ export type DashData = {
 // countUp Props
 export type CountUpProps = {
     value: number;
-    duration?: number ;
+    duration?: number;
     prefix?: string;
 };

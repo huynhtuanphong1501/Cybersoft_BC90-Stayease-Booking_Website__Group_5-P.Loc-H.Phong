@@ -230,37 +230,49 @@ const Listing = () => {
 
             <main className="app-container mx-auto py-6 md:py-10">
                 <div className="flex flex-col lg:flex-row gap-8 xl:gap-14">
-                    <aside className="w-full lg:w-[320px] xl:w-95 shrink-0">
-                        <div className="bg-white rounded-4xl p-6 md:p-8 shadow-sm border lg:sticky lg:top-28">
-                            <div className="flex items-center lg:flex-col gap-5 text-center">
+                    <aside className="w-full lg:w-75 xl:w-87.5 shrink-0">
+                        <div className="bg-white rounded-3xl p-4 sm:p-6 shadow-sm border lg:sticky lg:top-24">
+                            <div className="flex items-center lg:flex-col gap-3 sm:gap-4 md:gap-5 text-left lg:text-center">
                                 <img
                                     src="/img/avatarLogo.jpg"
                                     alt={user.name}
-                                    className="w-24 h-24 xl:w-32 xl:h-32 rounded-full object-cover shadow-lg ring-4 ring-rose-50 cursor-pointer transition-all duration-300 hover:scale-105"
+                                    className="w-14 h-14 sm:w-20 sm:h-20 md:w-24 md:h-24 xl:w-28 xl:h-28 rounded-full object-cover shadow-lg ring-4 ring-rose-50 cursor-pointer transition-all duration-300 hover:scale-105"
                                 />
-                                <h2 className="text-2xl font-black truncate">{user.name}</h2>
+                                <div className="min-w-0 flex-1 lg:flex-none">
+                                    <h2 className="text-lg sm:text-xl md:text-2xl font-black truncate text-gray-900 leading-tight">{user.name}</h2>
+                                    <p className="text-[10px] text-gray-400 font-bold uppercase mt-0.5 lg:mt-1">Profile Account</p>
+                                </div>
                             </div>
 
-                            <div className="mt-8 space-y-3 border-t pt-8">
-                                <div className="p-4 bg-gray-50 rounded-2xl">
-                                    <p className="text-[10px] uppercase font-black text-gray-400">Email</p>
-                                    <p className="text-sm font-bold truncate">{user.email}</p>
+                            <div className="mt-5 lg:mt-6 space-y-2 sm:space-y-2.5 border-t pt-5 lg:pt-6">
+                                <div className="p-3 bg-gray-50 rounded-xl border border-transparent hover:border-gray-200 transition-colors">
+                                    <p className="text-[9px] uppercase font-black text-gray-400 tracking-wider">Email Address</p>
+                                    <p className="text-xs sm:text-sm font-bold truncate text-gray-800">{user.email}</p>
                                 </div>
-                                <div className="p-4 bg-gray-50 rounded-2xl">
-                                    <p className="text-[10px] uppercase font-black text-gray-400">Phone</p>
-                                    <p className="text-sm font-bold">{user.phone || "Not provided"}</p>
+
+                                <div className="p-3 bg-gray-50 rounded-xl border border-transparent hover:border-gray-200 transition-colors">
+                                    <p className="text-[9px] uppercase font-black text-gray-400 tracking-wider">Phone Number</p>
+                                    <p className="text-xs sm:text-sm font-bold text-gray-800">{user.phone || "Not provided"}</p>
+                                </div>
+
+                                <div className="p-3 bg-gray-50 rounded-xl border border-transparent hover:border-gray-200 transition-colors">
+                                    <p className="text-[9px] uppercase font-black text-gray-400 tracking-wider">Gender</p>
+                                    <p className="text-xs sm:text-sm font-bold text-gray-800">
+                                        {user.gender === true ? "Male" : user.gender === false ? "Female" : "Not specified"}
+                                    </p>
                                 </div>
                             </div>
 
                             <button
                                 onClick={handleEditProfile}
-                                className="w-full mt-8 bg-gray-900 py-4 rounded-2xl font-bold text-white hover:bg-rose-500 transition-all duration-300 cursor-pointer active:scale-95">
+                                className="w-full mt-5 lg:mt-6 bg-gray-900 py-3 sm:py-3.5 rounded-xl sm:rounded-2xl font-bold text-white text-xs sm:text-sm md:text-base hover:bg-rose-500 transition-all duration-300 cursor-pointer active:scale-95 shadow-md"
+                            >
                                 Edit Profile
                             </button>
                         </div>
                     </aside>
 
-                    <section className="flex-1">
+                    <section className="w-full lg:w-[70%]">
                         <div className="mb-8">
                             <h1 className="text-3xl md:text-4xl xl:text-5xl font-black">
                                 Booking History

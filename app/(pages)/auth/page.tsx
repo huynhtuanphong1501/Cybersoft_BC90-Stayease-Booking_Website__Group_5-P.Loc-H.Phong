@@ -53,17 +53,17 @@ const Auth = () => {
 
       <div className="absolute inset-0 bg-linear-to-br from-black/50 via-black/25 to-black/40" />
 
-      <div className="relative z-10 w-full max-w-6xl flex flex-col lg:flex-row items-center justify-between">
+      <div className="relative z-1 w-full max-w-6xl flex flex-col lg:flex-row items-center justify-between">
         <div className="hidden lg:flex w-1/2 items-center justify-center">
           <div className="w-100 h-100 rounded-full bg-linear-to-br from-blue-900 via-indigo-500 to-pink-500 flex items-center justify-center shadow-[0_40px_120px_rgba(56,189,248,0.45)]">
             <div className="w-90 h-90 bg-gray-300 rounded-full flex items-center justify-center shadow-xl relative">
-              <div className="absolute top-[28%] left-1/2 -translate-x-1/2 w-40 h-40 bg-indigo-800 rounded-full flex items-center justify-center shadow-lg z-10">
+              <div className="absolute top-[28%] left-1/2 -translate-x-1/2 w-40 h-40 bg-indigo-800 rounded-full flex items-center justify-center shadow-lg z-1">
                 <div className="flex flex-col items-center">
                   <div className="w-5 h-5 bg-black rounded-full mb-1" />
                   <div className="w-2 h-6 bg-black rounded-full" />
                 </div>
               </div>
-              <div className="absolute top-[15%] left-1/2 -translate-x-1/2 w-30 h-30 border-8 border-gray-500 rounded-t-full bg-transparent z-5" />
+              <div className="absolute top-[15%] left-1/2 -translate-x-1/2 w-30 h-30 border-8 border-gray-500 rounded-t-full bg-transparent z-1" />
             </div>
           </div>
         </div>

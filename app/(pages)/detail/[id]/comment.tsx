@@ -136,7 +136,7 @@ const CommentSection = ({ roomId }: { roomId: string }) => {
                         initial={{ opacity: 0, y: -20, x: "-50%" }}
                         animate={{ opacity: 1, y: 0, x: "-50%" }}
                         exit={{ opacity: 0, y: -20, x: "-50%" }}
-                        className="fixed top-6 left-1/2 z-50 bg-white shadow-2xl rounded-2xl px-6 py-4 flex items-center gap-4 border border-slate-100 w-[90%] max-w-87.5"
+                        className="fixed top-6 left-1/2 z-5 bg-white shadow-2xl rounded-2xl px-6 py-4 flex items-center gap-4 border border-slate-100 w-[90%] max-w-87.5"
                     >
                         <div className="bg-amber-100 p-2 rounded-full shrink-0">
                             <Lock className="text-amber-600" size={20} />
@@ -210,21 +210,38 @@ const CommentSection = ({ roomId }: { roomId: string }) => {
                     </div>
                 </div>
 
-                <div className="relative group">
+                <div className="flex flex-col w-full rounded-2xl border border-slate-200 bg-white shadow-sm focus-within:border-black focus-within:ring-4 focus-within:ring-black/5 transition-all overflow-hidden">
                     <textarea
                         value={newComment}
                         onChange={(e) => setNewComment(e.target.value)}
                         placeholder="Share your experience about this place..."
-                        className="w-full p-5 sm:p-6 rounded-2xl border border-slate-200 focus:border-black focus:ring-4 focus:ring-black/5 outline-none transition-all min-h-32 text-black bg-white shadow-sm"
+                        className="w-full p-4 sm:p-5 md:p-6 min-h-30 sm:min-h-37.5 md:min-h-45 text-sm sm:text-base text-black outline-none resize-none bg-transparent"
                     />
-                    <button
-                        onClick={handlePostComment}
-                        disabled={isSubmitting}
-                        className="absolute bottom-4 right-4 bg-black text-white p-3 sm:px-6 sm:py-3 rounded-xl font-bold flex items-center gap-2 hover:bg-slate-800 transition-all active:scale-95 disabled:opacity-50 disabled:scale-100 shadow-lg"
-                    >
-                        <span className="hidden sm:inline">{isSubmitting ? "Posting..." : "Post review"}</span>
-                        <Send size={18} className={isSubmitting ? "animate-pulse" : ""} />
-                    </button>
+
+                    <div className="flex items-center justify-end p-3 sm:p-4 border-t border-slate-50 bg-slate-50/50">
+                        <button
+                            onClick={handlePostComment}
+                            disabled={isSubmitting}
+                            className="
+                flex items-center gap-2 font-bold transition-all active:scale-95 disabled:opacity-50 disabled:scale-100 shadow-sm
+                bg-black text-white 
+                text-xs sm:text-sm md:text-base
+                px-4 py-2 sm:px-5 sm:py-2.5 md:px-6 md:py-3
+                lg:px-8 lg:py-3.5
+                xl:px-10
+                rounded-lg sm:rounded-xl
+                hover:bg-slate-800
+            "
+                        >
+                            <span className="inline-block">
+                                {isSubmitting ? "Submitting..." : "Submit review"}
+                            </span>
+                            <Send
+                                size={16}
+                                className={`${isSubmitting ? "animate-pulse" : ""} sm:w-4.5 md:w-5`}
+                            />
+                        </button>
+                    </div>
                 </div>
             </div>
         </section>

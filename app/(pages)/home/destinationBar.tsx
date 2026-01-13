@@ -122,7 +122,7 @@ const DestinationBar = () => {
                 </div>
 
                 {isOpen && filteredLocations.length > 0 && (
-                    <div className="absolute top-[115%] left-0 w-full bg-white rounded-2xl shadow-2xl border border-gray-100 z-50 overflow-hidden">
+                    <div className="absolute top-[115%] left-0 w-full bg-white rounded-2xl shadow-2xl border border-gray-100 z-1 overflow-hidden">
                         <div className="max-h-80 overflow-y-auto p-2">
                             {filteredLocations.map(item => (
                                 <div

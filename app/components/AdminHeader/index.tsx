@@ -15,10 +15,9 @@ export default function AdminHeader({
   const pathname = usePathname();
 
   const linkClass = (path: string) =>
-    `flex items-center px-4 py-3 rounded-xl text-sm sm:text-base font-medium transition cursor-pointer ${
-      pathname === path
-        ? "bg-white text-black shadow-sm"
-        : "text-neutral-300 hover:bg-neutral-800 hover:text-white"
+    `flex items-center px-4 py-3 rounded-xl text-sm sm:text-base font-medium transition cursor-pointer ${pathname === path
+      ? "bg-white text-black shadow-sm"
+      : "text-neutral-300 hover:bg-neutral-800 hover:text-white"
     }`;
 
   return (
@@ -56,7 +55,7 @@ export default function AdminHeader({
       </aside>
 
       {sidebarOpen && (
-        <div className="fixed inset-0 z-50 flex lg:hidden">
+        <div className="fixed inset-0 z-1 flex lg:hidden">
           <div
             className="absolute inset-0 bg-black/60"
             onClick={() => setSidebarOpen(false)}

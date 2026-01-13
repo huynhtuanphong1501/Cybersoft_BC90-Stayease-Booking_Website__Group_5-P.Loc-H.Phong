@@ -68,7 +68,7 @@ const LoginModal = ({ onClose, onSwitchRegister, onLoginSuccess }: LoginModalPro
     };
 
     return (
-        <section className="w-full max-w-[92%] sm:max-w-md md:max-w-lg lg:max-w-md xl:max-w-lg bg-[#FDF8F3] rounded-2xl p-5 sm:p-6 md:p-8 lg:p-8 xl:p-10 relative shadow-lg mx-auto" onClick={(e) => e.stopPropagation()}>
+        <section className="app-container mx-auto sm:max-w-md md:max-w-lg lg:max-w-md xl:max-w-lg bg-white rounded-2xl p-5 sm:p-6 md:p-8 lg:p-8 xl:p-10 relative shadow-lg" onClick={(e) => e.stopPropagation()}>
             <button onClick={onClose} className="absolute right-4 top-4 text-[#272B45] hover:text-red-600 transition cursor-pointer">
                 <FontAwesomeIcon icon={faXmark} size="lg" />
             </button>
