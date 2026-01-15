@@ -1,17 +1,17 @@
 import HomeHeader from '@/app/components/HomeHeader'
 import React from 'react'
 
-const About = () => {
+const Blogs = () => {
     return (
         <>
             <HomeHeader />
             <main>
                 <div>
-                    Đây là trang About
+                    Đây là trang Blogs
                 </div>
             </main>
         </>
     )
 }
 
-export default About
+export default Blogs
