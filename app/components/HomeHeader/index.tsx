@@ -113,11 +113,11 @@ const HomeHeader = ({ isHome = false, homeAnimationDone = false }: HeaderProps) 
                         Inspiration
                     </Link>
                     <Link
-                        href="/about"
+                        href="/blogs"
                         className={`px-4 py-1.5 rounded-full cursor-pointer transition-all duration-300 hover:scale-105 ${pathname === "/about" ? "bg-black text-white shadow" : "text-gray-700 hover:bg-black/5"
                             }`}
                     >
-                        About
+                        Blogs
                     </Link>
                 </div>
             </div>
@@ -353,11 +353,11 @@ const HomeHeader = ({ isHome = false, homeAnimationDone = false }: HeaderProps) 
                                     Inspiration
                                 </Link>
                                 <Link
-                                    href="/about"
+                                    href="/blogs"
                                     onClick={() => setIsMenuOpen(false)}
                                     className={`p-4 rounded-2xl font-semibold text-lg cursor-pointer transition-colors ${pathname === "/about" ? "bg-[#C3DFE3] text-[#143944]" : "text-gray-700 hover:bg-gray-50"}`}
                                 >
-                                    About
+                                    Blogs
                                 </Link>
                             </nav>
                         </motion.div>

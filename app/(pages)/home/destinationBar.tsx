@@ -91,7 +91,7 @@ const DestinationBar = () => {
     };
 
     return (
-        <div className="w-full border-3 border-[#ED1B24] lg:rounded-full rounded-2xl p-2 flex flex-col lg:flex-row items-center gap-2 bg-white transition-all duration-300 shadow-sm">
+        <div className="w-full border-3 border-[#F56BEF] lg:rounded-full rounded-2xl p-2 flex flex-col lg:flex-row items-center gap-2 bg-white transition-all duration-300 shadow-sm">
             <div className="relative flex-[1.5] w-full transition-all duration-300" ref={dropdownRef}>
                 <div className="w-full h-full px-6 py-2 lg:rounded-full rounded-xl hover:bg-gray-50 transition-all duration-300 border border-transparent focus-within:border-gray-300 flex flex-col justify-center">
                     <label className="text-[10px] font-bold uppercase tracking-wider text-gray-800 ml-px">
@@ -214,7 +214,6 @@ const DestinationBar = () => {
                 <span>Search</span>
             </Link>
         </div>
-
     );
 };
 

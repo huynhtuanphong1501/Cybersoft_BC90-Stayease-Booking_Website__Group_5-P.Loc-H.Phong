@@ -69,9 +69,10 @@ const Home = () => {
     return () => clearTimeout(t);
   }, []);
 
-  const renderLoctionBanner = () => {
+  const renderLocationBanner = () => {
     return groupedCities.map((group, index) => (
       <div
+        key={group.key || index}
         ref={heroRef}
         className="absolute inset-0 overflow-hidden"
       >
@@ -202,7 +203,7 @@ const Home = () => {
           <section className="relative h-screen">
             <div className="absolute inset-0 overflow-hidden" ref={heroRef}>
               <div className="flex h-full">
-                {renderLoctionBanner()}
+                {renderLocationBanner()}
               </div>
             </div>
 
@@ -262,25 +263,93 @@ const Home = () => {
               <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-center mb-10 sm:mb-12 md:mb-14 lg:mb-16 xl:mb-20 wow animate__animated animate__fadeInUp">
                 Amazing Experiences
               </h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-6 sm:gap-8 lg:gap-10 xl:gap-12">
-                <div
-                  className="h-64 sm:h-72 md:h-80 lg:h-100 xl:h-112.5 2xl:h-125 rounded-2xl overflow-hidden shadow-md bg-gray-200 wow animate__animated animate__fadeInUp"
-                  data-wow-delay="0s"
-                >
-                  <img src="/experiences/exp1.jpg" className="w-full h-full object-cover" />
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-0 overflow-hidden">
+
+                <div className="wow animate__animated animate__fadeInUp relative aspect-square overflow-hidden group cursor-pointer" data-wow-delay="0s">
+                  <img
+                    src="/img/Experience/northern.jpg"
+                    alt="Northern Heritage"
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 ease-in-out"
+                  />
+                  <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-all duration-300 flex flex-col justify-end text-center p-4 sm:p-6 lg:p-4 xl:p-6">
+                    <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                      <p className="text-white/90 text-[10px] tracking-[0.2em] mb-1 uppercase">
+                        Experience
+                      </p>
+                      <h3 className="text-white font-bold text-base sm:text-lg lg:text-base xl:text-xl leading-tight uppercase mb-1">
+                        Northern Heritage
+                      </h3>
+                      <p className="text-white/80 text-[10px] sm:text-xs italic opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100 line-clamp-1">
+                        Old Quarters & Mountain Views
+                      </p>
+                    </div>
+                  </div>
                 </div>
-                <div
-                  className="h-64 sm:h-72 md:h-80 lg:h-100 xl:h-112.5 2xl:h-125 rounded-2xl overflow-hidden shadow-md bg-gray-200 wow animate__animated animate__fadeInUp"
-                  data-wow-delay="0.2s"
-                >
-                  <img src="/experiences/exp2.jpg" className="w-full h-full object-cover" />
+
+                <div className="wow animate__animated animate__fadeInUp relative aspect-square overflow-hidden group cursor-pointer" data-wow-delay="0.1s">
+                  <img
+                    src="/img/Experience/hoiAn.jpg"
+                    alt="Central Coastal"
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 ease-in-out"
+                  />
+                  <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-all duration-300 flex flex-col justify-end text-center p-4 sm:p-6 lg:p-4 xl:p-6">
+                    <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                      <p className="text-white/90 text-[10px] tracking-[0.2em] mb-1 uppercase">
+                        Experience
+                      </p>
+                      <h3 className="text-white font-bold text-base sm:text-lg lg:text-base xl:text-xl leading-tight uppercase mb-1">
+                        Central Coastal Escape
+                      </h3>
+                      <p className="text-white/80 text-[10px] sm:text-xs italic opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100 line-clamp-1">
+                        Beach Houses & Heritage Towns
+                      </p>
+                    </div>
+                  </div>
                 </div>
-                <div
-                  className="h-64 sm:h-72 md:h-80 lg:h-100 xl:h-112.5 2xl:h-125 rounded-2xl overflow-hidden shadow-md bg-gray-200 wow animate__animated animate__fadeInUp"
-                  data-wow-delay="0.4s"
-                >
-                  <img src="/experiences/exp3.jpg" className="w-full h-full object-cover" />
+
+                <div className="wow animate__animated animate__fadeInUp relative aspect-square overflow-hidden group cursor-pointer" data-wow-delay="0.2s">
+                  <img
+                    src="/img/Experience/southern.webp"
+                    alt="Southern City"
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 ease-in-out"
+                  />
+                  <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-all duration-300 flex flex-col justify-end text-center p-4 sm:p-6 lg:p-4 xl:p-6">
+                    <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                      <p className="text-white/90 text-[10px] tracking-[0.2em] mb-1 uppercase">
+                        Experience
+                      </p>
+                      <h3 className="text-white font-bold text-base sm:text-lg lg:text-base xl:text-xl leading-tight uppercase mb-1">
+                        Southern City Life
+                      </h3>
+                      <p className="text-white/80 text-[10px] sm:text-xs italic opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100 line-clamp-1">
+                        Modern Stays & Nightlife
+                      </p>
+                    </div>
+                  </div>
                 </div>
+
+                <div className="wow animate__animated animate__fadeInUp relative aspect-square overflow-hidden group cursor-pointer" data-wow-delay="0.3s">
+                  <img
+                    src="/img/Experience/island.jpg"
+                    alt="Island Retreats"
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 ease-in-out"
+                  />
+                  <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-all duration-300 flex flex-col justify-end text-center p-4 sm:p-6 lg:p-4 xl:p-6">
+                    <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                      <p className="text-white/90 text-[10px] tracking-[0.2em] mb-1 uppercase">
+                        Experience
+                      </p>
+                      <h3 className="text-white font-bold text-base sm:text-lg lg:text-base xl:text-xl leading-tight uppercase mb-1">
+                        Island Retreats
+                      </h3>
+                      <p className="text-white/80 text-[10px] sm:text-xs italic opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100 line-clamp-1">
+                        Tropical Villas & Ocean Breeze
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
               </div>
             </div>
           </section>
