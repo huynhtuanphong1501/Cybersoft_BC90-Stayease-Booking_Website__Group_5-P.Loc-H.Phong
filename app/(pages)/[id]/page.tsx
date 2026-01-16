@@ -131,6 +131,7 @@ const CityName = ({ params }: CityNameProps) => {
                                 <FontAwesomeIcon icon={faSlidersH} className="text-[#65727D] text-sm" />
                                 <span className="text-[10px] sm:text-xs font-black uppercase text-black">Filters</span>
                             </div>
+
                             <div className="flex flex-wrap gap-2">
                                 {availableFilters.map((filter) => (
                                     <button

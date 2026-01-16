@@ -132,7 +132,7 @@ const DestinationBar = () => {
                                 >
                                     <div className="w-10 h-10 rounded-lg overflow-hidden shrink-0 border border-gray-100">
                                         <img
-                                            src={item.hinhAnh}
+                                            src={item.hinhAnh || "/img/default-location.jpg"}
                                             alt={item.tenViTri}
                                             className="w-full h-full object-cover"
                                         />

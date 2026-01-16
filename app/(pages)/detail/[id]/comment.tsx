@@ -135,11 +135,11 @@ const CommentSection = ({ roomId }: { roomId: string }) => {
                         exit={{ opacity: 0, y: -20, x: "-50%" }}
                         className="fixed top-6 left-1/2 z-5 bg-white shadow-2xl rounded-2xl px-6 py-4 flex items-center gap-4 border border-[#335765]  w-[90%] max-w-87.5"
                     >
-                        <div className="bg-amber-100 p-2 rounded-full shrink-0">
-                            <Lock className="text-amber-600" size={20} />
+                        <div className="bg-red-500 p-2 rounded-full shrink-0">
+                            <Lock className="text-white" size={20} />
                         </div>
-                        <div>
-                            <p className="font-bold text-black text-sm">Please log in</p>
+                        <div className="flex-1">
+                            <p className="font-black text-black text-sm">Action Required</p>
                             <p className="text-xs text-[#65727D] ">You need to sign in to leave a review.</p>
                         </div>
                     </motion.div>
@@ -219,15 +219,7 @@ const CommentSection = ({ roomId }: { roomId: string }) => {
                         <button
                             onClick={handlePostComment}
                             disabled={isSubmitting}
-                            className="
-                flex items-center gap-2 font-bold transition-all active:scale-95 disabled:opacity-50 disabled:scale-100 shadow-sm
-                bg-black text-white 
-                text-xs sm:text-sm md:text-base
-                px-4 py-2 sm:px-5 sm:py-2.5 md:px-6 md:py-3
-                lg:px-8 lg:py-3.5
-                xl:px-10
-                rounded-lg sm:rounded-xl
-                hover:bg-white              "
+                            className="flex items-center justify-center gap-2 px-5 py-2.5 text-[13px] font-bold tracking-wide bg-black text-white border border-black cursor-pointer transition-all duration-300 ease-in-out hover:bg-[#47242B] hover:shadow-md active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed rounded-lg"
                         >
                             <span className="inline-block">
                                 {isSubmitting ? "Submitting..." : "Submit review"}
