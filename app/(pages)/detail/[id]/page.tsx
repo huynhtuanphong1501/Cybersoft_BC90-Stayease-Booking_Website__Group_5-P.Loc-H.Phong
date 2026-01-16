@@ -42,7 +42,7 @@ const DetailRoom = ({ params }: DetailRoomProps) => {
     const [checkIn, setCheckIn] = useState<Date | undefined>();
     const [checkOut, setCheckOut] = useState<Date | undefined>();
     const [guests, setGuests] = useState(1);
-    const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+
     const [isCalendarOpen, setIsCalendarOpen] = useState(false);
     const calendarRef = useRef<HTMLDivElement>(null);
     const [bookedRanges, setBookedRanges] = useState<IBooking[]>([]);
@@ -71,14 +71,16 @@ const DetailRoom = ({ params }: DetailRoomProps) => {
     }, []);
 
     useEffect(() => {
-        const checkUser = () => {
-            const currentUser = localStorage.getItem("USER_LOGIN");
-            if (currentUser !== user) setUser(currentUser);
+        const getUser = () => {
+            const u = localStorage.getItem("USER_LOGIN");
+            setUser(u);
         };
-        checkUser();
-        const interval = setInterval(checkUser, 1000);
-        return () => clearInterval(interval);
-    }, [user]);
+
+        getUser();
+
+        window.addEventListener("LOGIN_SUCCESS", getUser);
+        return () => window.removeEventListener("LOGIN_SUCCESS", getUser);
+    }, []);
 
     useEffect(() => {
         if (!id) return;
@@ -114,7 +116,7 @@ const DetailRoom = ({ params }: DetailRoomProps) => {
         }))
     ];
 
-    const handleBooking = async () => {
+    const handleGoCheckout = () => {
         if (!user) {
             setShowAuthNotice(true);
             setTimeout(() => {
@@ -125,19 +127,33 @@ const DetailRoom = ({ params }: DetailRoomProps) => {
         }
         if (!checkIn || !checkOut) return alert("Please select travel dates!");
 
-        const loginData = JSON.parse(user);
+        const loginData = user ? JSON.parse(user) : null;
+        if (!loginData) return;
+
         const payload = {
-            id: 0, maPhong: Number(id),
-            ngayDen: checkIn.toISOString(),
-            ngayDi: checkOut.toISOString(),
-            soLuongKhach: guests,
-            maNguoiDung: loginData?.content?.user?.id
+            roomId: Number(id),
+            roomName: dataRoom.tenPhong,
+            roomImage: dataRoom.hinhAnh,
+            pricePerNight: dataRoom.giaTien,
+
+            checkIn: checkIn.toISOString(),
+            checkOut: checkOut.toISOString(),
+            guests,
+
+            days: bookingDetails?.days,
+            roomPriceTotal: bookingDetails?.roomPriceTotal,
+            extraGuestFee: bookingDetails?.extraGuestFee,
+            total: bookingDetails?.total,
+
+            userId: loginData?.content?.user?.id
         };
-        try {
-            await api.post("dat-phong", payload);
-            setShowSuccessPopup(true);
-            setTimeout(() => { router.push("/"); }, 3000);
-        } catch (error) { alert("Booking failed. Please try again."); }
+
+        sessionStorage.setItem(
+            "CHECKOUT_DATA",
+            JSON.stringify(payload)
+        );
+
+        router.push(`/checkout/${id}`);
     };
 
     const PriceCalculationUI = ({ isSidebar = false }: { isSidebar?: boolean }) => (
@@ -230,7 +246,7 @@ const DetailRoom = ({ params }: DetailRoomProps) => {
 
             <div className="w-full">
                 <button
-                    onClick={(e) => { e.stopPropagation(); handleBooking(); }}
+                    onClick={(e) => { e.stopPropagation(); handleGoCheckout(); }}
                     className="w-full py-4 bg-linear-to-br from-blue-900 via-indigo-500 to-pink-500 text-white font-black rounded-xl shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 active:scale-95 flex items-center justify-center gap-2 uppercase tracking-widest text-sm relative z-5 cursor-pointer"
                 >
                     <span>Reserve Now</span>
@@ -328,15 +344,6 @@ const DetailRoom = ({ params }: DetailRoomProps) => {
     return (
         <div className="bg-white min-h-screen">
             <HomeHeader />
-
-            <AnimatePresence>
-                {showAuthNotice && (
-                    <motion.div initial={{ opacity: 0, y: -100, x: "-50%" }} animate={{ opacity: 1, y: 0, x: "-50%" }} exit={{ opacity: 0, y: -100, x: "-50%" }} className="fixed top-6 left-1/2 z-5 bg-white shadow-2xl rounded-2xl px-6 py-4 flex items-center gap-4 border border-[#335765]  w-[90%] max-w-sm">
-                        <div className="bg-[#47242B] p-3 rounded-full shrink-0"><Lock className="text-[#ED1B24] " size={24} /></div>
-                        <div className="flex-1"><p className="font-black text-black text-sm">Action Required</p><p className="text-xs text-[#65727D]  font-bold">Please login to continue.</p></div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
 
             <main className="app-container mx-auto py-6 md:py-10 text-black pb-40 lg:pb-10">
                 <section className="relative overflow-hidden rounded-2xl md:rounded-3xl mb-10 border shadow-sm">
@@ -476,13 +483,15 @@ const DetailRoom = ({ params }: DetailRoomProps) => {
             <HomeFooter />
 
             <AnimatePresence>
-                {showSuccessPopup && (
-                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-5 flex items-center justify-center bg-black/60 backdrop-blur-sm px-4">
-                        <motion.div initial={{ scale: 0.9 }} animate={{ scale: 1 }} className="bg-white rounded-3xl p-10 max-w-sm w-full shadow-2xl text-center">
-                            <CheckCircle2 className="text-green-600 mb-4 mx-auto" size={60} />
-                            <h2 className="text-2xl font-black mb-2 tracking-tight">Booking Confirmed!</h2>
-                            <p className="text-[#65727D]  font-bold">Your reservation request has been sent.</p>
-                        </motion.div>
+                {showAuthNotice && (
+                    <motion.div initial={{ opacity: 0, y: -100, x: "-50%" }} animate={{ opacity: 1, y: 0, x: "-50%" }} exit={{ opacity: 0, y: -100, x: "-50%" }} className="fixed top-6 left-1/2 z-5 bg-white shadow-2xl rounded-2xl px-6 py-4 flex items-center gap-4 border border-[#335765]  w-[90%] max-w-sm">
+                        <div className="bg-red-500 p-2 rounded-full shrink-0">
+                            <Lock className="text-white" size={24} />
+                        </div>
+                        <div className="flex-1">
+                            <p className="font-black text-black text-sm">Action Required</p>
+                            <p className="text-xs text-[#65727D]  font-bold">Please login to continue.</p>
+                        </div>
                     </motion.div>
                 )}
             </AnimatePresence>
