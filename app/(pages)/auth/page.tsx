@@ -24,6 +24,7 @@ const Auth = () => {
 
       if (response.data?.content) {
         const userData = response.data.content;
+        document.cookie = `TOKEN=${userData.token}; path=/; samesite=lax`;
 
         localStorage.setItem("USER_LOGIN", JSON.stringify(userData));
         localStorage.setItem("TOKEN", userData.token);
