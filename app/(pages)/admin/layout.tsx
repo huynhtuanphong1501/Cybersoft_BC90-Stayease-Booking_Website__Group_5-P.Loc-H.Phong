@@ -12,6 +12,7 @@ import {
 import AdminHeader from "@/app/components/AdminHeader";
 import AdminFooter from "@/app/components/AdminFooter";
 import type { TUser } from "@/app/type";
+import { useRouter } from "next/navigation";
 
 export default function AdminLayout({
   children,
@@ -21,6 +22,7 @@ export default function AdminLayout({
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [user, setUser] = useState<TUser | null>(null);
+  const router = useRouter();
 
   //mouse event
   useEffect(() => {
@@ -47,6 +49,13 @@ export default function AdminLayout({
       }
     }
   }, []);
+
+  const handleLogout = () => {
+    document.cookie = "TOKEN=; path=/; max-age=0; samesite=lax";
+    localStorage.removeItem("USER_LOGIN");
+    localStorage.removeItem("TOKEN");
+    router.replace("/auth");
+  };
 
   return (
     <div className="flex h-screen bg-neutral-100 overflow-hidden">
@@ -92,11 +101,7 @@ export default function AdminLayout({
                 <div className="absolute right-0 top-12 w-40 bg-white rounded-xl shadow-lg border border-neutral-200 opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 transition-all origin-top-right">
                   <button
                     className="flex items-center w-full px-4 py-3 text-sm font-medium text-[#ED1B24] hover:bg-[#47242B] transition"
-                    onClick={() => {
-                      localStorage.removeItem("TOKEN");
-                      localStorage.removeItem("USER_LOGIN");
-                      window.location.href = "/auth";
-                    }}
+                    onClick={handleLogout}
                   >
                     <FontAwesomeIcon icon={faSignOutAlt} className="mr-2" />
                     Logout

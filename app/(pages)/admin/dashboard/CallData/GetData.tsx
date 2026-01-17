@@ -10,6 +10,7 @@ import type {
 } from "@/app/type";
 import { useEffect, useState } from "react";
 import CountUpTo from "../../_cmps/countUp/CountUpTo";
+import { Spin } from "antd";
 
 export default function GetData() {
   const [stats, setStats] = useState<DashData>({
@@ -34,7 +35,7 @@ export default function GetData() {
       const rooms = roomsRes.data.content;
 
       const roomPriceMap = new Map<number, number>(
-        rooms.map((room) => [room.id, room.giaTien])
+        rooms.map((room) => [room.id, room.giaTien]),
       );
 
       const calcDays = (start: string, end: string) => {
@@ -42,7 +43,7 @@ export default function GetData() {
         const e = new Date(end);
         return Math.max(
           1,
-          Math.ceil((e.getTime() - s.getTime()) / (1000 * 60 * 60 * 24))
+          Math.ceil((e.getTime() - s.getTime()) / (1000 * 60 * 60 * 24)),
         );
       };
 
@@ -69,7 +70,12 @@ export default function GetData() {
     fetchStats();
   }, []);
 
-  if (loading) return <div>Loading...</div>;
+  if (loading)
+    return (
+      <div>
+        <Spin />
+      </div>
+    );
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 gap-4 sm:gap-5 md:gap-6">

@@ -7,7 +7,7 @@ const { Search } = Input;
 export default function SearchCmps({ placeholder, onSearch }: SearchCmpsProps) {
   return (
     <Search
-      className="mr-2"
+      className="mr-2 z-0"
       placeholder={placeholder}
       allowClear
       onChange={(e) => onSearch(e.target.value)}
