@@ -70,28 +70,32 @@ const Home = () => {
   }, []);
 
   const renderLocationBanner = () => {
-    return groupedCities.map((group, index) => (
+    const validGroups = groupedCities.filter(
+      (item) => item?.hinhAnh && item.hinhAnh.trim() !== ""
+    );
+
+    return validGroups.map((group, index) => (
       <div
         key={group.key || index}
         ref={heroRef}
         className="absolute inset-0 overflow-hidden"
       >
         <div className="flex h-full">
-          {groupedCities.map((group) => (
+          {validGroups.map((group) => (
             <div
               key={group?.key}
               className="flex-[0_0_100%] h-full relative"
             >
               <img
-                src={group.hinhAnh || "/img/Carousel/default.jpg"}
+                src={group.hinhAnh || "/img/Carousel/carousel1.jpg"}
                 className="w-full h-full object-cover"
               />
 
-              <div className="hidden absolute inset-0 bg-black/20 lg:flex flex-col items-center text-white justify-center">
-                <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold">
+              <div className="hidden absolute inset-0 bg-black/20 lg:flex flex-col items-start text-white justify-center">
+                <h2 className="text-6xl xl:text-8xl font-light px-12 xl:px-15 animate__animated animate__animate__fadeInUp animate__delay-3s">
                   {group.tinhThanh}
                 </h2>
-                <p className="text-lg sm:text-xl md:text-2xl italic">
+                <p className="text-2xl xl:text-4xl italic animate__animated px-12 xl:px-15 animate__animate__fadeInUp animate__delay-4s">
                   {group.quocGia}
                 </p>
 
