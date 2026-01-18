@@ -193,6 +193,8 @@ const DetailRoom = ({ params }: DetailRoomProps) => {
         </div>
     );
 
+    const maxGuests = dataRoom?.khach || 1;
+
     const BookingInputs = ({ isSidebar = false }: { isSidebar?: boolean }) => (
         <div className="space-y-4 relative">
             <div className={`flex flex-col gap-3 ${!isSidebar ? "lg:flex-col sm:grid sm:grid-cols-3 sm:items-stretch" : "lg:flex-col"}`}>
@@ -234,8 +236,14 @@ const DetailRoom = ({ params }: DetailRoomProps) => {
                             <span className="text-xs font-black px-2">{guests} guest{guests > 1 ? 's' : ''}</span>
                             <button
                                 type="button"
-                                onClick={(e) => { e.stopPropagation(); setGuests(guests + 1); }}
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    if (guests < maxGuests) {
+                                        setGuests(guests + 1);
+                                    }
+                                }}
                                 className="w-6 h-6 rounded-full border border-[#335765]  flex items-center justify-center font-bold hover:border-black cursor-pointer"
+                                disabled={guests >= maxGuests}
                             >
                                 +
                             </button>
@@ -446,7 +454,9 @@ const DetailRoom = ({ params }: DetailRoomProps) => {
                                         <h4 className="flex items-center gap-2 font-black"><FontAwesomeIcon icon={faHouseCircleCheck} /> Rules</h4>
                                         <ul className="list-disc pl-5 text-[#65727D] ">
                                             <li>Non-smoking, no pets allowed</li>
-                                            <li className="text-[#ED1B24] ">Extra fee: 10% after 4 pax</li>
+                                            <li className="text-[#ED1B24]">
+                                                Maximum {dataRoom.khach} guests allowed
+                                            </li>
                                         </ul>
                                     </div>
                                     <div className="space-y-2">
