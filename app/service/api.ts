@@ -7,6 +7,7 @@ const api = axios.create({
 
 api.interceptors.request.use(
     (config: InternalAxiosRequestConfig<any>) => {
+
         if (typeof window !== "undefined") {
             const userLogin = localStorage.getItem("USER_LOGIN");
             const userAdmin = localStorage.getItem("USER_ADMIN");

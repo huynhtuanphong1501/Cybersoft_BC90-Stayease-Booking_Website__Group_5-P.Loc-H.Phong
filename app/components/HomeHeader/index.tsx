@@ -43,8 +43,21 @@ const HomeHeader = ({ isHome = false, homeAnimationDone = false }: HeaderProps) 
     }, []);
 
     useEffect(() => {
-        const storedUser = localStorage.getItem("USER_LOGIN");
-        if (storedUser) setUserLogin(JSON.parse(storedUser));
+        try {
+            const storedUser = localStorage.getItem("USER_LOGIN");
+            if (!storedUser) return;
+
+            const parsed = JSON.parse(storedUser);
+
+            if (!parsed?.content?.user) {
+                localStorage.removeItem("USER_LOGIN");
+                return;
+            }
+
+            setUserLogin(parsed);
+        } catch (err) {
+            localStorage.removeItem("USER_LOGIN");
+        }
     }, []);
 
     useEffect(() => {
@@ -162,11 +175,11 @@ const HomeHeader = ({ isHome = false, homeAnimationDone = false }: HeaderProps) 
                             >
                                 <span
                                     className="text-[10px] sm:text-xs xl:text-sm font-medium text-gray-700 truncate"
-                                    title={userLogin.content.user.name}
+                                    title={userLogin?.content?.user?.name || ""}
                                 >
                                     Welcome,&nbsp;
                                     <span className="font-bold text-[#143944] truncate">
-                                        {userLogin.content.user.name}
+                                        {userLogin?.content?.user?.name || "User"}
                                     </span>
                                 </span>
                             </motion.div>
@@ -245,7 +258,7 @@ const HomeHeader = ({ isHome = false, homeAnimationDone = false }: HeaderProps) 
                                     <div className="flex flex-col gap-2 px-2 py-1 text-sm text-gray-700">
                                         <div className="flex gap-3">
                                             <span className="font-semibold w-28 shrink-0">Name:</span>
-                                            <span>{userLogin.content.user.name}</span>
+                                            <span>{userLogin?.content?.user?.name || "User"}</span>
                                         </div>
 
                                         <div className="flex gap-3">
