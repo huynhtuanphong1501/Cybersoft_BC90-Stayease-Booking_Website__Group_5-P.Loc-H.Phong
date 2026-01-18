@@ -61,14 +61,14 @@ const CheckoutPage = () => {
         setTimeout(() => setShowNotice(false), 4000);
     };
 
+    const maxGuests = checkoutData?.maxGuests || checkoutData?.khach || 1;
+
     const calculateLivePrice = () => {
-        if (!checkoutData || !checkIn || !checkOut) return { days: 0, roomPriceTotal: 0, extraFee: 0, total: 0 };
+        if (!checkoutData || !checkIn || !checkOut) return { days: 0, roomPriceTotal: 0, total: 0 };
         const diffTime = Math.abs(checkOut.getTime() - checkIn.getTime());
         const days = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) || 0;
         const roomPriceTotal = checkoutData.pricePerNight * days;
-        // Logic: Extra fee for more than 4 guests
-        const extraFee = guests > 4 ? (guests - 4) * (checkoutData.pricePerNight * 0.1) * days : 0;
-        return { days, roomPriceTotal, extraFee, total: roomPriceTotal + extraFee };
+        return { days, roomPriceTotal, total: roomPriceTotal };
     };
 
     const livePrice = calculateLivePrice();
@@ -162,9 +162,19 @@ const CheckoutPage = () => {
                                         <p className="text-slate-500 text-sm mt-1">{guests} {guests > 1 ? 'guests' : 'guest'}</p>
                                     </div>
                                     <div className="flex items-center gap-4 bg-slate-50 p-1.5 rounded-xl border border-slate-200">
-                                        <button onClick={() => setGuests(Math.max(1, guests - 1))} className="w-8 h-8 flex items-center justify-center hover:bg-white hover:shadow-sm rounded-lg transition-all font-bold">-</button>
+                                        <button
+                                            onClick={() => setGuests(Math.max(1, guests - 1))}
+                                            disabled={guests <= 1}
+                                            className="w-8 h-8 flex items-center justify-center hover:bg-white hover:shadow-sm rounded-lg transition-all font-bold">-</button>
                                         <span className="w-4 text-center font-bold text-sm">{guests}</span>
-                                        <button onClick={() => setGuests(guests + 1)} className="w-8 h-8 flex items-center justify-center hover:bg-white hover:shadow-sm rounded-lg transition-all font-bold">+</button>
+                                        <button
+                                            onClick={() => {
+                                                if (guests < maxGuests) {
+                                                    setGuests(guests + 1);
+                                                }
+                                            }}
+                                            disabled={guests >= maxGuests}
+                                            className="w-8 h-8 flex items-center justify-center hover:bg-white hover:shadow-sm rounded-lg transition-all font-bold">+</button>
                                     </div>
                                 </div>
                             </div>
@@ -207,7 +217,6 @@ const CheckoutPage = () => {
                                         </div>
                                     </label>
                                 </div>
-                                {/* Other Options */}
                                 {['bank', 'cash'].map((method) => (
                                     <label key={method} className={`p-6 border-2 rounded-2xl flex items-center gap-4 cursor-pointer transition-all ${paymentMethod === method ? 'border-slate-900 bg-white ring-4 ring-slate-900/5' : 'border-slate-200 bg-white hover:border-slate-300'}`}>
                                         <input type="radio" className="w-5 h-5 accent-slate-900" checked={paymentMethod === method} onChange={() => setPaymentMethod(method)} />
@@ -232,7 +241,6 @@ const CheckoutPage = () => {
                         </div>
                     </div>
 
-                    {/* Right side: Sidebar sticky */}
                     <aside className="lg:col-span-5">
                         <div className="sticky top-28 bg-white border border-slate-200 rounded-[2.5rem] p-8 shadow-xl shadow-slate-200/40 space-y-8">
                             <div className="flex gap-6">
@@ -256,12 +264,6 @@ const CheckoutPage = () => {
                                         <span>${checkoutData.pricePerNight} x {livePrice.days} nights</span>
                                         <span className="text-slate-900 font-bold">${livePrice.roomPriceTotal}</span>
                                     </div>
-                                    {livePrice.extraFee > 0 && (
-                                        <div className="flex justify-between text-slate-600">
-                                            <span>Extra guest fee ({guests - 4} people)</span>
-                                            <span className="text-slate-900 font-bold">+${livePrice.extraFee.toFixed(0)}</span>
-                                        </div>
-                                    )}
                                 </div>
                             </div>
 
@@ -283,7 +285,6 @@ const CheckoutPage = () => {
                 </div>
             </main>
 
-            {/* Success Modal */}
             {mounted && showSuccessModal && createPortal(
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-md p-4">
                     <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="bg-white p-12 rounded-[3.5rem] shadow-2xl text-center max-w-sm w-full">
