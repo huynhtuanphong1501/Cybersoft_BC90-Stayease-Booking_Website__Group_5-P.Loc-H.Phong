@@ -9,12 +9,15 @@ import React, { useEffect, useState, useCallback } from "react";
 import EditProfilePopUp from "./editProfile";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserLock } from "@fortawesome/free-solid-svg-icons";
+import Loading from "@/app/components/_Loading/Loading";
+import Toast from "@/app/components/_Toast/Toast";
 
 const Listing = () => {
     const [user, setUser] = useState<TUser | null>(null);
     const [bookings, setBookings] = useState<TBooking[]>([]);
     const [loading, setLoading] = useState(true);
     const [isEditOpen, setIsEditOpen] = useState(false);
+    const [toastOpen, setToastOpen] = useState(false);
 
     const calculateTotal = (checkIn: string, checkOut: string, price: number, guests: number) => {
         const start = new Date(checkIn);
@@ -185,12 +188,7 @@ const Listing = () => {
 
     if (loading) {
         return (
-            <div className="flex items-center justify-center h-screen bg-white">
-                <div className="relative w-14 h-14">
-                    <div className="absolute inset-0 border-4 border-gray-100 rounded-full" />
-                    <div className="absolute inset-0 border-4 border-rose-500 rounded-full animate-spin border-t-transparent" />
-                </div>
-            </div>
+            <Loading />
         );
     }
 
@@ -270,7 +268,7 @@ const Listing = () => {
 
                             <button
                                 onClick={handleEditProfile}
-                                className="w-full mt-5 lg:mt-6 bg-gray-900 py-3 sm:py-3.5 rounded-xl sm:rounded-2xl font-bold text-white text-xs sm:text-sm md:text-base hover:bg-[#47242B] transition-all duration-300 cursor-pointer active:scale-95 shadow-md"
+                                className="w-full mt-5 lg:mt-6 bg-gray-900 py-3 sm:py-3.5 rounded-xl sm:rounded-2xl font-bold text-white text-xs sm:text-sm md:text-base hover:bg-[#a50000] transition-all duration-300 cursor-pointer active:scale-95 shadow-md"
                             >
                                 Edit Profile
                             </button>
@@ -299,9 +297,25 @@ const Listing = () => {
                 <EditProfilePopUp
                     userId={user.id}
                     onClose={() => setIsEditOpen(false)}
-                    onUpdateSuccess={fetchData}
+                    onUpdateSuccess={() => {
+                        fetchData();
+                        setToastOpen(true);
+                    }}
                 />
             )}
+
+            <Toast
+                open={toastOpen}
+                onClose={() => setToastOpen(false)}
+                type="success"
+            >
+                <div>
+                    <p className="font-bold text-sm">Profile updated</p>
+                    <p className="text-xs text-gray-500 mt-0.5">
+                        Your information has been saved successfully
+                    </p>
+                </div>
+            </Toast>
 
             <BackToTopButton />
             <HomeFooter />

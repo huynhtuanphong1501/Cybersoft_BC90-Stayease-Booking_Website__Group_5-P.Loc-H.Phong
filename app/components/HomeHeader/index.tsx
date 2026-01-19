@@ -14,6 +14,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import LoginModal from "@/app/(pages)/login";
 import RegisterModal from "@/app/(pages)/register";
+import Toast from "../_Toast/Toast";
 
 interface HeaderProps {
     isHome?: boolean;
@@ -86,7 +87,6 @@ const HomeHeader = ({ isHome = false, homeAnimationDone = false }: HeaderProps) 
         window.dispatchEvent(new Event("LOGIN_SUCCESS"));
         setToastMessage("Logged in successfully!");
         setShowToast(true);
-        setTimeout(() => setShowToast(false), 3000);
     };
 
     const handleLogout = () => {
@@ -100,7 +100,6 @@ const HomeHeader = ({ isHome = false, homeAnimationDone = false }: HeaderProps) 
         setAuthModal(null);
         setToastMessage("Registered successfully!");
         setShowToast(true);
-        setTimeout(() => setShowToast(false), 3000);
     };
 
     const HeaderContent = (
@@ -247,7 +246,7 @@ const HomeHeader = ({ isHome = false, homeAnimationDone = false }: HeaderProps) 
                                         <button
                                             onClick={handleLogout}
                                             className="w-full px-4 py-2 text-left cursor-pointer 
-                            text-[#ED1B24] hover:bg-[#47242B] rounded-xl 
+                            text-[#a50000] hover:bg-[#74A8A4] rounded-xl 
                             flex items-center gap-3 transition-all font-medium"
                                         >
                                             <FontAwesomeIcon icon={faRightFromBracket} />
@@ -281,8 +280,8 @@ const HomeHeader = ({ isHome = false, homeAnimationDone = false }: HeaderProps) 
                                         <button
                                             onClick={handleLogout}
                                             className="w-full px-4 py-2 text-left cursor-pointer 
-                            text-[#ED1B24] hover:bg-[#47242B] rounded-xl 
-                            flex items-center gap-3 transition-all font-medium"
+                            text-[#a50000] hover:bg-[#74A8A4] rounded-xl 
+                            flex items-center gap-3 transition-all duration-300 font-medium"
                                         >
                                             <FontAwesomeIcon icon={faRightFromBracket} />
                                             Logout
@@ -317,24 +316,6 @@ const HomeHeader = ({ isHome = false, homeAnimationDone = false }: HeaderProps) 
 
     return (
         <>
-            <AnimatePresence>
-                {showToast && (
-                    <div className="fixed top-[5%] left-0 w-full flex justify-center z-2 pointer-events-none">
-                        <motion.div
-                            initial={{ opacity: 0, y: -40 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: -40 }}
-                            className="bg-[#143944] text-white px-8 py-3.5 rounded-full shadow-2xl flex items-center gap-3 border border-white/10 pointer-events-auto"
-                        >
-                            <FontAwesomeIcon icon={faCheckCircle} className="text-green-400" />
-                            <span className="font-semibold tracking-wide text-sm">
-                                {toastMessage}
-                            </span>
-                        </motion.div>
-                    </div>
-                )}
-            </AnimatePresence>
-
             <AnimatePresence>
                 {isMenuOpen && (
                     <>
@@ -422,6 +403,15 @@ const HomeHeader = ({ isHome = false, homeAnimationDone = false }: HeaderProps) 
                     </motion.div>
                 )}
             </AnimatePresence>
+
+            {/* NOTICE */}
+            <Toast
+                open={showToast}
+                onClose={() => setShowToast(false)}
+                type="success"
+            >
+                <p className="font-bold text-sm">{toastMessage}</p>
+            </Toast>
         </>
     );
 };

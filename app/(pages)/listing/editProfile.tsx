@@ -148,12 +148,12 @@ const EditProfilePopUp = ({ userId, onClose, onUpdateSuccess }: Props) => {
                                 <button
                                     type="button"
                                     onClick={() => setFormData({ ...formData, gender: true })}
-                                    className={`flex-1 py-2.5 sm:py-3 md:py-4 rounded-xl sm:rounded-2xl font-bold text-xs sm:text-sm md:text-base transition-all cursor-pointer active:scale-95 ${formData.gender ? 'bg-[#47242B] text-white shadow-md' : 'bg-gray-100 text-gray-500'}`}
+                                    className={`flex-1 py-2.5 sm:py-3 md:py-4 rounded-xl sm:rounded-2xl font-bold text-xs sm:text-sm md:text-base transition-all cursor-pointer active:scale-95 ${formData.gender ? 'bg-[#a50000] text-white shadow-md' : 'bg-gray-100 text-gray-500'}`}
                                 > Male </button>
                                 <button
                                     type="button"
                                     onClick={() => setFormData({ ...formData, gender: false })}
-                                    className={`flex-1 py-2.5 sm:py-3 md:py-4 rounded-xl sm:rounded-2xl font-bold text-xs sm:text-sm md:text-base transition-all cursor-pointer active:scale-95 ${!formData.gender ? 'bg-[#47242B] text-white shadow-md' : 'bg-gray-100 text-gray-500'}`}
+                                    className={`flex-1 py-2.5 sm:py-3 md:py-4 rounded-xl sm:rounded-2xl font-bold text-xs sm:text-sm md:text-base transition-all cursor-pointer active:scale-95 ${!formData.gender ? 'bg-[#a50000] text-white shadow-md' : 'bg-gray-100 text-gray-500'}`}
                                 > Female </button>
                             </div>
                         </div>
@@ -162,7 +162,7 @@ const EditProfilePopUp = ({ userId, onClose, onUpdateSuccess }: Props) => {
                             <button
                                 disabled={loading}
                                 type="submit"
-                                className="w-full bg-gray-900 py-3 sm:py-4 md:py-5 rounded-xl sm:rounded-2xl font-bold text-white text-sm md:text-base hover:bg-[#47242B] transition-all cursor-pointer active:scale-[0.98] flex items-center justify-center gap-2 shadow-lg"
+                                className="w-full bg-gray-900 py-3 sm:py-4 md:py-5 rounded-xl sm:rounded-2xl font-bold text-white text-sm md:text-base hover:bg-[#a50000] transition-all cursor-pointer active:scale-[0.98] flex items-center justify-center gap-2 shadow-lg"
                             >
                                 {loading ? (
                                     <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
