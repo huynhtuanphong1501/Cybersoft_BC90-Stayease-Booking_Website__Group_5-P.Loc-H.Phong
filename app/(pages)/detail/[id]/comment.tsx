@@ -5,6 +5,7 @@ import { Star, Send, ChevronLeft, ChevronRight, Lock, User } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion";
 import api from "@/app/service/api";
 import { TComment } from "@/app/type";
+import Toast from "@/app/components/_Toast/Toast";
 
 const CommentSection = ({ roomId }: { roomId: string }) => {
     const [comments, setComments] = useState<TComment[]>([]);
@@ -12,7 +13,7 @@ const CommentSection = ({ roomId }: { roomId: string }) => {
     const [newComment, setNewComment] = useState("");
     const [rating, setRating] = useState(5);
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [showAuthNotice, setShowAuthNotice] = useState(false);
+    const [showToast, setShowToast] = useState(false);
     const [user, setUser] = useState<any>(null);
 
     const scrollRef = useRef<HTMLDivElement>(null);
@@ -54,9 +55,9 @@ const CommentSection = ({ roomId }: { roomId: string }) => {
         const currentUser = localStorage.getItem("USER_LOGIN");
 
         if (!currentUser) {
-            setShowAuthNotice(true);
+            setShowToast(true);
             setTimeout(() => {
-                setShowAuthNotice(false);
+                setShowToast(false);
                 window.dispatchEvent(new CustomEvent("OPEN_AUTH_MODAL", { detail: { mode: "login" } }));
             }, 2000);
             return;
@@ -68,7 +69,7 @@ const CommentSection = ({ roomId }: { roomId: string }) => {
         const userId = parsedUser?.content?.user?.id;
 
         if (!userId) {
-            setShowAuthNotice(true);
+            setShowToast(true);
             return;
         }
 
@@ -127,25 +128,6 @@ const CommentSection = ({ roomId }: { roomId: string }) => {
 
     return (
         <section className="relative border-t border-[#B6D9E0]  pt-10">
-            <AnimatePresence>
-                {showAuthNotice && (
-                    <motion.div
-                        initial={{ opacity: 0, y: -20, x: "-50%" }}
-                        animate={{ opacity: 1, y: 0, x: "-50%" }}
-                        exit={{ opacity: 0, y: -20, x: "-50%" }}
-                        className="fixed top-6 left-1/2 z-5 bg-white shadow-2xl rounded-2xl px-6 py-4 flex items-center gap-4 border border-[#335765]  w-[90%] max-w-87.5"
-                    >
-                        <div className="bg-red-500 p-2 rounded-full shrink-0">
-                            <Lock className="text-white" size={20} />
-                        </div>
-                        <div className="flex-1">
-                            <p className="font-black text-black text-sm">Action Required</p>
-                            <p className="text-xs text-[#65727D] ">You need to sign in to leave a review.</p>
-                        </div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
-
             <div className="flex items-center justify-between mb-8">
                 <div className="flex items-center gap-2">
                     <Star className="w-5 h-5 fill-[#7D3719] text-[#7D3719]" />
@@ -219,7 +201,7 @@ const CommentSection = ({ roomId }: { roomId: string }) => {
                         <button
                             onClick={handlePostComment}
                             disabled={isSubmitting}
-                            className="flex items-center justify-center gap-2 px-5 py-2.5 text-[13px] font-bold tracking-wide bg-black text-white border border-black cursor-pointer transition-all duration-300 ease-in-out hover:bg-[#47242B] hover:shadow-md active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed rounded-lg"
+                            className="flex items-center justify-center gap-2 px-5 py-2.5 text-[13px] font-bold tracking-wide bg-black text-white border border-black cursor-pointer transition-all duration-300 ease-in-out hover:bg-[#a50000] hover:shadow-md active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed rounded-lg"
                         >
                             <span className="inline-block">
                                 {isSubmitting ? "Submitting..." : "Submit review"}
@@ -232,6 +214,17 @@ const CommentSection = ({ roomId }: { roomId: string }) => {
                     </div>
                 </div>
             </div>
+
+            <Toast
+                open={showToast}
+                onClose={() => setShowToast(false)}
+                type="warning"
+            >
+                <p className="font-black text-sm">Login required</p>
+                <p className="text-xs text-[#65727D]">
+                    Please log in to leave a comment.
+                </p>
+            </Toast>
         </section >
     );
 };

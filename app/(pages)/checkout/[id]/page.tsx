@@ -17,6 +17,7 @@ import { format } from "date-fns";
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
 import { createPortal } from "react-dom";
+import Loading from "@/app/components/_Loading/Loading";
 
 const CheckoutPage = () => {
     const router = useRouter();
@@ -33,6 +34,8 @@ const CheckoutPage = () => {
     const [showNotice, setShowNotice] = useState(false);
     const [noticeMsg, setNoticeMsg] = useState("");
     const [showSuccessModal, setShowSuccessModal] = useState(false);
+
+    const [pageLoading, setPageLoading] = useState(true);
 
     useEffect(() => {
         const userLogin = localStorage.getItem("USER_LOGIN");
@@ -52,7 +55,11 @@ const CheckoutPage = () => {
         setCheckIn(new Date(parsed.checkIn));
         setCheckOut(new Date(parsed.checkOut));
         setGuests(parsed.guests || 1);
-        setMounted(true);
+
+        setTimeout(() => {
+            setMounted(true);
+            setPageLoading(false);
+        }, 1000);
     }, [router]);
 
     const triggerNotice = (msg: string) => {
@@ -74,7 +81,6 @@ const CheckoutPage = () => {
     const livePrice = calculateLivePrice();
 
     const handleConfirmBooking = async () => {
-        // Validation
         if (!checkIn || !checkOut || livePrice.days <= 0) {
             triggerNotice("Please select valid check-in and check-out dates.");
             return;
@@ -107,7 +113,11 @@ const CheckoutPage = () => {
         }
     };
 
-    if (!mounted) return null;
+    if (pageLoading) {
+        return (
+            <Loading />
+        );
+    }
 
     return (
         <div className="bg-[#F8FAFC] min-h-screen text-slate-900 font-sans selection:bg-rose-100">

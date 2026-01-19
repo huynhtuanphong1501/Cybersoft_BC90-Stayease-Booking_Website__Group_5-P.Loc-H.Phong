@@ -134,7 +134,7 @@ const RegisterModal = ({ onClose, onSwitchLogin, onRegisterSuccess }: RegisterMo
             </h3>
 
             {errors.form && (
-                <div className="mb-4 rounded-xl border border-[#ED1B24]  bg-[#47242B] p-3 sm:p-4 text-xs sm:text-sm text-[#ED1B24] ">
+                <div className="mb-4 rounded-xl border border-[#ED1B24]  bg-[#a50000] p-3 sm:p-4 text-xs sm:text-sm text-[#ED1B24] ">
                     {errors.form}{" "}
                     <span
                         onClick={onSwitchLogin}

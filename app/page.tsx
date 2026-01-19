@@ -131,11 +131,10 @@ const Home = () => {
   }, [cities]);
 
   const renderExploreDestination = () => {
-    return groupedCities.slice(0, 6).map((group, index) => (
+    return groupedCities.slice(0, 6).map((group) => (
       <div
         key={group.key}
         className="wow animate__animated animate__fadeInUp group relative h-64 sm:h-72 lg:h-80 overflow-hidden shadow-lg cursor-pointer"
-        data-wow-delay={`${index * 0.1}s`}
       >
         <img
           src={group.hinhAnh || "/destinations/img1.jpg"}
@@ -163,7 +162,7 @@ const Home = () => {
               <Link
                 key={loc.id}
                 href={`/${loc.id}`}
-                className="flex text-black items-center gap-2 hover:text-[#47242B] hover:font-bold transition-all duration-300"
+                className="flex text-black items-center gap-2 hover:text-[#a50000] hover:font-bold transition-all duration-300"
               >
                 {loc.name}
               </Link>
@@ -204,7 +203,7 @@ const Home = () => {
         <HomeHeader isHome homeAnimationDone={homeReady} />
 
         <main className="w-full">
-          <section className="relative h-screen">
+          <section className="relative h-[75vh] sm:h-[85vh] lg:h-screen max-h-225">
             <div className="absolute inset-0 overflow-hidden" ref={heroRef}>
               <div className="flex h-full">
                 {renderLocationBanner()}

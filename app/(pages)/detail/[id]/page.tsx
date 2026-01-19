@@ -27,6 +27,8 @@ import { format } from "date-fns";
 import "react-day-picker/dist/style.css";
 
 import { createPortal } from "react-dom";
+import Toast from "@/app/components/_Toast/Toast";
+import Loading from "@/app/components/_Loading/Loading";
 
 const DetailRoom = ({ params }: DetailRoomProps) => {
     const { id } = React.use(params);
@@ -35,7 +37,8 @@ const DetailRoom = ({ params }: DetailRoomProps) => {
     const [dataRoom, setDataRoom] = useState<any>(null);
     const [loading, setLoading] = useState(true);
     const [dataCity, setDataCity] = useState<TCity[]>([]);
-    const [showAuthNotice, setShowAuthNotice] = useState(false);
+    const [showToast, setShowToast] = useState(false);
+    const [dateToast, setDateToast] = useState(false);
     const [user, setUser] = useState<string | null>(null);
     const [commentCount, setCommentCount] = useState(0);
 
@@ -118,14 +121,18 @@ const DetailRoom = ({ params }: DetailRoomProps) => {
 
     const handleGoCheckout = () => {
         if (!user) {
-            setShowAuthNotice(true);
+            setShowToast(true);
             setTimeout(() => {
-                setShowAuthNotice(false);
+                setShowToast(false);
                 window.dispatchEvent(new CustomEvent("OPEN_AUTH_MODAL", { detail: { mode: "login" } }));
             }, 2500);
             return;
         }
-        if (!checkIn || !checkOut) return alert("Please select travel dates!");
+        if (!checkIn || !checkOut) {
+            setDateToast(true);
+            setTimeout(() => setDateToast(false), 2000);
+            return;
+        }
 
         const loginData = user ? JSON.parse(user) : null;
         if (!loginData) return;
@@ -284,7 +291,7 @@ const DetailRoom = ({ params }: DetailRoomProps) => {
                                 animate={{ opacity: 1, scale: 1, y: 0 }}
                                 exit={{ opacity: 0, scale: 0.9, y: 20 }}
                                 transition={{ duration: 0.3 }}
-                                className="relative z-6 bg-white rounded-3xl p-6 shadow-2xl w-[95%] max-w-100 h-fit border border-[#335765] "
+                                className="relative z-6 bg-white rounded-3xl p-6 shadow-2xl app-container mx-auto max-w-100 h-fit border border-[#335765] "
                             >
                                 <div className="flex justify-between items-center mb-4 pb-2 border-b">
                                     <h3 className="font-black text-lg text-black">Select dates</h3>
@@ -336,7 +343,12 @@ const DetailRoom = ({ params }: DetailRoomProps) => {
         </div>
     );
 
-    if (loading) return <div className="min-h-screen flex items-center justify-center bg-white"><div className="h-12 w-12 rounded-full border-4 border-[#65727D]  border-t-rose-500 animate-spin"></div></div>;
+    if (loading) {
+        return (
+            <Loading />
+        )
+    }
+
     if (!dataRoom) return null;
 
     const amenities = [
@@ -454,7 +466,7 @@ const DetailRoom = ({ params }: DetailRoomProps) => {
                                         <h4 className="flex items-center gap-2 font-black"><FontAwesomeIcon icon={faHouseCircleCheck} /> Rules</h4>
                                         <ul className="list-disc pl-5 text-[#65727D] ">
                                             <li>Non-smoking, no pets allowed</li>
-                                            <li className="text-[#ED1B24]">
+                                            <li className="text-[#a50000]">
                                                 Maximum {dataRoom.khach} guests allowed
                                             </li>
                                         </ul>
@@ -492,19 +504,27 @@ const DetailRoom = ({ params }: DetailRoomProps) => {
             <BackToTopButton />
             <HomeFooter />
 
-            <AnimatePresence>
-                {showAuthNotice && (
-                    <motion.div initial={{ opacity: 0, y: -100, x: "-50%" }} animate={{ opacity: 1, y: 0, x: "-50%" }} exit={{ opacity: 0, y: -100, x: "-50%" }} className="fixed top-6 left-1/2 z-5 bg-white shadow-2xl rounded-2xl px-6 py-4 flex items-center gap-4 border border-[#335765]  w-[90%] max-w-sm">
-                        <div className="bg-red-500 p-2 rounded-full shrink-0">
-                            <Lock className="text-white" size={24} />
-                        </div>
-                        <div className="flex-1">
-                            <p className="font-black text-black text-sm">Action Required</p>
-                            <p className="text-xs text-[#65727D]  font-bold">Please login to continue.</p>
-                        </div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
+            <Toast
+                open={showToast}
+                onClose={() => setShowToast(false)}
+                type="warning"
+            >
+                <p className="font-black text-sm">Login required</p>
+                <p className="text-xs text-[#65727D]">
+                    Please log in to proceed with booking and payment.
+                </p>
+            </Toast>
+
+            <Toast
+                open={dateToast}
+                onClose={() => setDateToast(false)}
+                type="warning"
+            >
+                <p className="font-black text-sm">Missing dates</p>
+                <p className="text-xs text-[#65727D]">
+                    Please select check-in and check-out dates.
+                </p>
+            </Toast>
         </div >
     );
 };
