@@ -13,6 +13,7 @@ import AdminHeader from "@/app/components/AdminHeader";
 import AdminFooter from "@/app/components/AdminFooter";
 import type { TUser } from "@/app/type";
 import { useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 export default function AdminLayout({
   children,
@@ -23,6 +24,7 @@ export default function AdminLayout({
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [user, setUser] = useState<TUser | null>(null);
   const router = useRouter();
+  const pathname = usePathname();
 
   //mouse event
   useEffect(() => {
@@ -40,15 +42,14 @@ export default function AdminLayout({
   //get user info
   useEffect(() => {
     const data = localStorage.getItem("USER_LOGIN");
-    if (data) {
-      try {
-        const obj = JSON.parse(data);
-        setUser(obj?.user || null);
-      } catch (err) {
-        console.error("Data user error", err);
-      }
+    if (!data) return;
+    try {
+      const obj = JSON.parse(data);
+      setUser(obj?.content?.user || obj?.user || null);
+    } catch (e) {
+      console.error(e);
     }
-  }, []);
+  }, [pathname]);
 
   const handleLogout = () => {
     document.cookie = "TOKEN=; path=/; max-age=0; samesite=lax";

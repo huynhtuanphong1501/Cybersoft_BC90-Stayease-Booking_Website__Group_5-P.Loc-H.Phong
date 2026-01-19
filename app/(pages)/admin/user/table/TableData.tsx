@@ -38,18 +38,20 @@ export default function TableData({
     setOpenEdit(true);
   };
 
+  // for loading data when adding new
   useEffect(() => {
     fetchUsers();
   }, [reload]);
 
+  // for searching
   useEffect(() => {
     const lower = keyword.toLowerCase();
     setFilteredData(
       data.filter(
         (user) =>
           user.name.toLowerCase().includes(lower) ||
-          user.email.toLowerCase().includes(lower)
-      )
+          user.email.toLowerCase().includes(lower),
+      ),
     );
   }, [keyword, data]);
 
