@@ -12,6 +12,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
 import { CityNameProps, TCity } from '@/app/type';
+import Loading from '@/app/components/_Loading/Loading';
 
 const CityName = ({ params }: CityNameProps) => {
     const { id } = React.use(params);
@@ -81,10 +82,8 @@ const CityName = ({ params }: CityNameProps) => {
 
     if (loading) {
         return (
-            <div className="min-h-screen flex items-center justify-center bg-white">
-                <div className="h-12 w-12 rounded-full border-4 border-[#65727D]  border-t-[#ED1B24] animate-spin"></div>
-            </div>
-        );
+            <Loading />
+        )
     }
 
     const AmenityIcon = ({ icon, label }: { icon: any; label: string }) => (
@@ -193,7 +192,7 @@ const CityName = ({ params }: CityNameProps) => {
                                                             <div className="flex flex-col items-end">
                                                                 <span className="text-[#65727D] line-through text-[10px] sm:text-xs font-bold">${originalPrice}</span>
                                                                 <div className="flex items-baseline gap-1">
-                                                                    <span className="text-lg sm:text-xl font-black text-[#47242B] ">${room.giaTien}</span>
+                                                                    <span className="text-lg sm:text-xl font-black text-[#a50000] ">${room.giaTien}</span>
                                                                     <span className="text-[9px] sm:text-[10px] font-bold text-[#65727D] uppercase">/ night</span>
                                                                 </div>
                                                             </div>

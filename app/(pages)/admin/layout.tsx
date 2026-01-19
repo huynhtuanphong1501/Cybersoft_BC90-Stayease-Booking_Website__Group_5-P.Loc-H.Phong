@@ -101,7 +101,7 @@ export default function AdminLayout({
 
                 <div className="absolute right-0 top-12 w-40 bg-white rounded-xl shadow-lg border border-neutral-200 opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 transition-all origin-top-right">
                   <button
-                    className="flex items-center w-full px-4 py-3 text-sm font-medium text-[#ED1B24] hover:bg-[#47242B] transition"
+                    className="flex items-center w-full px-4 py-3 text-sm font-medium text-[#ED1B24] hover:bg-[#74A8A4] transition"
                     onClick={handleLogout}
                   >
                     <FontAwesomeIcon icon={faSignOutAlt} className="mr-2" />

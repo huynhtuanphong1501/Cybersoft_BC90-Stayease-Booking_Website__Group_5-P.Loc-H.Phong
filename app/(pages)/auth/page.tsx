@@ -115,7 +115,7 @@ const Auth = () => {
             </form>
 
             {error && (
-              <div className="mt-6 rounded-xl border border-[#ED1B24] bg-[#47242B] px-4 py-3 text-sm text-white text-center">
+              <div className="mt-6 rounded-xl border border-[#ED1B24] bg-[#a50000] px-4 py-3 text-sm text-white text-center">
                 {error}
               </div>
             )}
