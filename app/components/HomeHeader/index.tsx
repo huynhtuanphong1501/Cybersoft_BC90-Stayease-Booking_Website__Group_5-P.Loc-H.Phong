@@ -6,19 +6,19 @@ import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-    faUser,
-    faRightFromBracket,
-    faCheckCircle,
-    faBars,
-    faTimes
+  faUser,
+  faRightFromBracket,
+  faCheckCircle,
+  faBars,
+  faTimes,
 } from "@fortawesome/free-solid-svg-icons";
 import LoginModal from "@/app/(pages)/login";
 import RegisterModal from "@/app/(pages)/register";
 import Toast from "../_Toast/Toast";
 
 interface HeaderProps {
-    isHome?: boolean;
-    homeAnimationDone?: boolean;
+  isHome?: boolean;
+  homeAnimationDone?: boolean;
 }
 
 const HomeHeader = ({ isHome = false, homeAnimationDone = false }: HeaderProps) => {
@@ -93,8 +93,11 @@ const HomeHeader = ({ isHome = false, homeAnimationDone = false }: HeaderProps) 
         localStorage.removeItem("USER_LOGIN");
         setUserLogin(null);
         setDropdownOpen(false);
-        window.dispatchEvent(new Event("LOGIN_SUCCESS"));
+      }
     };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
     const handleRegisterSuccess = () => {
         setAuthModal(null);
@@ -102,146 +105,226 @@ const HomeHeader = ({ isHome = false, homeAnimationDone = false }: HeaderProps) 
         setShowToast(true);
     };
 
-    const HeaderContent = (
-        <div className="flex items-center justify-between py-4 sm:py-4 md:py-4 lg:py-0">
-            <div className="flex items-center gap-2 sm:gap-4 lg:gap-6 flex-1">
-                <button
-                    className="lg:hidden p-2 text-gray-700 cursor-pointer hover:bg-black/5 rounded-full transition-colors"
-                    onClick={() => setIsMenuOpen(true)}
-                >
-                    <FontAwesomeIcon icon={faBars} className="text-xl" />
-                </button>
+      const parsed = JSON.parse(storedUser);
 
-                <Link href="/" className="lg:hidden cursor-pointer active:scale-95 transition-transform">
-                    <img src="/img/logo.png" className="h-8 sm:h-10 object-contain" alt="Logo" />
-                </Link>
+      if (!parsed?.content?.user) {
+        localStorage.removeItem("USER_LOGIN");
+        return;
+      }
 
-                <div className="hidden lg:flex items-center gap-2 xl:gap-6 font-semibold">
-                    <Link
-                        href="/inspiration"
-                        className={`px-4 py-1.5 rounded-full cursor-pointer transition-all duration-300 hover:scale-105 ${pathname === "/inspiration" ? "bg-black text-white shadow" : "text-gray-700 hover:bg-black/5"
-                            }`}
-                    >
-                        Inspiration
-                    </Link>
-                    <Link
-                        href="/blogs"
-                        className={`px-4 py-1.5 rounded-full cursor-pointer transition-all duration-300 hover:scale-105 ${pathname === "/about" ? "bg-black text-white shadow" : "text-gray-700 hover:bg-black/5"
-                            }`}
-                    >
-                        Blogs
-                    </Link>
-                </div>
-            </div>
+      setUserLogin(parsed);
+    } catch (err) {
+      localStorage.removeItem("USER_LOGIN");
+    }
+  }, []);
 
-            <div className="hidden lg:block">
-                <Link href="/" className="cursor-pointer group">
-                    <div className="bg-[#C3DFE3] px-10 xl:px-14 py-3 xl:py-4 shadow-md [clip-path:polygon(0%_0%,100%_0%,80%_100%,20%_100%)]">
-                        <img src="/img/logo.png" className="h-10 xl:h-12 mx-auto pointer-events-none" alt="Logo" />
-                    </div>
-                </Link>
-            </div>
+  useEffect(() => {
+    if (!isHome) return;
+    const onScroll = () => setShowBg(window.scrollY > 50);
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [isHome]);
 
-            <div
-                className="flex items-center gap-2 sm:gap-3 md:gap-4 flex-1 justify-end relative"
-                ref={dropdownRef}
-            >
-                <Link
-                    href="/listing"
-                    className="px-3 sm:px-4 xl:px-6 py-1.5 sm:py-2 rounded-full cursor-pointer text-white 
+  useEffect(() => {
+    const handleOpenModal = (event: any) => {
+      const mode = event.detail?.mode || "login";
+      setAuthModal(mode);
+      setDropdownOpen(false);
+      setIsMenuOpen(false);
+    };
+
+    window.addEventListener("OPEN_AUTH_MODAL", handleOpenModal);
+    return () => window.removeEventListener("OPEN_AUTH_MODAL", handleOpenModal);
+  }, []);
+
+  const handleLoginSuccess = (userData: any) => {
+    localStorage.setItem("USER_LOGIN", JSON.stringify(userData));
+    setUserLogin(userData);
+    setAuthModal(null);
+    window.dispatchEvent(new Event("LOGIN_SUCCESS"));
+    setToastMessage("Logged in successfully!");
+    setShowToast(true);
+    setTimeout(() => setShowToast(false), 3000);
+  };
+
+  const handleLogout = () => {
+    document.cookie = "TOKEN=; path=/; max-age=0; samesite=lax";
+    localStorage.removeItem("USER_LOGIN");
+    localStorage.removeItem("TOKEN");
+    setUserLogin(null);
+    setDropdownOpen(false);
+    window.dispatchEvent(new Event("LOGIN_SUCCESS"));
+  };
+
+  const handleRegisterSuccess = () => {
+    setAuthModal(null);
+    setToastMessage("Registered successfully!");
+    setShowToast(true);
+    setTimeout(() => setShowToast(false), 3000);
+  };
+
+  const HeaderContent = (
+    <div className="flex items-center justify-between py-4 sm:py-4 md:py-4 lg:py-0">
+      <div className="flex items-center gap-2 sm:gap-4 lg:gap-6 flex-1">
+        <button
+          className="lg:hidden p-2 text-gray-700 cursor-pointer hover:bg-black/5 rounded-full transition-colors"
+          onClick={() => setIsMenuOpen(true)}
+        >
+          <FontAwesomeIcon icon={faBars} className="text-xl" />
+        </button>
+
+        <Link
+          href="/"
+          className="lg:hidden cursor-pointer active:scale-95 transition-transform"
+        >
+          <img
+            src="/img/logo.png"
+            className="h-8 sm:h-10 object-contain"
+            alt="Logo"
+          />
+        </Link>
+
+        <div className="hidden lg:flex items-center gap-2 xl:gap-6 font-semibold">
+          <Link
+            href="/inspiration"
+            className={`px-4 py-1.5 rounded-full cursor-pointer transition-all duration-300 hover:scale-105 ${
+              pathname === "/inspiration"
+                ? "bg-black text-white shadow"
+                : "text-gray-700 hover:bg-black/5"
+            }`}
+          >
+            Inspiration
+          </Link>
+          <Link
+            href="/blogs"
+            className={`px-4 py-1.5 rounded-full cursor-pointer transition-all duration-300 hover:scale-105 ${
+              pathname === "/about"
+                ? "bg-black text-white shadow"
+                : "text-gray-700 hover:bg-black/5"
+            }`}
+          >
+            Blogs
+          </Link>
+        </div>
+      </div>
+
+      <div className="hidden lg:block">
+        <Link href="/" className="cursor-pointer group">
+          <div className="bg-[#C3DFE3] px-10 xl:px-14 py-3 xl:py-4 shadow-md [clip-path:polygon(0%_0%,100%_0%,80%_100%,20%_100%)]">
+            <img
+              src="/img/logo.png"
+              className="h-10 xl:h-12 mx-auto pointer-events-none"
+              alt="Logo"
+            />
+          </div>
+        </Link>
+      </div>
+
+      <div
+        className="flex items-center gap-2 sm:gap-3 md:gap-4 flex-1 justify-end relative"
+        ref={dropdownRef}
+      >
+        <Link
+          href="/listing"
+          className="px-3 sm:px-4 xl:px-6 py-1.5 sm:py-2 rounded-full cursor-pointer text-white 
         bg-linear-to-br from-blue-900 via-indigo-500 to-pink-500 
         text-[10px] sm:text-xs xl:text-sm font-medium 
         transition-all duration-300 hover:scale-105 hover:shadow-lg active:scale-95 shadow-sm whitespace-nowrap"
-                >
-                    List Now
-                </Link>
+        >
+          List Now
+        </Link>
 
-                <div
-                    className="flex items-center gap-1.5 sm:gap-2 xl:gap-3 
+        <div
+          className="flex items-center gap-1.5 sm:gap-2 xl:gap-3 
         bg-white/40 backdrop-blur-md 
         px-2 sm:px-2.5 xl:px-3 
         py-1 sm:py-1.5 
         rounded-full border border-white/30 shadow-inner"
+        >
+          <AnimatePresence mode="wait">
+            {userLogin ? (
+              <motion.div
+                key="logged-in"
+                initial={{ opacity: 0, x: 4 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 4 }}
+                className="flex items-center"
+              >
+                <span
+                  className="text-[10px] sm:text-xs xl:text-sm font-medium text-gray-700 truncate"
+                  title={userLogin?.content?.user?.name || ""}
                 >
-                    <AnimatePresence mode="wait">
-                        {userLogin ? (
-                            <motion.div
-                                key="logged-in"
-                                initial={{ opacity: 0, x: 4 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                exit={{ opacity: 0, x: 4 }}
-                                className="flex items-center"
-                            >
-                                <span
-                                    className="text-[10px] sm:text-xs xl:text-sm font-medium text-gray-700 truncate"
-                                    title={userLogin?.content?.user?.name || ""}
-                                >
-                                    Welcome,&nbsp;
-                                    <span className="font-bold text-[#143944] truncate">
-                                        {userLogin?.content?.user?.name || "User"}
-                                    </span>
-                                </span>
-                            </motion.div>
-                        ) : (
-                            <motion.div
-                                key="guest"
-                                initial={{ opacity: 0, y: 3 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                exit={{ opacity: 0, y: 3 }}
-                                className="flex items-center max-w-22.5 sm:max-w-35 xl:max-w-none"
-                            >
-                                <span className="text-[10px] sm:text-xs xl:text-sm font-semibold text-gray-700 truncate">
-                                    Sign in to get started
-                                </span>
-                            </motion.div>
-                        )}
-                    </AnimatePresence>
+                  Welcome,&nbsp;
+                  <span className="font-bold text-[#143944] truncate">
+                    {userLogin?.content?.user?.name || "User"}
+                  </span>
+                </span>
+              </motion.div>
+            ) : (
+              <motion.div
+                key="guest"
+                initial={{ opacity: 0, y: 3 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 3 }}
+                className="flex items-center max-w-22.5 sm:max-w-35 xl:max-w-none"
+              >
+                <span className="text-[10px] sm:text-xs xl:text-sm font-semibold text-gray-700 truncate">
+                  Sign in to get started
+                </span>
+              </motion.div>
+            )}
+          </AnimatePresence>
 
-                    <button
-                        onClick={() => setDropdownOpen(!dropdownOpen)}
-                        className="w-7 h-7 sm:w-8 sm:h-8 xl:w-9 xl:h-9 
+          <button
+            onClick={() => setDropdownOpen(!dropdownOpen)}
+            className="w-7 h-7 sm:w-8 sm:h-8 xl:w-9 xl:h-9 
             rounded-full overflow-hidden cursor-pointer 
             bg-[#143944] text-white 
             flex items-center justify-center 
             transition-all hover:scale-105 hover:ring-2 ring-offset-2 ring-[#143944] 
             shadow-md active:scale-95 shrink-0"
-                    >
-                        {userLogin ? (
-                            <img
-                                src={userLogin.avatar || "/img/avatarLogo.jpg"}
-                                className="w-full h-full object-cover"
-                                alt="Avatar"
-                            />
-                        ) : (
-                            <FontAwesomeIcon icon={faUser} className="text-[10px] sm:text-xs xl:text-sm" />
-                        )}
-                    </button>
-                </div>
+          >
+            {userLogin ? (
+              <img
+                src={userLogin.avatar || "/img/avatarLogo.jpg"}
+                className="w-full h-full object-cover"
+                alt="Avatar"
+              />
+            ) : (
+              <FontAwesomeIcon
+                icon={faUser}
+                className="text-[10px] sm:text-xs xl:text-sm"
+              />
+            )}
+          </button>
+        </div>
 
-                <AnimatePresence>
-                    {dropdownOpen && (
-                        <motion.div
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: 10 }}
-                            className={`absolute right-0 top-12 sm:top-14 
+        <AnimatePresence>
+          {dropdownOpen && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 10 }}
+              className={`absolute right-0 top-12 sm:top-14 
             ${userLogin ? "w-105 xl:w-120" : "w-44"} 
             bg-white/95 backdrop-blur-md 
             rounded-2xl shadow-2xl border border-gray-100 z-2 p-4`}
-                        >
-                            {userLogin ? (
-                                userLogin.content.user.role === "ADMIN" ? (
-                                    <div className="flex flex-col gap-2 px-2 py-1 text-sm text-gray-700">
-                                        <Link
-                                            href="/admin/dashboard"
-                                            onClick={() => { setDropdownOpen(false); }}
-                                            className="w-full px-4 py-3 text-left cursor-pointer 
+            >
+              {userLogin ? (
+                userLogin.content.user.role === "ADMIN" ? (
+                  <div className="flex flex-col gap-2 px-2 py-1 text-sm text-gray-700">
+                    <Link
+                      href="/admin/dashboard"
+                      onClick={() => {
+                        setDropdownOpen(false);
+                      }}
+                      className="w-full px-4 py-3 text-left cursor-pointer 
                             text-gray-700 hover:bg-gray-100 rounded-xl transition-all font-medium"
-                                        >
-                                            Go to Admin Page
-                                        </Link>
+                    >
+                      Go to Admin Page
+                    </Link>
 
-                                        <div className="h-px bg-gray-200 my-2" />
+                    <div className="h-px bg-gray-200 my-2" />
 
                                         <button
                                             onClick={handleLogout}
@@ -294,13 +377,16 @@ const HomeHeader = ({ isHome = false, homeAnimationDone = false }: HeaderProps) 
                                         onClick={() => { setAuthModal("login"); setDropdownOpen(false); }}
                                         className="w-full px-4 py-3 text-left cursor-pointer 
                         text-gray-700 hover:bg-gray-100 rounded-xl transition-all font-medium text-sm"
-                                    >
-                                        Login
-                                    </button>
+                  >
+                    Login
+                  </button>
 
-                                    <button
-                                        onClick={() => { setAuthModal("register"); setDropdownOpen(false); }}
-                                        className="w-full px-4 py-3 text-left cursor-pointer 
+                  <button
+                    onClick={() => {
+                      setAuthModal("register");
+                      setDropdownOpen(false);
+                    }}
+                    className="w-full px-4 py-3 text-left cursor-pointer 
                         text-gray-700 hover:bg-gray-100 rounded-xl transition-all font-medium text-sm"
                                     >
                                         Register
