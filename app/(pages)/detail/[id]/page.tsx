@@ -20,7 +20,6 @@ import {
 import { DetailRoomProps, IBooking, TCity } from "@/app/type";
 import { useRouter } from "next/navigation";
 import CommentSection from "./comment";
-import BackToTopButton from "@/app/components/BackToTop";
 
 import { DayPicker } from "react-day-picker";
 import { format } from "date-fns";
@@ -501,7 +500,6 @@ const DetailRoom = ({ params }: DetailRoomProps) => {
                 </div>
             </section>
 
-            <BackToTopButton />
             <HomeFooter />
 
             <Toast

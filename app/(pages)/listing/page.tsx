@@ -1,6 +1,5 @@
 "use client";
 
-import BackToTopButton from "@/app/components/BackToTop";
 import HomeFooter from "@/app/components/HomeFooter";
 import HomeHeader from "@/app/components/HomeHeader";
 import api from "@/app/service/api";
@@ -317,7 +316,6 @@ const Listing = () => {
                 </div>
             </Toast>
 
-            <BackToTopButton />
             <HomeFooter />
         </div>
     );

@@ -145,21 +145,19 @@ const HomeHeader = ({
         <div className="hidden lg:flex items-center gap-2 xl:gap-6 font-semibold">
           <Link
             href="/inspiration"
-            className={`px-4 py-1.5 rounded-full cursor-pointer transition-all duration-300 hover:scale-105 ${
-              pathname === "/inspiration"
-                ? "bg-black text-white shadow"
-                : "text-gray-700 hover:bg-black/5"
-            }`}
+            className={`px-4 py-1.5 rounded-full cursor-pointer transition-all duration-300 hover:scale-105 ${pathname === "/inspiration"
+              ? "bg-black text-white shadow"
+              : "text-gray-700 hover:bg-black/5"
+              }`}
           >
             Inspiration
           </Link>
           <Link
             href="/blogs"
-            className={`px-4 py-1.5 rounded-full cursor-pointer transition-all duration-300 hover:scale-105 ${
-              pathname === "/about"
-                ? "bg-black text-white shadow"
-                : "text-gray-700 hover:bg-black/5"
-            }`}
+            className={`px-4 py-1.5 rounded-full cursor-pointer transition-all duration-300 hover:scale-105 ${pathname === "/blogs"
+              ? "bg-black text-white shadow"
+              : "text-gray-700 hover:bg-black/5"
+              }`}
           >
             Blogs
           </Link>
@@ -408,10 +406,11 @@ const HomeHeader = ({
                 >
                   Inspiration
                 </Link>
+
                 <Link
                   href="/blogs"
                   onClick={() => setIsMenuOpen(false)}
-                  className={`p-4 rounded-2xl font-semibold text-lg cursor-pointer transition-colors ${pathname === "/about" ? "bg-[#C3DFE3] text-[#143944]" : "text-gray-700 hover:bg-gray-50"}`}
+                  className={`p-4 rounded-2xl font-semibold text-lg cursor-pointer transition-colors ${pathname === "/blogs" ? "bg-[#C3DFE3] text-[#143944]" : "text-gray-700 hover:bg-gray-50"}`}
                 >
                   Blogs
                 </Link>
@@ -428,11 +427,10 @@ const HomeHeader = ({
               initial={{ y: -60, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.5, ease: [0.33, 1, 0.68, 1] }}
-              className={`fixed top-0 left-0 w-full z-2 transition-all duration-300 rounded-b-2xl sm:rounded-b-3xl lg:rounded-b-4xl xl:rounded-b-[2.5rem] ${
-                showBg
-                  ? "bg-[#C3DFE3] shadow-md"
-                  : "bg-white/30 backdrop-blur-sm"
-              }`}
+              className={`fixed top-0 left-0 w-full z-2 transition-all duration-300 rounded-b-2xl sm:rounded-b-3xl lg:rounded-b-4xl xl:rounded-b-[2.5rem] ${showBg
+                ? "bg-[#C3DFE3] shadow-md"
+                : "bg-white/30 backdrop-blur-sm"
+                }`}
             >
               <div className="app-container mx-auto">{HeaderContent}</div>
             </motion.header>
