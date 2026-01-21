@@ -1,8 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { Star, Send, ChevronLeft, ChevronRight, Lock, User } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { Star, Send, ChevronLeft, ChevronRight, User } from "lucide-react";
 import api from "@/app/service/api";
 import { TComment } from "@/app/type";
 import Toast from "@/app/components/_Toast/Toast";
@@ -136,12 +135,20 @@ const CommentSection = ({ roomId }: { roomId: string }) => {
                         <span className="text-black">{comments.length} reviews</span>
                     </h3>
                 </div>
-                <div className="flex gap-2">
-                    <button onClick={() => scroll("left")} className="p-2 rounded-full border border-[#335765]  bg-white hover:bg-white  ransition-colors shadow-sm active:scale-95">
-                        <ChevronLeft size={18} />
+
+                <div className="flex items-center gap-2 sm:gap-3 md:gap-4 lg:gap-5">
+                    <button
+                        onClick={() => scroll("left")}
+                        className="flex items-center justify-center rounded-full border border-[#335765] bg-white shadow-sm transition-all duration-300 active:scale-90 hover:bg-slate-50 cursor-pointer p-1.5 sm:p-2 md:p-2.5 lg:p-2.5"
+                    >
+                        <ChevronLeft className="w-4 h-4 sm:w-4.5 sm:h-4.5 md:w-5 md:h-5 xl:w-5.5 xl:h-5.5" />
                     </button>
-                    <button onClick={() => scroll("right")} className="p-2 rounded-full border border-[#335765]  bg-white hover:bg-white  ransition-colors shadow-sm active:scale-95">
-                        <ChevronRight size={18} />
+
+                    <button
+                        onClick={() => scroll("right")}
+                        className="flex items-center justify-center rounded-full border border-[#335765] bg-white shadow-sm transition-all duration-300 active:scale-90 hover:bg-slate-50 cursor-pointer p-1.5 sm:p-2 md:p-2.5 lg:p-2.5"
+                    >
+                        <ChevronRight className="w-4 h-4 sm:w-4.5 sm:h-4.5 md:w-5 md:h-5 xl:w-5.5 xl:h-5.5" />
                     </button>
                 </div>
             </div>

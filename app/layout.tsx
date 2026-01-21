@@ -5,6 +5,7 @@ import 'animate.css/animate.min.css';
 import "@fortawesome/fontawesome-svg-core/styles.css";
 import { config } from "@fortawesome/fontawesome-svg-core";
 import BackToTopButton from "./components/BackToTop";
+import PhoneNumber from "./components/PhoneNumber";
 
 config.autoAddCss = false;
 
@@ -24,6 +25,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         {children}
+        <PhoneNumber />
         <BackToTopButton />
       </body>
     </html>

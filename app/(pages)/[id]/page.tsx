@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect, useMemo } from 'react';
-import BackToTopButton from '@/app/components/BackToTop';
 import HomeFooter from '@/app/components/HomeFooter';
 import HomeHeader from '@/app/components/HomeHeader';
 import api from '@/app/service/api';
@@ -74,11 +73,6 @@ const CityName = ({ params }: CityNameProps) => {
         const query = encodeURIComponent(`${currentCity.tenViTri}, ${currentCity.tinhThanh}`);
         return `https://maps.google.com/maps?q=${query}&t=&z=14&ie=UTF8&iwloc=&output=embed`;
     }, [currentCity]);
-
-    const getRandomRating = () => {
-        const ratings = [2, 2.5, 3, 3.5, 4, 4.5, 5];
-        return ratings[Math.floor(Math.random() * ratings.length)];
-    };
 
     if (loading) {
         return (
@@ -199,7 +193,7 @@ const CityName = ({ params }: CityNameProps) => {
                                                             <div className="flex items-center justify-between w-full sm:mt-1">
                                                                 <div className="flex items-center gap-1.5 bg-white  px-2 py-1 sm:px-2.5 rounded-lg">
                                                                     <FontAwesomeIcon icon={faStar} className="text-amber-500 text-[10px] sm:text-xs" />
-                                                                    <span className="text-[10px] sm:text-xs font-black text-[#7D6834] ">{getRandomRating()}</span>
+                                                                    <span className="text-[10px] sm:text-xs font-black text-[#7D6834] ">4.95</span>
                                                                 </div>
                                                                 <div className="bg-linear-to-br from-[#ACCAD5] to-[#F0944D] text-black px-4 sm:px-6 py-2 sm:py-2.5 rounded-xl font-bold text-[10px] sm:text-xs hover:bg-linear-to-br hover:from-[#F0944D] hover:to-black hover:text-white transition-all active:scale-95 shadow-lg shadow-black/10">
                                                                     Check Availability
@@ -241,7 +235,6 @@ const CityName = ({ params }: CityNameProps) => {
                 </div>
             </main>
 
-            <BackToTopButton />
             <HomeFooter />
         </div>
     );
