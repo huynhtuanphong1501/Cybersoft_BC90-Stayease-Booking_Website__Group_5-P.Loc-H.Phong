@@ -8,14 +8,18 @@ import {
   Select,
   message,
 } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ModalCmps from "@/app/(pages)/admin/_cmps/modal/ModalCmps";
 import api from "@/app/service/api";
-import type { AddProps } from "@/app/type";
+import type { AddProps, TCity, TRooms } from "@/app/type";
 
 export default function AddList({ onSuccess }: AddProps) {
   const [open, setOpen] = useState(false);
   const [form] = Form.useForm();
+
+  const [location, setLocation] = useState<TCity[]>([]);
+
+  const [loadingLocation, setLoadingLocation] = useState(false);
 
   const UTILITIES = [
     { label: "Máy giặt", value: "mayGiat" },
@@ -28,6 +32,30 @@ export default function AddList({ onSuccess }: AddProps) {
     { label: "Hồ bơi", value: "hoBoi" },
     { label: "Bàn ủi", value: "banUi" },
   ];
+
+  const fetchData = async () => {
+    setLoadingLocation(true);
+    try {
+      const response = await api.get("/vi-tri");
+
+      const locations = response.data.content;
+
+      setLocation(
+        locations.map((location: TCity) => ({
+          label: location.tenViTri,
+          value: location.id,
+        })),
+      );
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoadingLocation(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   const handleSubmit = async () => {
     try {
@@ -191,18 +219,17 @@ export default function AddList({ onSuccess }: AddProps) {
           </Form.Item>
 
           <Form.Item
+            label="Location"
             name="maViTri"
-            label="Index Location"
-            rules={[
-              { required: true, message: "Please input index location number" },
-              {
-                type: "number",
-                min: 0,
-                message: "Index Location must be greater than 0",
-              },
-            ]}
+            rules={[{ required: true, message: "Please input!" }]}
           >
-            <InputNumber min={0} style={{ width: "100%" }} />
+            <Select
+              showSearch
+              options={location}
+              optionFilterProp="label"
+              loading={loadingLocation}
+              placeholder="Select a location"
+            />
           </Form.Item>
 
           <Form.Item
