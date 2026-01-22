@@ -2,7 +2,6 @@
 
 import React, { useEffect } from 'react';
 import 'animate.css';
-import WOW from 'wowjs';
 import HomeHeader from '@/app/components/HomeHeader';
 import HomeFooter from '@/app/components/HomeFooter';
 
@@ -47,10 +46,11 @@ const BlogsPage = () => {
     ];
 
     useEffect(() => {
-        const wow = new WOW.WOW({
-            live: false
+        import('wowjs').then((WOW) => {
+            new WOW.WOW({
+                live: false
+            }).init();
         });
-        wow.init();
     }, []);
 
     return (
@@ -63,7 +63,7 @@ const BlogsPage = () => {
                     <h1 className="text-5xl md:text-7xl font-serif italic mb-8 tracking-tight">
                         Blogs
                     </h1>
-                    <p className="max-w-2xl mx-auto text-slate-500 text-lg font-light leading-relaxed">
+                    <p className="w-full mx-auto text-slate-500 text-lg font-light leading-relaxed">
                         Where Expert Knowledge Meets Exclusive Destinations. <br />
                         Inspiring Experiences and Curated Travel Guides for the Discerning Traveler.
                     </p>

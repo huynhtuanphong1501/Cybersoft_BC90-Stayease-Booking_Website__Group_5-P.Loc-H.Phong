@@ -80,7 +80,7 @@ const EditProfilePopUp = ({ userId, onClose, onUpdateSuccess }: Props) => {
         <div className="fixed inset-0 z-10 flex items-center justify-center p-2 sm:p-4">
             <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose}></div>
 
-            <div className="relative bg-white w-full max-w-[98%] sm:max-w-120 md:max-w-150 lg:max-w-2xl xl:max-w-3xl rounded-2xl sm:rounded-4xladow-2xl flex flex-col max-h-[95vh] animate-in fade-in zoom-in duration-300">
+            <div className="relative bg-white w-full sm:max-w-120 md:max-w-150 lg:max-w-2xl xl:max-w-3xl rounded-2xl sm:rounded-4xladow-2xl flex flex-col max-h-[95vh] animate-in fade-in zoom-in duration-300">
 
                 <button
                     onClick={onClose}

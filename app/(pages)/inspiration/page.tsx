@@ -33,7 +33,7 @@ const Inspiration = () => {
                         LockWind Inspiration
                     </h1>
                     <div className="w-24 h-px bg-slate-400 mx-auto mt-8"></div>
-                    <p className="max-w-2xl mx-auto text-lg text-slate-600 italic mt-6 wow animate__animated animate__fadeInUp" data-wow-delay="0.3s">
+                    <p className="w-full mx-auto text-lg text-slate-600 italic mt-6 wow animate__animated animate__fadeInUp" data-wow-delay="0.3s">
                         "Luxury is emotive and personal. Unique to every individual."
                     </p>
                 </div>
