@@ -44,11 +44,9 @@ const Home = () => {
   }, [emblaApi, setScrollSnaps, onSelect]);
 
   useEffect(() => {
-    import("wowjs/dist/wow").then((module) => {
-      const WOW = module.WOW;
-      new WOW({
-        live: false,
-        offset: 80,
+    import('wowjs').then((WOW) => {
+      new WOW.WOW({
+        live: false
       }).init();
     });
 
@@ -388,16 +386,19 @@ const Home = () => {
                     />
                     <div className="absolute inset-0 bg-black/5 group-hover:bg-transparent transition-colors duration-300"></div>
                   </div>
-                  <div className="mt-6 sm:mt-8 space-y-4">
+                  <div className="mt-4 sm:mt-5 md:mt-6 lg:mt-7 xl:mt-8 space-y-2 sm:space-y-3 md:space-y-4">
                     <span className="text-[10px] uppercase tracking-[0.4em] font-bold text-rose-800 block opacity-80 group-hover:opacity-100 transition-opacity duration-300">
                       Heritage Guide
                     </span>
                     <h3 className="text-xl font-serif leading-snug group-hover:text-slate-600 transition-colors duration-300 min-h-14 lg:min-h-18 xl:min-h-20">
                       7 Perfect Days in the Heart of Ancient Hoi An
                     </h3>
-                    <div className="pt-2">
-                      <button className="relative text-[11px] uppercase tracking-widest font-bold border-b border-slate-900 pb-1 group/btn">
-                        <span className="relative z-10 group-hover/btn:text-rose-800 transition-colors duration-300">Read More</span>
+
+                    <div className="flex justify-center">
+                      <button className="relative flex items-center justify-center text-[11px] uppercase tracking-widest font-bold border-b border-slate-900 pb-1 group/btn cursor-pointer hover:border-[#E76F51] transition-all duration-300">
+                        <span className="group-hover/btn:text-[#E76F51] transition-all duration-300 cursor-pointer">
+                          Read More
+                        </span>
                       </button>
                     </div>
                   </div>
@@ -414,16 +415,18 @@ const Home = () => {
                     <div className="absolute inset-0 bg-black/5 group-hover:bg-transparent transition-colors duration-300"></div>
                   </div>
 
-                  <div className="mt-6 sm:mt-8 space-y-4">
+                  <div className="mt-4 sm:mt-5 md:mt-6 lg:mt-7 xl:mt-8 space-y-2 sm:space-y-3 md:space-y-4">
                     <span className="text-[10px] uppercase tracking-[0.4em] font-bold text-rose-800 block opacity-80 group-hover:opacity-100 transition-opacity duration-300">
                       Seasonal Experience
                     </span>
                     <h3 className="text-xl font-serif leading-snug group-hover:text-slate-600 transition-colors duration-300 min-h-14 lg:min-h-18 xl:min-h-20">
                       The Ultimate Lunar New Year Escapes 2026
                     </h3>
-                    <div className="pt-2">
-                      <button className="relative text-[11px] uppercase tracking-widest font-bold border-b border-slate-900 pb-1 group/btn">
-                        <span className="relative z-10 group-hover/btn:text-rose-800 transition-colors duration-300">Read More</span>
+                    <div className="flex justify-center">
+                      <button className="relative flex items-center justify-center text-[11px] uppercase tracking-widest font-bold border-b border-slate-900 pb-1 group/btn cursor-pointer hover:border-[#E76F51] transition-all duration-300">
+                        <span className="group-hover/btn:text-[#E76F51] transition-all duration-300 cursor-pointer">
+                          Read More
+                        </span>
                       </button>
                     </div>
                   </div>
@@ -439,16 +442,18 @@ const Home = () => {
                     />
                     <div className="absolute inset-0 bg-black/5 group-hover:bg-transparent transition-colors duration-300"></div>
                   </div>
-                  <div className="mt-6 sm:mt-8 space-y-4">
+                  <div className="mt-4 sm:mt-5 md:mt-6 lg:mt-7 xl:mt-8 space-y-2 sm:space-y-3 md:space-y-4">
                     <span className="text-[10px] uppercase tracking-[0.4em] font-bold text-rose-800 block opacity-80 group-hover:opacity-100 transition-opacity duration-300">
                       Mountain Luxury
                     </span>
                     <h3 className="text-xl font-serif leading-snug group-hover:text-slate-600 transition-colors duration-300 min-h-14 lg:min-h-18 xl:min-h-20">
                       Beyond the Clouds: Private Retreats in Sapa
                     </h3>
-                    <div className="pt-2">
-                      <button className="relative text-[11px] uppercase tracking-widest font-bold border-b border-slate-900 pb-1 group/btn">
-                        <span className="relative z-10 group-hover/btn:text-rose-800 transition-colors duration-300">Read More</span>
+                    <div className="flex justify-center">
+                      <button className="relative flex items-center justify-center text-[11px] uppercase tracking-widest font-bold border-b border-slate-900 pb-1 group/btn cursor-pointer hover:border-[#E76F51] transition-all duration-300">
+                        <span className="group-hover/btn:text-[#E76F51] transition-all duration-300 cursor-pointer">
+                          Read More
+                        </span>
                       </button>
                     </div>
                   </div>
@@ -464,16 +469,18 @@ const Home = () => {
                     />
                     <div className="absolute inset-0 bg-black/5 group-hover:bg-transparent transition-colors duration-300"></div>
                   </div>
-                  <div className="mt-6 sm:mt-8 space-y-4">
+                  <div className="mt-4 sm:mt-5 md:mt-6 lg:mt-7 xl:mt-8 space-y-2 sm:space-y-3 md:space-y-4">
                     <span className="text-[10px] uppercase tracking-[0.4em] font-bold text-rose-800 block opacity-80 group-hover:opacity-100 transition-opacity duration-300">
                       Urban Discovery
                     </span>
                     <h3 className="text-xl font-serif leading-snug group-hover:text-slate-600 transition-colors duration-300 min-h-14 lg:min-h-18 xl:min-h-20">
                       LockWind City Guide | The Colonial Charm of Hanoi
                     </h3>
-                    <div className="pt-2">
-                      <button className="relative text-[11px] uppercase tracking-widest font-bold border-b border-slate-900 pb-1 group/btn">
-                        <span className="relative z-10 group-hover/btn:text-rose-800 transition-colors duration-300">Read More</span>
+                    <div className="flex justify-center">
+                      <button className="relative flex items-center justify-center text-[11px] uppercase tracking-widest font-bold border-b border-slate-900 pb-1 group/btn cursor-pointer hover:border-[#E76F51] transition-all duration-300">
+                        <span className="group-hover/btn:text-[#E76F51] transition-all duration-300 cursor-pointer">
+                          Read More
+                        </span>
                       </button>
                     </div>
                   </div>
@@ -481,7 +488,7 @@ const Home = () => {
 
               </div>
 
-              <div className="mt-20 text-center wow animate__animated animate__fadeInUp">
+              <div className="mt-4 sm:mt-8 md:mt-12 lg:mt-16 xl:mt-20 text-center wow animate__animated animate__fadeInUp">
                 <Link
                   href={"/blogs"}
                   className="px-12 py-4 border border-slate-200 text-[11px] uppercase tracking-[0.4em] font-bold hover:bg-slate-900 hover:text-white transition-all duration-500 shadow-sm hover:shadow-xl"
