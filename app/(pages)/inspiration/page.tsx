@@ -19,7 +19,7 @@ const Inspiration = () => {
     }, []);
 
     return (
-        <section className="bg-[#F8FAFC] min-h-screen text-slate-900 font-sans selection:bg-rose-100 overflow-x-hidden">
+        <section className="bg-[#F8FAFC] min-h-screen text-black font-sans selection:bg-rose-100 overflow-x-hidden">
             <HomeHeader />
 
             <main className="app-container mx-auto py-12 md:py-24">
@@ -29,7 +29,7 @@ const Inspiration = () => {
                     <h2 className="text-sm uppercase tracking-[0.4em] text-slate-500">
                         The Art of Discovery
                     </h2>
-                    <h1 className="text-5xl md:text-8xl font-serif italic text-slate-900 tracking-tight">
+                    <h1 className="text-5xl md:text-8xl font-serif italic text-black tracking-tight">
                         LockWind Inspiration
                     </h1>
                     <div className="w-24 h-px bg-slate-400 mx-auto mt-8"></div>
@@ -46,7 +46,7 @@ const Inspiration = () => {
                         </h3>
                         <div className="space-y-6 text-lg leading-relaxed text-slate-700">
                             <p>
-                                For nearly two decades, <span className="font-semibold text-slate-900">LockWind</span> has meticulously curated a collection of only the finest villas in Vietnam’s most celebrated destinations.
+                                For nearly two decades, <span className="font-semibold text-black">LockWind</span> has meticulously curated a collection of only the finest villas in Vietnam’s most celebrated destinations.
                             </p>
                             <p className="font-light">
                                 From the locally crafted fine art that adorns our walls, to our sommelier-selected wine collections, each facet of your stay is a bespoke masterpiece.
@@ -88,22 +88,21 @@ const Inspiration = () => {
                             </p>
                         </div>
                         <div className="pt-6">
-                            <button className="group relative px-10 py-4 overflow-hidden border border-slate-900 text-sm uppercase tracking-widest transition-all">
+                            <button className="group relative px-10 py-4 overflow-hidden border border-black text-sm uppercase tracking-widest transition-all">
                                 <span className="relative z-10 group-hover:text-white transition-colors duration-500">Explore Our World</span>
-                                <div className="absolute inset-0 bg-slate-900 translate-y-[101%] group-hover:translate-y-0 transition-transform duration-500"></div>
+                                <div className="absolute inset-0 bg-[#143944] translate-y-[101%] group-hover:translate-y-0 transition-transform duration-500"></div>
                             </button>
                         </div>
                     </div>
                 </section>
 
-                {/* --- Footer Quote --- */}
                 <div className="text-center py-32 border-t border-slate-100 wow animate__animated animate__fadeInUp">
                     <p className="text-3xl md:text-5xl font-serif italic text-slate-400 leading-snug">
                         "Unscripted moments and extraordinary <br className="hidden md:block" /> milestones that write your life’s story."
                     </p>
                     <div className="mt-12 flex flex-col items-center">
                         <span className="h-12 w-px bg-slate-300 mb-6"></span>
-                        <p className="font-bold tracking-[0.5em] uppercase text-slate-900 text-xs">LockWind Vietnam</p>
+                        <p className="font-bold tracking-[0.5em] uppercase text-black text-xs">LockWind Vietnam</p>
                     </div>
                 </div>
             </main>

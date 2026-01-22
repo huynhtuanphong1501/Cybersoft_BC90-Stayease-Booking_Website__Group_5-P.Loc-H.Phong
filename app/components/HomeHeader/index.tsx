@@ -125,10 +125,13 @@ const HomeHeader = ({
     <div className="flex items-center justify-between py-4 sm:py-4 md:py-4 lg:py-0">
       <div className="flex items-center gap-2 sm:gap-4 lg:gap-6 flex-1">
         <button
-          className="lg:hidden p-2 text-gray-700 cursor-pointer hover:bg-black/5 rounded-full transition-colors"
+          className="lg:hidden p-3 sm:p-2.5 md:p-2 text-gray-700 cursor-pointer hover:bg-black/5 rounded-full transition-colors flex items-center justify-center"
           onClick={() => setIsMenuOpen(true)}
         >
-          <FontAwesomeIcon icon={faBars} className="text-xl" />
+          <FontAwesomeIcon
+            icon={faBars}
+            className="text-2xl sm:text-xl md:text-lg lg:text-base"
+          />
         </button>
 
         <Link
@@ -137,7 +140,7 @@ const HomeHeader = ({
         >
           <img
             src="/img/logo.png"
-            className="h-8 sm:h-10 object-contain"
+            className="h-10 sm:h-9 md:h-8 object-contain"
             alt="Logo"
           />
         </Link>
@@ -261,76 +264,87 @@ const HomeHeader = ({
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 10 }}
-              className={`absolute right-0 top-12 sm:top-14 
-            ${userLogin ? "w-105 xl:w-120" : "w-44"} 
-            bg-white/95 backdrop-blur-md 
-            rounded-2xl shadow-2xl border border-gray-100 z-2 p-4`}
+              className={`absolute right-0 z-50 p-3 sm:p-4 
+        bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl border border-gray-100
+        top-12 sm:top-14 
+        ${userLogin
+                  ? "w-[calc(100vw-2rem)] sm:w-80 md:w-90 lg:w-100 xl:w-120"
+                  : "w-48 sm:w-56"
+                } 
+        max-w-[95vw] sm:max-w-none`}
             >
               {userLogin ? (
                 userLogin.content.user.role === "ADMIN" ? (
-                  <div className="flex flex-col gap-2 px-2 py-1 text-sm text-gray-700">
+                  <div className="flex flex-col gap-1 sm:gap-2">
                     <Link
                       href="/admin/dashboard"
-                      onClick={() => {
-                        setDropdownOpen(false);
-                      }}
-                      className="w-full px-4 py-3 text-left cursor-pointer 
-                            text-gray-700 hover:bg-gray-100 rounded-xl transition-all font-medium"
+                      onClick={() => setDropdownOpen(false)}
+                      className="w-full px-4 py-3 sm:py-3 text-left cursor-pointer 
+                         text-gray-700 hover:bg-gray-100 rounded-xl transition-all 
+                         font-semibold text-sm sm:text-base lg:text-sm"
                     >
                       Go to Admin Page
                     </Link>
 
-                    <div className="h-px bg-gray-200 my-2" />
+                    <div className="h-px bg-gray-200 my-1 sm:my-2" />
 
                     <button
                       onClick={handleLogout}
-                      className="w-full px-4 py-2 text-left cursor-pointer 
-                            text-[#a50000] hover:bg-[#74A8A4] rounded-xl 
-                            flex items-center gap-3 transition-all font-medium"
+                      className="w-full px-4 py-3 sm:py-2 text-left cursor-pointer 
+                         text-[#a50000] hover:bg-red-50 rounded-xl 
+                         flex items-center gap-3 transition-all 
+                         font-semibold text-sm sm:text-base lg:text-sm"
                     >
                       <FontAwesomeIcon icon={faRightFromBracket} />
                       Logout
                     </button>
                   </div>
                 ) : (
-                  <div className="flex flex-col gap-2 px-2 py-1 text-sm text-gray-700">
-                    <div className="flex gap-3">
-                      <span className="font-semibold w-28 shrink-0">Name:</span>
-                      <span>{userLogin?.content?.user?.name || "User"}</span>
+                  <div className="flex flex-col gap-3 px-1 sm:px-2">
+                    <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-4">
+                      <span className="text-[10px] sm:text-xs font-bold text-gray-400 uppercase tracking-wider w-20 shrink-0">
+                        Name
+                      </span>
+                      <span className="text-sm sm:text-base lg:text-sm font-medium text-gray-900 truncate">
+                        {userLogin?.content?.user?.name || "User"}
+                      </span>
                     </div>
 
-                    <div className="flex gap-3">
-                      <span className="font-semibold w-28 shrink-0">
-                        Email:
+                    <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-4">
+                      <span className="text-[10px] sm:text-xs font-bold text-gray-400 uppercase tracking-wider w-20 shrink-0">
+                        Email
                       </span>
-                      <span className="break-all">
+                      <span className="text-sm sm:text-base lg:text-sm font-medium text-gray-900 break-all">
                         {userLogin.content.user.email}
                       </span>
                     </div>
 
-                    <div className="flex gap-3">
-                      <span className="font-semibold w-28 shrink-0">
-                        Birthday:
+                    <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-4">
+                      <span className="text-[10px] sm:text-xs font-bold text-gray-400 uppercase tracking-wider w-20 shrink-0">
+                        Birthday
                       </span>
-                      <span>{userLogin.content.user.birthday}</span>
+                      <span className="text-sm sm:text-base lg:text-sm font-medium text-gray-900">
+                        {userLogin.content.user.birthday}
+                      </span>
                     </div>
 
-                    <div className="flex gap-3">
-                      <span className="font-semibold w-28 shrink-0">
-                        Gender:
+                    <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-4">
+                      <span className="text-[10px] sm:text-xs font-bold text-gray-400 uppercase tracking-wider w-20 shrink-0">
+                        Gender
                       </span>
-                      <span>
+                      <span className="text-sm sm:text-base lg:text-sm font-medium text-gray-900">
                         {userLogin.content.user.gender ? "Male" : "Female"}
                       </span>
                     </div>
 
-                    <div className="h-px bg-gray-200 my-3" />
+                    <div className="h-px bg-gray-100 my-1" />
 
                     <button
                       onClick={handleLogout}
-                      className="w-full px-4 py-2 text-left cursor-pointer 
-                            text-[#a50000] hover:bg-[#74A8A4] rounded-xl 
-                            flex items-center gap-3 transition-all duration-300 font-medium"
+                      className="w-full px-4 py-3 sm:py-2 text-left cursor-pointer 
+                         text-[#a50000] hover:bg-red-50 rounded-xl 
+                         flex items-center gap-3 transition-all duration-300 
+                         font-bold text-sm sm:text-base lg:text-sm"
                     >
                       <FontAwesomeIcon icon={faRightFromBracket} />
                       Logout
@@ -345,7 +359,8 @@ const HomeHeader = ({
                       setDropdownOpen(false);
                     }}
                     className="w-full px-4 py-3 text-left cursor-pointer 
-                        text-gray-700 hover:bg-gray-100 rounded-xl transition-all font-medium text-sm"
+                       text-gray-700 hover:bg-gray-100 rounded-xl transition-all 
+                       font-semibold text-sm sm:text-base lg:text-sm"
                   >
                     Login
                   </button>
@@ -356,7 +371,8 @@ const HomeHeader = ({
                       setDropdownOpen(false);
                     }}
                     className="w-full px-4 py-3 text-left cursor-pointer 
-                        text-gray-700 hover:bg-gray-100 rounded-xl transition-all font-medium text-sm"
+                       text-gray-700 hover:bg-gray-100 rounded-xl transition-all 
+                       font-semibold text-sm sm:text-base lg:text-sm"
                   >
                     Register
                   </button>
@@ -398,6 +414,7 @@ const HomeHeader = ({
                   <FontAwesomeIcon icon={faTimes} />
                 </button>
               </div>
+
               <nav className="flex flex-col gap-2">
                 <Link
                   href="/inspiration"

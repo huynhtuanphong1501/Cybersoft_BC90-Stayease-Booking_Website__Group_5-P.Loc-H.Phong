@@ -359,7 +359,7 @@ const Home = () => {
 
               <div className="flex justify-between items-end mb-12 md:mb-16 wow animate__animated animate__fadeInUp">
                 <div className="text-left">
-                  <h2 className="text-3xl md:text-5xl lg:text-6xl font-serif italic text-slate-900">
+                  <h2 className="text-3xl md:text-5xl lg:text-6xl font-serif italic text-black">
                     Blogs
                   </h2>
                   <div className="w-12 h-0.5 bg-rose-800 mt-4"></div>
@@ -367,7 +367,7 @@ const Home = () => {
 
                 <Link
                   href="/blogs"
-                  className="mt-6 sm:mt-0 group flex items-center text-[11px] uppercase tracking-[0.3em] font-bold text-slate-900 hover:text-rose-800 transition-colors"
+                  className="mt-6 sm:mt-0 group flex items-center text-[11px] uppercase tracking-[0.3em] font-bold text-black hover:text-rose-800 transition-colors"
                 >
                   Explore All
                   <span className="ml-2 transform group-hover:translate-x-2 transition-transform duration-300">→</span>
@@ -395,7 +395,7 @@ const Home = () => {
                     </h3>
 
                     <div className="flex justify-center">
-                      <button className="relative flex items-center justify-center text-[11px] uppercase tracking-widest font-bold border-b border-slate-900 pb-1 group/btn cursor-pointer hover:border-[#E76F51] transition-all duration-300">
+                      <button className="relative flex items-center justify-center text-[11px] uppercase tracking-widest font-bold border-b border-black pb-1 group/btn cursor-pointer hover:border-[#E76F51] transition-all duration-300">
                         <span className="group-hover/btn:text-[#E76F51] transition-all duration-300 cursor-pointer">
                           Read More
                         </span>
@@ -423,7 +423,7 @@ const Home = () => {
                       The Ultimate Lunar New Year Escapes 2026
                     </h3>
                     <div className="flex justify-center">
-                      <button className="relative flex items-center justify-center text-[11px] uppercase tracking-widest font-bold border-b border-slate-900 pb-1 group/btn cursor-pointer hover:border-[#E76F51] transition-all duration-300">
+                      <button className="relative flex items-center justify-center text-[11px] uppercase tracking-widest font-bold border-b border-black pb-1 group/btn cursor-pointer hover:border-[#E76F51] transition-all duration-300">
                         <span className="group-hover/btn:text-[#E76F51] transition-all duration-300 cursor-pointer">
                           Read More
                         </span>
@@ -450,7 +450,7 @@ const Home = () => {
                       Beyond the Clouds: Private Retreats in Sapa
                     </h3>
                     <div className="flex justify-center">
-                      <button className="relative flex items-center justify-center text-[11px] uppercase tracking-widest font-bold border-b border-slate-900 pb-1 group/btn cursor-pointer hover:border-[#E76F51] transition-all duration-300">
+                      <button className="relative flex items-center justify-center text-[11px] uppercase tracking-widest font-bold border-b border-black pb-1 group/btn cursor-pointer hover:border-[#E76F51] transition-all duration-300">
                         <span className="group-hover/btn:text-[#E76F51] transition-all duration-300 cursor-pointer">
                           Read More
                         </span>
@@ -477,7 +477,7 @@ const Home = () => {
                       LockWind City Guide | The Colonial Charm of Hanoi
                     </h3>
                     <div className="flex justify-center">
-                      <button className="relative flex items-center justify-center text-[11px] uppercase tracking-widest font-bold border-b border-slate-900 pb-1 group/btn cursor-pointer hover:border-[#E76F51] transition-all duration-300">
+                      <button className="relative flex items-center justify-center text-[11px] uppercase tracking-widest font-bold border-b border-black pb-1 group/btn cursor-pointer hover:border-[#E76F51] transition-all duration-300">
                         <span className="group-hover/btn:text-[#E76F51] transition-all duration-300 cursor-pointer">
                           Read More
                         </span>
@@ -491,7 +491,7 @@ const Home = () => {
               <div className="mt-4 sm:mt-8 md:mt-12 lg:mt-16 xl:mt-20 text-center wow animate__animated animate__fadeInUp">
                 <Link
                   href={"/blogs"}
-                  className="px-12 py-4 border border-slate-200 text-[11px] uppercase tracking-[0.4em] font-bold hover:bg-slate-900 hover:text-white transition-all duration-500 shadow-sm hover:shadow-xl"
+                  className="px-12 py-4 border border-slate-200 text-[11px] uppercase tracking-[0.4em] font-bold hover:bg-[#143944] hover:text-white transition-all duration-500 shadow-sm hover:shadow-xl"
                 >
                   Load More
                 </Link>
