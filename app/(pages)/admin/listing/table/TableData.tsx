@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { Table, Space, Flex, Tag } from "antd";
 import type { TableProps } from "antd";
-import type { TRooms } from "@/app/type";
+import type { TApiResponse, TRooms, TRoomView, TCity } from "@/app/type";
 import api from "@/app/service/api";
 import EditList from "../editList/EditList";
 import DelList from "../deleteList/DelLocation";
@@ -16,7 +16,7 @@ export default function TableData({
   keyword: string;
   utilities: string[];
 }) {
-  const [data, setData] = useState<TRooms[]>([]);
+  const [data, setData] = useState<TRoomView[]>([]);
   const [loading, setLoading] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
   const [editingUser, setEditingUser] = useState<TRooms | null>(null);
@@ -25,8 +25,24 @@ export default function TableData({
   const fetchUsers = async () => {
     setLoading(true);
     try {
-      const response = await api.get("/phong-thue");
-      setData(response.data.content);
+      const [roomRes, cityRes] = await Promise.all([
+        api.get<TApiResponse<TRooms>>("/phong-thue"),
+        api.get<TApiResponse<TCity>>("/vi-tri"),
+      ]);
+      const roomData = roomRes.data.content;
+      const cityData = cityRes.data.content;
+
+      const data = roomData.map((room) => {
+        const city = cityData.find((city) => city.id === room.maViTri);
+        return {
+          ...room,
+          tenViTri: city?.tenViTri || "Unknown",
+        };
+      });
+
+      console.log(data);
+
+      setData(data);
     } catch (error) {
       console.log(error);
     } finally {
@@ -51,13 +67,13 @@ export default function TableData({
       result = result.filter(
         (room) =>
           room.tenPhong.toLowerCase().includes(lower) ||
-          room.moTa.toLowerCase().includes(lower)
+          room.moTa.toLowerCase().includes(lower),
       );
     }
 
     if (utilities.length > 0) {
       result = result.filter((room) =>
-        utilities.every((u) => room[u as keyof TRooms] === true)
+        utilities.every((u) => room[u as keyof TRooms] === true),
       );
     }
 
@@ -136,6 +152,12 @@ export default function TableData({
       title: "Price",
       dataIndex: "giaTien",
       key: "giaTien",
+      width: 180,
+    },
+    {
+      title: "Location",
+      dataIndex: "tenViTri",
+      key: "tenViTri",
       width: 180,
     },
     {

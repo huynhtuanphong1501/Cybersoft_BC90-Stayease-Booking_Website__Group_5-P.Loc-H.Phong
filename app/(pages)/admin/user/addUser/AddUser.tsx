@@ -78,12 +78,30 @@ export default function AddUser({ onSuccess }: AddProps) {
           <Form.Item
             name="password"
             label="Password"
-            rules={[{ required: true, message: "Please input password" }]}
+            rules={[
+              { required: true, message: "Please input password" },
+              {
+                pattern:
+                  /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{0,}$/,
+                message:
+                  "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character",
+              },
+            ]}
           >
             <Input.Password />
           </Form.Item>
 
-          <Form.Item name="birthday" label="Birthday">
+          <Form.Item
+            name="birthday"
+            label="Birthday"
+            rules={[
+              { required: true, message: "Please input birthday" },
+              {
+                pattern: /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/,
+                message: "Birthday must be in format YYYY-MM-DD",
+              },
+            ]}
+          >
             <Input placeholder="YYYY-MM-DD" />
           </Form.Item>
 
