@@ -54,7 +54,7 @@ const BlogsPage = () => {
     }, []);
 
     return (
-        <section className="bg-[#F8FAFC] min-h-screen text-slate-900 font-sans selection:bg-rose-100 overflow-x-hidden">
+        <section className="bg-[#F8FAFC] min-h-screen text-black font-sans selection:bg-rose-100 overflow-x-hidden">
             <HomeHeader />
 
             <main className='app-container mx-auto py-12 md:py-24'>
@@ -96,7 +96,7 @@ const BlogsPage = () => {
                                         {post.title}
                                     </h3>
                                     <div className="pt-1 sm:pt-2">
-                                        <button className="relative text-[10px] sm:text-[11px] uppercase tracking-widest font-bold border-b border-slate-900 pb-1 overflow-hidden group/btn">
+                                        <button className="relative text-[10px] sm:text-[11px] uppercase tracking-widest font-bold border-b border-black pb-1 overflow-hidden group/btn">
                                             <span className="relative z-10 group-hover/btn:text-rose-800 transition-colors duration-300">
                                                 Read More
                                             </span>
@@ -108,7 +108,7 @@ const BlogsPage = () => {
                     </div>
 
                     <div className="mt-16 sm:mt-24 md:mt-32 text-center wow animate__animated animate__fadeInUp">
-                        <button className="px-10 py-4 sm:px-14 sm:py-5 border border-slate-200 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] sm:tracking-[0.4em] font-semibold hover:bg-slate-900 hover:text-white hover:border-slate-900 transition-all duration-300 shadow-sm hover:shadow-xl">
+                        <button className="px-10 py-4 sm:px-14 sm:py-5 border border-slate-200 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] sm:tracking-[0.4em] font-semibold hover:bg-[#143944] hover:text-white hover:border-black transition-all duration-300 shadow-sm hover:shadow-xl">
                             Load more
                         </button>
                     </div>
@@ -119,7 +119,7 @@ const BlogsPage = () => {
                     <p className="font-serif italic text-xl text-slate-400 tracking-wider">
                         — Curating Vietnam's Finest Moments —
                     </p>
-                    <p className="mt-4 text-[10px] uppercase tracking-[0.5em] text-slate-900">LockWind Vietnam</p>
+                    <p className="mt-4 text-[10px] uppercase tracking-[0.5em] text-black">LockWind Vietnam</p>
                 </div>
             </main>
 

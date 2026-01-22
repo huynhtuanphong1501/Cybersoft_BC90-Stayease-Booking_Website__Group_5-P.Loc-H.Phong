@@ -123,21 +123,22 @@ const CheckoutPage = () => {
     }
 
     return (
-        <div className="bg-[#F8FAFC] min-h-screen text-slate-900 font-sans selection:bg-rose-100">
+        <div className="bg-[#F8FAFC] min-h-screen text-black font-sans selection:bg-rose-100">
             <HomeHeader />
 
-            <main className="app-container mx-auto px-4 md:px-8 py-8 md:py-16">
-                <div className="flex items-center gap-4 mb-10">
+            <main className="app-container mx-auto py-8 md:py-16">
+                {/* TITLE */}
+                <section className="flex items-center gap-4 mb-10">
                     <button onClick={() => router.back()} className="p-3 bg-white hover:bg-slate-50 rounded-full duration-300 transition-all border border-slate-200 shadow-sm group">
                         <ChevronLeft size={20} className="group-hover:-translate-x-1 duration-300 transition-transform" />
                     </button>
                     <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight">Confirm and pay</h1>
-                </div>
+                </section>
 
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
+                <section className="grid grid-cols-1 lg:grid-cols-12 gap-16">
                     <div className="lg:col-span-7 space-y-12">
-
-                        <section className="space-y-6">
+                        {/* INFORMATION BOOKING*/}
+                        <div className="space-y-6">
                             <h3 className="text-xl font-bold tracking-tight">Trip summary</h3>
                             <div className="bg-white rounded-4xl p-8 shadow-sm border border-slate-200 divide-y divide-slate-100">
                                 <div className="flex justify-between items-center pb-6">
@@ -171,14 +172,15 @@ const CheckoutPage = () => {
                                     </div>
                                 </div>
                             </div>
-                        </section>
+                        </div>
 
-                        <section className="space-y-6">
+                        {/* PAYMENT METHOD */}
+                        <div className="space-y-6">
                             <h3 className="text-xl font-bold tracking-tight">Payment method</h3>
                             <div className="space-y-4">
-                                <div className={`border-2 rounded-2xl transition-all duration-300 ${paymentMethod === 'card' ? 'border-slate-900 bg-white ring-4 ring-slate-900/5' : 'border-slate-200 bg-white'}`}>
+                                <div className={`border-2 rounded-2xl transition-all duration-300 ${paymentMethod === 'card' ? 'border-black bg-white ring-4 ring-black/5' : 'border-slate-200 bg-white'}`}>
                                     <label className="p-6 flex items-start gap-4 cursor-pointer">
-                                        <input type="radio" className="mt-1.5 w-5 h-5 accent-slate-900" checked={paymentMethod === 'card'} onChange={() => setPaymentMethod("card")} />
+                                        <input type="radio" className="mt-1.5 w-5 h-5 accent-black" checked={paymentMethod === 'card'} onChange={() => setPaymentMethod("card")} />
                                         <div className="flex-1">
                                             <div className="flex justify-between items-center mb-1">
                                                 <span className="font-bold flex items-center gap-2"><CreditCard size={18} /> Credit or Debit Card</span>
@@ -197,11 +199,11 @@ const CheckoutPage = () => {
                                                                 maxLength={19}
                                                                 value={cardDetails.number.replace(/\W/gi, '').replace(/(.{4})/g, '$1 ').trim()}
                                                                 onChange={(e) => setCardDetails({ ...cardDetails, number: e.target.value })}
-                                                                className="w-full p-4 rounded-xl border border-slate-200 focus:border-slate-900 outline-none duration-300 transition-all text-sm bg-slate-50/50"
+                                                                className="w-full p-4 rounded-xl border border-slate-200 focus:border-black outline-none duration-300 transition-all text-sm bg-slate-50/50"
                                                             />
                                                             <div className="grid grid-cols-2 gap-4">
-                                                                <input type="text" placeholder="Exp: MM/YY" className="p-4 rounded-xl border border-slate-200 focus:border-slate-900 outline-none text-sm bg-slate-50/50" onChange={(e) => setCardDetails({ ...cardDetails, expiry: e.target.value })} />
-                                                                <input type="text" placeholder="CVV" className="p-4 rounded-xl border border-slate-200 focus:border-slate-900 outline-none text-sm bg-slate-50/50" onChange={(e) => setCardDetails({ ...cardDetails, cvv: e.target.value })} />
+                                                                <input type="text" placeholder="Exp: MM/YY" className="p-4 rounded-xl border border-slate-200 focus:border-black outline-none text-sm bg-slate-50/50" onChange={(e) => setCardDetails({ ...cardDetails, expiry: e.target.value })} />
+                                                                <input type="text" placeholder="CVV" className="p-4 rounded-xl border border-slate-200 focus:border-black outline-none text-sm bg-slate-50/50" onChange={(e) => setCardDetails({ ...cardDetails, cvv: e.target.value })} />
                                                             </div>
                                                         </div>
                                                     </motion.div>
@@ -211,26 +213,43 @@ const CheckoutPage = () => {
                                     </label>
                                 </div>
                                 {['bank', 'cash'].map((method) => (
-                                    <label key={method} className={`p-6 border-2 rounded-2xl flex items-center gap-4 cursor-pointer duration-300 transition-all ${paymentMethod === method ? 'border-slate-900 bg-white ring-4 ring-slate-900/5' : 'border-slate-200 bg-white hover:border-slate-300'}`}>
-                                        <input type="radio" className="w-5 h-5 accent-slate-900" checked={paymentMethod === method} onChange={() => setPaymentMethod(method)} />
+                                    <label key={method} className={`p-6 border-2 rounded-2xl flex items-center gap-4 cursor-pointer duration-300 transition-all ${paymentMethod === method ? 'border-black bg-white ring-4 ring-black/5' : 'border-slate-200 bg-white hover:border-slate-300'}`}>
+                                        <input type="radio" className="w-5 h-5 accent-black" checked={paymentMethod === method} onChange={() => setPaymentMethod(method)} />
                                         <span className="font-bold flex items-center gap-2 uppercase text-xs tracking-widest">
                                             {method === 'bank' ? <><Landmark size={18} /> Bank Transfer</> : <><Banknote size={18} /> Pay at Property</>}
                                         </span>
                                     </label>
                                 ))}
                             </div>
-                        </section>
+                        </div>
 
-                        <div className="pt-4 border-t border-slate-200">
-                            <p className="text-[11px] text-slate-400 mb-6 italic leading-relaxed">By selecting the button below, I agree to the Host's House Rules, Safety Disclosures, and Re-booking and Refund Policy.</p>
-                            <button
-                                disabled={isProcessing}
-                                onClick={handleConfirmBooking}
-                                className="w-full md:w-auto px-16 py-4 bg-slate-900 hover:bg-black text-white font-bold rounded-2xl shadow-xl duration-300 transition-all flex items-center justify-center gap-3 disabled:opacity-70 active:scale-[0.98]"
-                            >
-                                {isProcessing && <Loader2 size={20} className="animate-spin" />}
-                                {isProcessing ? "Processing..." : "Confirm and Pay"}
-                            </button>
+                        {/* BUTTON CONFIRM AND PAY */}
+                        <div className="pt-4 lg:border-t lg:border-slate-200">
+                            <div className={`
+        lg:static fixed bottom-0 left-0 w-full lg:w-auto 
+        bg-white lg:bg-transparent border-t border-slate-200 lg:border-none 
+        p-4 lg:p-0 z-40 duration-300 transition-all
+    `}>
+                                <div>
+                                    <button
+                                        disabled={isProcessing}
+                                        onClick={handleConfirmBooking}
+                                        className={`
+                    w-full lg:w-auto px-16 py-4 
+                    bg-[#143944]  hover:bg-black text-white 
+                    font-bold rounded-2xl shadow-xl 
+                    cursor-pointer disabled:cursor-not-allowed
+                    duration-300 transition-all 
+                    flex items-center justify-center gap-3 
+                    disabled:opacity-70 active:scale-[0.98] 
+                    text-sm sm:text-base md:text-lg lg:text-base
+                `}
+                                    >
+                                        {isProcessing && <Loader2 size={20} className="animate-spin" />}
+                                        {isProcessing ? "Processing..." : "Confirm and Pay"}
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -242,7 +261,7 @@ const CheckoutPage = () => {
                                     <div className="absolute -top-2 -right-2 bg-white shadow-md rounded-full p-1.5"><Award size={16} className="text-rose-500" /></div>
                                 </div>
                                 <div className="flex flex-col justify-center">
-                                    <h4 className="font-bold text-slate-900 leading-snug text-lg line-clamp-2">{checkoutData.roomName}</h4>
+                                    <h4 className="font-bold text-black leading-snug text-lg line-clamp-2">{checkoutData.roomName}</h4>
                                     <div className="flex items-center gap-1.5 text-sm font-bold mt-2">
                                         <FontAwesomeIcon icon={faStar} className="text-amber-500 text-[10px] sm:text-xs" />
                                         <span className="text-[10px] sm:text-xs font-black text-[#7D6834] ">4.95</span>
@@ -255,14 +274,14 @@ const CheckoutPage = () => {
                                 <div className="space-y-3 text-sm">
                                     <div className="flex justify-between text-slate-600">
                                         <span>${checkoutData.pricePerNight} x {livePrice.days} nights</span>
-                                        <span className="text-slate-900 font-bold">${livePrice.roomPriceTotal}</span>
+                                        <span className="text-black font-bold">${livePrice.roomPriceTotal}</span>
                                     </div>
                                 </div>
                             </div>
 
-                            <div className="flex justify-between items-end pt-4 border-t border-slate-900/5">
+                            <div className="flex justify-between items-end pt-4 border-t border-black/5">
                                 <span className="text-lg font-bold">Total <span className="text-slate-400 font-medium">(USD)</span></span>
-                                <span className="text-4xl font-black text-slate-900 tracking-tighter">${livePrice.total.toFixed(0)}</span>
+                                <span className="text-4xl font-black text-black tracking-tighter">${livePrice.total.toFixed(0)}</span>
                             </div>
 
                             <div className="bg-slate-900 text-white p-6 rounded-3xl space-y-3 relative overflow-hidden">
@@ -275,16 +294,16 @@ const CheckoutPage = () => {
                             </div>
                         </div>
                     </aside>
-                </div>
+                </section>
             </main>
 
             {mounted && showSuccessModal && createPortal(
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-md p-4">
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#1C1C1C] /40 backdrop-blur-md p-4">
                     <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="bg-white p-12 rounded-[3.5rem] shadow-2xl text-center max-w-sm w-full">
                         <div className="w-24 h-24 bg-emerald-50 rounded-full flex items-center justify-center mx-auto mb-8 border-4 border-emerald-100">
                             <CheckCircle2 size={48} className="text-emerald-500" />
                         </div>
-                        <h2 className="text-3xl font-black text-slate-900 mb-2 tracking-tight">Booking Confirmed!</h2>
+                        <h2 className="text-3xl font-black text-black mb-2 tracking-tight">Booking Confirmed!</h2>
                         <p className="text-slate-500 mb-8 font-medium">We've sent the details to your email.</p>
                         <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
                             <motion.div initial={{ width: "0%" }} animate={{ width: "100%" }} transition={{ duration: 3 }} className="bg-emerald-500 h-full" />
@@ -295,7 +314,7 @@ const CheckoutPage = () => {
             )}
 
             {mounted && isCalendarOpen && createPortal(
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-md p-4">
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#143944] /60 backdrop-blur-md p-4">
                     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bg-white p-8 rounded-[2.5rem] shadow-2xl border border-slate-200">
                         <div className="flex justify-between items-center mb-6">
                             <h3 className="font-bold text-xl tracking-tight italic">Select trip dates</h3>
@@ -328,7 +347,7 @@ const CheckoutPage = () => {
                             <AlertCircle className="text-rose-500" size={20} />
                         </div>
                         <div className="flex-1">
-                            <p className="font-bold text-slate-900 text-sm">Action Required</p>
+                            <p className="font-bold text-black text-sm">Action Required</p>
                             <p className="text-xs text-slate-500 mt-0.5">{noticeMsg}</p>
                         </div>
                         <button onClick={() => setShowNotice(false)} className="text-slate-400 hover:text-slate-600">
