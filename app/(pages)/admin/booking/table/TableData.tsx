@@ -8,6 +8,7 @@ import type {
   TUser,
   TRooms,
   TApiResponse,
+  TCity,
 } from "@/app/type";
 import api from "@/app/service/api";
 import dayjs from "dayjs";
@@ -30,24 +31,29 @@ export default function TableData({
   const fetchUsers = async () => {
     setLoading(true);
     try {
-      const [usersRes, bookingsRes, roomsRes] = await Promise.all([
+      const [usersRes, bookingsRes, roomsRes, citiesRes] = await Promise.all([
         api.get<TApiResponse<TUser>>("/users"),
         api.get<TApiResponse<TBooking2>>("/dat-phong"),
         api.get<TApiResponse<TRooms>>("/phong-thue"),
+        api.get<TApiResponse<TCity>>("/vi-tri"),
       ]);
 
       const users = usersRes.data.content;
       const bookings = bookingsRes.data.content;
       const rooms = roomsRes.data.content;
+      const cities = citiesRes.data.content;
       const bookingsWithUser: TBookingView[] = bookings.map((booking) => {
         const user = users.find((user) => user.id === booking.maNguoiDung);
         const room = rooms.find((room) => room.id === booking.maPhong);
+        const city = cities.find((city) => city.id === room?.id);
         return {
           ...booking,
           roomName: room?.tenPhong ?? "-",
           ngayDen: dayjs(booking.ngayDen).format("DD/MM/YYYY"),
           ngayDi: dayjs(booking.ngayDi).format("DD/MM/YYYY"),
           userName: user?.name ?? "-",
+          email: user?.email ?? "-",
+          tenViTri: city?.tenViTri ?? "-",
         };
       });
 
@@ -76,7 +82,9 @@ export default function TableData({
       result = result.filter(
         (booking) =>
           booking.roomName?.toLowerCase().includes(lower) ||
-          booking.userName?.toLowerCase().includes(lower)
+          booking.userName?.toLowerCase().includes(lower) ||
+          booking.tenViTri?.toLowerCase().includes(lower) ||
+          booking.email?.toLowerCase().includes(lower),
       );
     }
 
@@ -103,16 +111,22 @@ export default function TableData({
       width: 180,
     },
     {
+      title: "Location",
+      dataIndex: "tenViTri",
+      key: "tenViTri",
+      width: 180,
+    },
+    {
       title: "Check-in",
       dataIndex: "ngayDen",
       key: "ngayDen",
-      width: 280,
+      width: 180,
     },
     {
       title: "Check-out",
       dataIndex: "ngayDi",
       key: "ngayDi",
-      width: 280,
+      width: 180,
     },
     {
       title: "Guests",
@@ -130,6 +144,12 @@ export default function TableData({
       title: "Name",
       dataIndex: "userName",
       key: "userName",
+      width: 180,
+    },
+    {
+      title: "Email",
+      dataIndex: "email",
+      key: "email",
       width: 180,
     },
     {

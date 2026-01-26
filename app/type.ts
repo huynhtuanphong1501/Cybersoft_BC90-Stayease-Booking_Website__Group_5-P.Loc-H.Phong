@@ -130,6 +130,8 @@ export type TBookingView = {
   maNguoiDung: number;
   roomName?: string;
   userName?: string;
+  email?: string;
+  tenViTri?: string;
 };
 
 export type TRoomView = TRooms & {
