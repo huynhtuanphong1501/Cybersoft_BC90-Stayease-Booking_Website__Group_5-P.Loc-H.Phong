@@ -67,7 +67,8 @@ export default function TableData({
       result = result.filter(
         (room) =>
           room.tenPhong.toLowerCase().includes(lower) ||
-          room.moTa.toLowerCase().includes(lower),
+          room.moTa.toLowerCase().includes(lower) ||
+          room.tenViTri.toLowerCase().includes(lower),
       );
     }
 
